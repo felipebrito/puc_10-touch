@@ -1,0 +1,142 @@
+/* ===========================
+   FONT FACES
+   =========================== */
+@font-face {
+    font-family: 'Blender Pro Book';
+    src: url('/assets/fonts/BlenderPro-Book.ttf') format('truetype');
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Blender Pro Medium';
+    src: url('/assets/fonts/BlenderPro-Medium.ttf') format('truetype');
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Blender Pro Heavy';
+    src: url('/assets/fonts/BlenderPro-Heavy.ttf') format('truetype');
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Canva Sans Regular';
+    src: url('/assets/fonts/CanvaSans-Regular.otf') format('opentype');
+    font-display: swap;
+}
+
+/* ===========================
+   CSS CUSTOM PROPERTIES
+   =========================== */
+:root {
+    /* Colors */
+    --color-bg-dark:       #070d19;
+    --color-bg-light:      #f4f4f4;
+    --color-primary-blue:  #005fff;
+    --color-secondary-blue:#006eff;
+    --color-white:         #ffffff;
+    --color-text-dark:     #0b0e21;
+    --color-muted-blue:    rgba(0, 85, 255, 0.4);
+    --color-glass:         rgba(0, 0, 0, 0.5);
+    --color-divider:       rgba(255, 255, 255, 0.3);
+
+    /* Fonts */
+    --font-primary:  'Blender Pro Heavy', 'Rajdhani', sans-serif;
+    --font-medium:   'Blender Pro Medium', 'Rajdhani', sans-serif;
+    --font-book:     'Blender Pro Book', 'Rajdhani', sans-serif;
+    --font-canva:    'Canva Sans Regular', 'Inter', sans-serif;
+    --font-body:     Georgia, 'Times New Roman', serif;
+
+    /* Spacing */
+    --spacing-xs:  8px;
+    --spacing-sm:  16px;
+    --spacing-md:  24px;
+    --spacing-lg:  32px;
+    --spacing-xl:  48px;
+    --spacing-2xl: 64px;
+
+    color-scheme: light dark;
+}
+
+/* ===========================
+   RESET & GLOBAL STYLES
+   =========================== */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html, body, #root {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+:root {
+    line-height: 1.5;
+    font-weight: 400;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+#root {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    max-width: 1080px;
+    margin: 0 auto;
+    aspect-ratio: 9 / 16;
+    background-color: var(--color-bg-dark);
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+button {
+    cursor: pointer;
+    border: none;
+    outline: none;
+    font-family: inherit;
+}
+
+button:focus {
+    outline: none;
+}
+
+/* ===========================
+   TYPOGRAPHY GLOBALS
+   =========================== */
+h1, h2, h3 {
+    font-family: var(--font-primary);
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* ===========================
+   GLOBAL ANIMATIONS
+   =========================== */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-fade-in {
+    animation: fadeIn 0.6s ease-out forwards;
+}
+
+.delay-100 { animation-delay: 0.1s; }
+.delay-200 { animation-delay: 0.2s; }
+.delay-300 { animation-delay: 0.3s; }
+.delay-400 { animation-delay: 0.4s; }
+.delay-500 { animation-delay: 0.5s; }
