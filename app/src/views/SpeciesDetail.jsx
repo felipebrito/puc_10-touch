@@ -188,11 +188,26 @@ export default function SpeciesDetail({ config, setConfig, editorVisible, onTogg
                     <motion.div className="species-footer" variants={itemVariants}>
                         <div className="footer-url-container">
                             <span className="footer-url">{species.externalUrl}</span>
-                            <img src="/assets/linha.svg" alt="" className="footer-line-svg" />
+                            <img 
+                                src="/assets/linha.svg" 
+                                alt="" 
+                                className="footer-line-svg" 
+                            />
                         </div>
                     </motion.div>
                 )}
+
             </motion.div>
+
+            {/* Final Footer Image Page - Static (no animation) */}
+            <div className="species-final-footer">
+                <img 
+                    src="/assets/linha.svg" 
+                    alt="" 
+                    className="footer-line-separator" 
+                />
+                <img src="/assets/rodape.png" alt="" className="rodape-image" />
+            </div>
 
             <DesignEditor 
                 config={config} 

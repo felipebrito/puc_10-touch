@@ -17,7 +17,11 @@ export const menuItems = [
     {
         id: 'toninha',
         label: 'TONINHA',
+        scientificName: 'TONINHA (FRANCISCANA)',
+        binomialName: 'Pontoporia blainvillei',
         image: '/assets/images/toninha.png',
+        guideImage: '/assets/guides/page-10.png',
+        description: `A toninha é um golfinho marinho bastante pequeno (entre 1,6 e 1,8m) que ocorre nas águas costeiras desde o ES até o norte da Argentina e está criticamente em perigo de extinção.\n\nApesar das estimativas atuais apontarem para a existência de mais de 10 mil indivíduos, a população parece estar em declínio constante nas últimas décadas, em especial pela alta taxa de captura acidental em redes de pesca.`,
     },
     {
         id: 'baleia-jubarte',

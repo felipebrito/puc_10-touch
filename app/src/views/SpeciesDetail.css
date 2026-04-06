@@ -77,10 +77,11 @@
 }
 
 .footer-line-svg {
-    width: 908px;
-    max-width: 100%;
+    width: 960px;
     height: auto;
     display: block;
+    align-self: flex-start;
+    margin-left: 75px;
     margin-top: 32px;
 }
 
@@ -113,6 +114,29 @@
     right: 64px;
     /* Offset from the editor button */
     z-index: 100000;
+}
+
+.species-final-footer {
+    margin-top: auto;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.footer-line-separator {
+    width: 960px;
+    height: auto;
+    display: block;
+    align-self: flex-start;
+    margin-left: 75px;
+    margin-bottom: 67px;
+}
+
+.rodape-image {
+    width: 100%;
+    height: auto;
+    display: block;
 }
 
 .error {
