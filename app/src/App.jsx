@@ -1,7 +1,48 @@
+import { useState } from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Home from './views/Home';
+import SpeciesDetail from './views/SpeciesDetail';
+import { loadConfig } from './components/DesignEditor';
 
 function App() {
-    return <Home />;
+    const [config, setConfig] = useState(loadConfig);
+    const [editorVisible, setEditorVisible] = useState(false);
+    const [showGuide, setShowGuide] = useState(false);
+
+    const toggleEditor = () => setEditorVisible(!editorVisible);
+
+    return (
+        <Router>
+            <Routes>
+                <Route 
+                    path="/" 
+                    element={
+                        <Home 
+                            config={config} 
+                            setConfig={setConfig}
+                            editorVisible={editorVisible}
+                            onToggleEditor={toggleEditor}
+                            showGuide={showGuide}
+                            setShowGuide={setShowGuide}
+                        />
+                    } 
+                />
+                <Route 
+                    path="/species/:id" 
+                    element={
+                        <SpeciesDetail 
+                            config={config} 
+                            setConfig={setConfig}
+                            editorVisible={editorVisible}
+                            onToggleEditor={toggleEditor}
+                            showGuide={showGuide}
+                            setShowGuide={setShowGuide}
+                        />
+                    } 
+                />
+            </Routes>
+        </Router>
+    );
 }
 
 export default App;

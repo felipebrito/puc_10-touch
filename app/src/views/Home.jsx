@@ -1,10 +1,11 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import BackgroundVideo from '../components/BackgroundVideo';
 import TopBar from '../components/TopBar';
 import BottomBar from '../components/BottomBar';
 import MenuGrid from '../components/MenuGrid';
-import DesignEditor, { loadConfig } from '../components/DesignEditor';
+import DesignEditor from '../components/DesignEditor';
 import { menuItems } from '../data/menuItems';
 import './Home.css';
 
@@ -26,14 +27,13 @@ const titleItemVariants = {
     }
 };
 
-export default function Home() {
-    const [config, setConfig] = useState(loadConfig);
-    const [editorVisible, setEditorVisible] = useState(false);
-    const [showGuide, setShowGuide] = useState(false);
+export default function Home({ config, setConfig, editorVisible, onToggleEditor, showGuide, setShowGuide }) {
     const [selectedCard, setSelectedCard] = useState(null);
+    const navigate = useNavigate();
 
     const handleItemClick = (item) => {
-        console.log('Clicked:', item.id);
+        // Navigate to species detail page
+        navigate(`/species/${item.id}`);
     };
 
     const tc = config.title;
@@ -92,7 +92,12 @@ export default function Home() {
                     className="home-menu-section"
                     style={{ paddingTop: `${config.grid.paddingTop}px` }}
                 >
-                    <MenuGrid items={menuItems} onItemClick={handleItemClick} config={config} selectedCard={selectedCard} />
+                    <MenuGrid 
+                        items={menuItems} 
+                        onItemClick={handleItemClick} 
+                        config={config} 
+                        selectedCard={selectedCard} 
+                    />
                 </div>
             </div>
 
@@ -119,7 +124,7 @@ export default function Home() {
                 config={config}
                 setConfig={setConfig}
                 visible={editorVisible}
-                onToggle={() => setEditorVisible(!editorVisible)}
+                onToggle={onToggleEditor}
                 selectedCard={selectedCard}
                 setSelectedCard={setSelectedCard}
             />

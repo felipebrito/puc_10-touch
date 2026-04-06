@@ -49,6 +49,7 @@
     background-color: var(--color-white);
     border-radius: 2px;
     flex-shrink: 0;
+    align-self: center; /* Centers the line on the page regardless of parent flex start alignment */
 }
 
 /* ========================
