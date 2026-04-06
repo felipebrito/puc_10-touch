@@ -133,14 +133,6 @@ const DEFAULT_CONFIG = {
             "footerUrlColor": "#005fff",
             "footerVerticalOffset": -6
         }
-    },
-    // Water Ripple effect configuration
-    ripple: {
-        radius: 0.035,
-        strength: 0.15,
-        damping: 0.98,
-        speed: 0.45,
-        normalZ: 0.012,
     }
 };
 
@@ -340,10 +332,11 @@ export default function DesignEditor({ config, setConfig, visible, onToggle, sel
         return () => window.removeEventListener('keydown', handler);
     }, [visible, setSelectedCard]);
 
-    // Global Key: C to toggle editor (anywhere)
+    // Global Key: C or P to toggle editor (anywhere)
     useEffect(() => {
         const handler = (e) => {
-            if (e.key.toLowerCase() === 'c' && e.target.tagName !== 'INPUT' && e.target.tagName !== 'TEXTAREA') {
+            const key = e.key.toLowerCase();
+            if ((key === 'c' || key === 'p') && e.target.tagName !== 'INPUT' && e.target.tagName !== 'TEXTAREA') {
                 e.preventDefault();
                 onToggle();
             }
@@ -619,20 +612,6 @@ export default function DesignEditor({ config, setConfig, visible, onToggle, sel
                         </ControlGroup>
                     );
                 })()}
-
-                {/* WATER RIPPLE */}
-                <ControlGroup label="💧 Water Ripple (Toque na tela)" defaultOpen={false}>
-                    <Slider label="Velocidade Propagação" value={config.ripple.speed} min={0.1} max={1} step={0.01} unit=""
-                        onChange={v => update('ripple', 'speed', v)} />
-                    <Slider label="Amortecimento (Damping)" value={config.ripple.damping} min={0.9} max={1} step={0.001} unit=""
-                        onChange={v => update('ripple', 'damping', v)} />
-                    <Slider label="Raio do Toque (Radius)" value={config.ripple.radius} min={0.01} max={0.1} step={0.001} unit=""
-                        onChange={v => update('ripple', 'radius', v)} />
-                    <Slider label="Força do Toque (Strength)" value={config.ripple.strength} min={0.01} max={0.5} step={0.01} unit=""
-                        onChange={v => update('ripple', 'strength', v)} />
-                    <Slider label="Suavidade Superfície (Normal Z)" value={config.ripple.normalZ} min={0.001} max={0.05} step={0.001} unit=""
-                        onChange={v => update('ripple', 'normalZ', v)} />
-                </ControlGroup>
             </div>
         </div>
     );

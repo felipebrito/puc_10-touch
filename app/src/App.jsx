@@ -6,18 +6,15 @@ import ExtincaoPage from './views/ExtincaoPage';
 import TartarugasPage from './views/TartarugasPage';
 import TubaroesPage from './views/TubaroesPage';
 import { loadConfig } from './components/DesignEditor';
-import WaterRipple from './components/WaterRipple';
 
 function App() {
     const [config, setConfig] = useState(loadConfig);
     const [editorVisible, setEditorVisible] = useState(false);
-    const [showGuide, setShowGuide] = useState(false);
 
     const toggleEditor = () => setEditorVisible(!editorVisible);
 
     return (
         <Router>
-            <WaterRipple config={config} />
             <Routes>
                 <Route 
                     path="/" 
@@ -27,8 +24,6 @@ function App() {
                             setConfig={setConfig}
                             editorVisible={editorVisible}
                             onToggleEditor={toggleEditor}
-                            showGuide={showGuide}
-                            setShowGuide={setShowGuide}
                         />
                     } 
                 />
@@ -52,8 +47,6 @@ function App() {
                             setConfig={setConfig}
                             editorVisible={editorVisible}
                             onToggleEditor={toggleEditor}
-                            showGuide={showGuide}
-                            setShowGuide={setShowGuide}
                         />
                     } 
                 />

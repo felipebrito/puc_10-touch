@@ -5,7 +5,7 @@ import TopBar from '../components/TopBar';
 import DesignEditor from '../components/DesignEditor';
 import './SpeciesDetail.css';
 
-export default function SpeciesDetail({ config, setConfig, editorVisible, onToggleEditor, showGuide, setShowGuide }) {
+export default function SpeciesDetail({ config, setConfig, editorVisible, onToggleEditor }) {
     const { id } = useParams();
     // Procura no menu principal ou nos detalhes específicos de sub-páginas
     const species = menuItems.find(item => item.id === id) || speciesDetails[id];
@@ -83,26 +83,6 @@ export default function SpeciesDetail({ config, setConfig, editorVisible, onTogg
                 )}
             </div>
 
-            <button
-                className="guide-toggle detail-guide"
-                onClick={() => setShowGuide(!showGuide)}
-                title="Mostrar Guia (👁️)"
-            >
-                {showGuide ? '👁️' : '👁️‍🗨️'}
-            </button>
-
-            {showGuide && species.guideImage && (
-                <div
-                    className="guide-overlay"
-                    onClick={() => setShowGuide(false)}
-                    style={{
-                        backgroundImage: `url(${species.guideImage})`,
-                        backgroundSize: '100% 100%',
-                        opacity: 0.5,
-                        zIndex: 9999
-                    }}
-                />
-            )}
 
             <div className="species-hero" style={{ height: `${sp.heroHeight}px`, marginBottom: `${sp.heroMarginBottom ?? 40}px` }}>
                 <motion.div

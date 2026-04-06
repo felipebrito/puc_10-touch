@@ -27,7 +27,7 @@ const titleItemVariants = {
     }
 };
 
-export default function Home({ config, setConfig, editorVisible, onToggleEditor, showGuide, setShowGuide }) {
+export default function Home({ config, setConfig, editorVisible, onToggleEditor }) {
     const [selectedCard, setSelectedCard] = useState(null);
     const navigate = useNavigate();
 
@@ -102,22 +102,6 @@ export default function Home({ config, setConfig, editorVisible, onToggleEditor,
             </div>
 
             <BottomBar />
-
-            {/* Guide Overlay — transparent reference image */}
-            {showGuide && (
-                <div className="guide-overlay">
-                    <img src="/assets/guide-overlay.png" alt="Design Guide" />
-                </div>
-            )}
-
-            {/* Guide Toggle Button */}
-            <button
-                className="guide-toggle"
-                onClick={() => setShowGuide(!showGuide)}
-                title={showGuide ? 'Esconder guia' : 'Mostrar guia'}
-            >
-                {showGuide ? '👁️' : '👁️‍🗨️'}
-            </button>
 
             {/* WYSIWYG Editor */}
             <DesignEditor
