@@ -52,10 +52,11 @@ void main() {
   fragColor = info;
 }`;
 
-// Render water surface as a semi-transparent light/caustic overlay
+// Render water surface with real background refraction
 const RENDER_FRAG = `#version 300 es
 precision highp float;
 uniform sampler2D uTex;
+uniform sampler2D uMainTex;
 uniform vec2 uDelta;
 uniform float uNormalZ;
 in vec2 vUV;
@@ -74,11 +75,23 @@ void main() {
   float diffuse  = max(0.0, dot(normal, lightDir));
   float specular = pow(max(0.0, dot(reflect(-lightDir, normal), eyeDir)), 80.0);
 
-  float wave  = abs(info.r) * 9.0;
-  float alpha = clamp(wave * (diffuse * 0.35 + specular * 1.1), 0.0, 0.72);
+  // Refraction: distorted UVs for the background
+  vec2 distortion = normal.xy * 0.045;
+  
+  // Subtle chromatic aberration
+  float r = texture(uMainTex, vUV + distortion * 1.1).r;
+  float g = texture(uMainTex, vUV + distortion).g;
+  float b = texture(uMainTex, vUV + distortion * 0.9).b;
+  vec3 refracted = vec3(r, g, b);
 
-  vec3 color = mix(vec3(0.18, 0.52, 0.88), vec3(0.88, 0.96, 1.0), specular);
-  fragColor = vec4(color, alpha);
+  // Combine background with water glints
+  vec3 color = refracted + specular * 0.6;
+  
+  // Slight blue tint based on wave depth
+  float wave = info.r;
+  color = mix(color, vec3(0.1, 0.4, 0.8), clamp(wave * 0.2, 0.0, 0.15));
+
+  fragColor = vec4(color, 1.0);
 }`;
 
 // ── WebGL helpers ──────────────────────────────────────────────────────────
@@ -173,6 +186,14 @@ export default function WaterRipple({ config }) {
         let [readTex, writeTex] = [texA, texB];
         let [readFBO, writeFBO] = [fboA, fboB];
 
+        // Texture for the background image/video
+        const mainTex = gl.createTexture();
+        gl.bindTexture(gl.TEXTURE_2D, mainTex);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+
         const delta = new Float32Array([1 / SIM_SIZE, 1 / SIM_SIZE]);
 
         function bindQuad(prog) {
@@ -220,19 +241,27 @@ export default function WaterRipple({ config }) {
         function renderWater() {
             gl.useProgram(renderProg);
             bindQuad(renderProg);
+            
             gl.activeTexture(gl.TEXTURE0);
             gl.bindTexture(gl.TEXTURE_2D, readTex);
             gl.uniform1i(gl.getUniformLocation(renderProg, 'uTex'), 0);
+
+            // Update and bind background texture
+            const video = document.querySelector('.target-bg-video');
+            if (video && video.readyState >= 2) {
+                gl.activeTexture(gl.TEXTURE1);
+                gl.bindTexture(gl.TEXTURE_2D, mainTex);
+                gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, video);
+                gl.uniform1i(gl.getUniformLocation(renderProg, 'uMainTex'), 1);
+            }
+
             gl.uniform2fv(gl.getUniformLocation(renderProg, 'uDelta'), delta);
             gl.uniform1f(gl.getUniformLocation(renderProg, 'uNormalZ'), configRef.current.ripple.normalZ);
             gl.bindFramebuffer(gl.FRAMEBUFFER, null);
             gl.viewport(0, 0, canvas.width, canvas.height);
             gl.clearColor(0, 0, 0, 0);
             gl.clear(gl.COLOR_BUFFER_BIT);
-            gl.enable(gl.BLEND);
-            gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
             gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
-            gl.disable(gl.BLEND);
         }
 
         // Touch / click input
@@ -274,6 +303,7 @@ export default function WaterRipple({ config }) {
             gl.deleteFramebuffer(fboA);
             gl.deleteFramebuffer(fboB);
             gl.deleteBuffer(quadVBO);
+            gl.deleteTexture(mainTex);
             [updateProg, dropProg, renderProg].forEach(p => gl.deleteProgram(p));
         };
     }, []);
@@ -281,13 +311,14 @@ export default function WaterRipple({ config }) {
     return (
         <canvas
             ref={canvasRef}
+            className="water-ripple-canvas"
             style={{
                 position: 'fixed',
                 inset: 0,
                 width: '100%',
                 height: '100%',
                 pointerEvents: 'none',
-                zIndex: 9999,
+                zIndex: 0, // Behind UI, but will cover pure CSS background
             }}
         />
     );
