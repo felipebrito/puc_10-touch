@@ -20,7 +20,7 @@ const itemVariants = {
     }
 };
 
-export default function MenuGrid({ items, onItemClick, config, selectedCard }) {
+export default function MenuGrid({ items, onItemClick, config, selectedCard, ignoreOverrides = false }) {
     const c = config?.grid || {};
 
     const gridStyle = {
@@ -52,7 +52,10 @@ export default function MenuGrid({ items, onItemClick, config, selectedCard }) {
             animate="visible"
         >
             {items.map((item, index) => {
-                const resolved = getCardLabelStyle(config, index);
+                const resolved = ignoreOverrides 
+                    ? { ...c, labelBottom: c.labelBottom, labelLeft: c.labelLeft, labelRight: c.labelRight } 
+                    : getCardLabelStyle(config, index);
+                
                 const labelStyle = {
                     position: 'absolute',
                     bottom: `${resolved.labelBottom}px`,

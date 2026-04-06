@@ -81,26 +81,55 @@
     margin-top: 32px;
 }
 
-.back-button {
+.detail-navigation {
     position: fixed;
-    z-index: 1000;
     bottom: 40px;
     left: 40px;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.back-button-home {
     background: #005fff;
-    border: none;
     border-radius: 50%;
     color: white;
     font-size: 24px;
     display: flex;
     align-items: center;
     justify-content: center;
-    cursor: pointer;
+    text-decoration: none;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
     transition: transform 0.2s;
 }
 
-.back-button:hover {
-    transform: scale(1.1);
+.back-button-category {
+    background: #005fff;
+    color: white;
+    font-family: 'Blender Pro', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    text-transform: uppercase;
+    padding: 12px 28px;
+    border-radius: 40px;
+    text-decoration: none;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    transition: transform 0.2s, background 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.back-button-category::before {
+    content: '←';
+    font-size: 24px;
+}
+
+.back-button-home:hover,
+.back-button-category:hover {
+    transform: scale(1.05);
+    background: #004ecc;
 }
 
 /* Override home guide position if needed, or keep consistent */

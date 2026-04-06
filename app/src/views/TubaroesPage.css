@@ -1,0 +1,124 @@
+.tubaroes-page {
+    position: relative;
+    width: 1080px;
+    height: 1920px;
+    overflow: hidden;
+    background: #000;
+}
+
+.tubaroes-page .top-bar {
+    position: relative;
+    z-index: 12;
+}
+
+.tubaroes-static-content {
+    position: absolute;
+    top: 100px;
+    left: 0;
+    right: 0;
+    bottom: 230px;
+    z-index: 3;
+}
+
+.shark-text-inner {
+    padding: 80px 70px 0 70px;
+    height: 100%;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+}
+
+.shark-title {
+    font-family: 'Blender Pro', sans-serif;
+    font-size: 72px;
+    font-weight: 900;
+    letter-spacing: 3px;
+    color: #ffffff;
+    text-transform: uppercase;
+    line-height: 1.05;
+    margin: 0 0 24px 0;
+}
+
+.shark-separator {
+    width: 200px;
+    height: 3px;
+    background: #005fff;
+    margin-bottom: 56px;
+    flex-shrink: 0;
+}
+
+.shark-paragraphs {
+    font-family: 'Canva Sans', sans-serif;
+    font-size: 34px;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #ffffff;
+    margin-bottom: 60px;
+}
+
+.shark-paragraphs p {
+    margin: 0 0 1.2em 0;
+}
+
+.shark-species-section {
+    width: 100%;
+    margin-top: auto;
+    padding-bottom: 40px;
+}
+
+/* Reset or adjust MenuGrid within this view if needed */
+.shark-species-section .menu-grid {
+    padding: 0 !important; /* Reuse Home logic but override padding if necessary */
+    row-gap: 30px;
+}
+
+/* ── Rodapé estático ─────────────────────────────────────── */
+.tubaroes-footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    pointer-events: none;
+    z-index: 3;
+}
+
+.tubaroes-linha {
+    width: 960px;
+    height: auto;
+    display: block;
+    margin-left: 75px;
+    margin-bottom: 67px;
+}
+
+.tubaroes-rodape {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* ── Botão voltar ────────────────────────────────────────── */
+.tubaroes-back-button {
+    position: fixed;
+    z-index: 1000;
+    bottom: 40px;
+    left: 40px;
+    width: 80px;
+    height: 80px;
+    background: #005fff;
+    border-radius: 50%;
+    color: white;
+    font-size: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+    transition: transform 0.2s;
+}
+
+.tubaroes-back-button:hover {
+    transform: scale(1.1);
+}
