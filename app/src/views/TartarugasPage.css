@@ -163,11 +163,9 @@
     content: '';
     position: absolute;
     inset: 0;
-    background: linear-gradient(
-        to bottom,
-        transparent 40%,
-        rgba(0, 10, 30, 0.75) 100%
-    );
+    background: linear-gradient(to bottom,
+            transparent 40%,
+            rgba(0, 10, 30, 0.75) 100%);
 }
 
 .species-label-content {
@@ -211,7 +209,7 @@
     height: 90px;
     border-radius: 50%;
     background: rgba(0, 95, 255, 0.85);
-    border: none;
+    border: 3px solid transparent;
     color: #ffffff;
     font-size: 64px;
     line-height: 1;
@@ -221,8 +219,14 @@
     cursor: pointer;
     z-index: 10;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
-    transition: background 0.2s, transform 0.2s;
+    transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     padding: 0;
+}
+
+.carousel-arrow-t:active {
+    transform: translateY(-50%) scale(0.92);
+    border-color: #ffffff;
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
 }
 
 .carousel-arrow-t:hover {
@@ -230,8 +234,19 @@
     transform: translateY(-50%) scale(1.1);
 }
 
-.arrow-left-t  { left: 30px; }
-.arrow-right-t { right: 30px; }
+.arrow-icon-svg {
+    width: 60%;
+    height: 60%;
+    object-fit: contain;
+}
+
+.arrow-left-t {
+    left: 30px;
+}
+
+.arrow-right-t {
+    right: 30px;
+}
 
 /* ── Indicadores de página ───────────────────────────────── */
 .tartarugas-indicator {
@@ -294,6 +309,7 @@
     height: 80px;
     background: #005fff;
     border-radius: 50%;
+    border: 3px solid transparent;
     color: white;
     font-size: 28px;
     display: flex;
@@ -301,7 +317,20 @@
     justify-content: center;
     text-decoration: none;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
-    transition: transform 0.2s;
+    transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.tartarugas-back-button:active {
+    transform: scale(0.92);
+    border-color: #ffffff;
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.5), 0 4px 15px rgba(0, 0, 0, 0.4);
+}
+
+.tartarugas-back-button .home-icon-svg {
+    width: 60%;
+    height: 60%;
+    filter: brightness(0) invert(1);
+    object-fit: contain;
 }
 
 .tartarugas-back-button:hover {

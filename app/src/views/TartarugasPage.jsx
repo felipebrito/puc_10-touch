@@ -93,7 +93,9 @@ export default function TartarugasPage() {
         <div className="tartarugas-page">
             <BackgroundVideo variant="full" />
             <TopBar />
-            <Link to="/" className="tartarugas-back-button">🏠</Link>
+             <Link to="/" className="tartarugas-back-button">
+                <img src="/assets/images/home.svg" alt="Home" className="home-icon-svg" />
+            </Link>
 
             <div
                 className="tartarugas-carousel"
@@ -116,16 +118,20 @@ export default function TartarugasPage() {
                         className="carousel-arrow-t arrow-left-t"
                         onClick={() => goTo(current - 1)}
                         onPointerDown={(e) => e.stopPropagation()}
-                    >‹</button>
+                    >
+                        <img src="/assets/images/seta-esquerda.svg" alt="Anterior" className="arrow-icon-svg" />
+                    </button>
                 )}
                 {current < slides.length - 1 && (
                     <button
                         className="carousel-arrow-t arrow-right-t"
                         onClick={() => goTo(current + 1)}
                         onPointerDown={(e) => e.stopPropagation()}
-                    >›</button>
+                    >
+                        <img src="/assets/images/seta-direita.svg" alt="Próximo" className="arrow-icon-svg" />
+                    </button>
                 )}
-            </div>
+</div>
 
             <div className="tartarugas-indicator">
                 {slides.map((_, i) => (

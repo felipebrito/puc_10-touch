@@ -70,7 +70,7 @@ export default function SpeciesDetail({ config, setConfig, editorVisible, onTogg
                     bottom: `${sp.backButtonBottom}px`,
                     left: `${sp.backButtonLeft}px`
                 }}>
-                    🏠
+                    <img src="/assets/images/home.svg" alt="Home" className="home-icon-svg" />
                 </Link>
 
                 {backPath && (

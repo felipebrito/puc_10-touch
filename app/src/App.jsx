@@ -6,6 +6,7 @@ import ExtincaoPage from './views/ExtincaoPage';
 import TartarugasPage from './views/TartarugasPage';
 import TubaroesPage from './views/TubaroesPage';
 import { loadConfig } from './components/DesignEditor';
+import WaterRipple from './components/WaterRipple';
 
 function App() {
     const [config, setConfig] = useState(loadConfig);
@@ -16,6 +17,7 @@ function App() {
 
     return (
         <Router>
+            <WaterRipple config={config} />
             <Routes>
                 <Route 
                     path="/" 

@@ -40,7 +40,9 @@ export default function TubaroesPage({ config }) {
         <div className="tubaroes-page">
             <BackgroundVideo variant="full" />
             <TopBar />
-            <Link to="/" className="tubaroes-back-button">🏠</Link>
+            <Link to="/" className="tubaroes-back-button">
+                <img src="/assets/images/home.svg" alt="Home" className="home-icon-svg" />
+            </Link>
 
             <div className="tubaroes-static-content">
                 <div className="shark-text-inner">

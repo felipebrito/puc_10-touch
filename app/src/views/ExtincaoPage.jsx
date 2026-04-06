@@ -107,7 +107,9 @@ export default function ExtincaoPage() {
             <BackgroundVideo variant="full" />
 
             <TopBar />
-            <Link to="/" className="extincao-back-button">🏠</Link>
+            <Link to="/" className="extincao-back-button">
+                <img src="/assets/images/home.svg" alt="Home" className="home-icon-svg" />
+            </Link>
 
             {/* Carrossel — cada slide contém seu próprio fundo e conteúdo */}
             <div
@@ -133,7 +135,7 @@ export default function ExtincaoPage() {
                         onClick={() => goTo(current - 1)}
                         onPointerDown={(e) => e.stopPropagation()}
                     >
-                        ‹
+                        <img src="/assets/images/seta-esquerda.svg" alt="Anterior" className="arrow-icon-svg" />
                     </button>
                 )}
 
@@ -144,7 +146,7 @@ export default function ExtincaoPage() {
                         onClick={() => goTo(current + 1)}
                         onPointerDown={(e) => e.stopPropagation()}
                     >
-                        ›
+                        <img src="/assets/images/seta-direita.svg" alt="Próximo" className="arrow-icon-svg" />
                     </button>
                 )}
             </div>

@@ -94,6 +94,7 @@
 .back-button-home {
     background: #005fff;
     border-radius: 50%;
+    border: 3px solid transparent;
     color: white;
     font-size: 24px;
     display: flex;
@@ -101,7 +102,20 @@
     justify-content: center;
     text-decoration: none;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-    transition: transform 0.2s;
+    transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.back-button-home:active {
+    transform: scale(0.92);
+    border-color: #ffffff;
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.5), 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.home-icon-svg {
+    width: 65%;
+    height: 65%;
+    filter: brightness(0) invert(1);
+    object-fit: contain;
 }
 
 .back-button-category {
@@ -115,10 +129,17 @@
     border-radius: 40px;
     text-decoration: none;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-    transition: transform 0.2s, background 0.2s;
+    transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     display: flex;
     align-items: center;
     gap: 10px;
+    border: 3px solid transparent;
+}
+
+.back-button-category:active {
+    transform: scale(0.95);
+    border-color: #ffffff;
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
 }
 
 .back-button-category::before {
@@ -129,7 +150,6 @@
 .back-button-home:hover,
 .back-button-category:hover {
     transform: scale(1.05);
-    background: #004ecc;
 }
 
 /* Override home guide position if needed, or keep consistent */
@@ -148,7 +168,8 @@
     width: 100%;
     display: flex;
     flex-direction: column;
-    align-items: flex-start; /* Control everything via margins/padding */
+    align-items: flex-start;
+    /* Control everything via margins/padding */
 }
 
 .species-footer {
@@ -167,7 +188,8 @@
     width: 100%;
     height: auto;
     display: block;
-    align-self: center; /* Only the base pattern is centered */
+    align-self: center;
+    /* Only the base pattern is centered */
 }
 
 .error {
