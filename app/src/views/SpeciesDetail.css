@@ -63,17 +63,13 @@
     margin-bottom: 1.5em;
 }
 
-.footer-url-container {
-    margin-top: 20px;
-    position: relative;
+.species-description p:last-child {
     padding-bottom: 20px;
 }
 
 .footer-url {
-    color: #005fff;
     font-family: 'Canva Sans', sans-serif;
-    font-size: 28px;
-    font-weight: 400;
+    display: block;
 }
 
 .footer-line-svg {
@@ -117,18 +113,23 @@
 }
 
 .species-final-footer {
-    margin-top: auto;
+    position: absolute;
+    bottom: 0;
+    left: 0;
     width: 100%;
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: flex-start; /* Control everything via margins/padding */
+}
+
+.species-footer {
+    width: 100%;
 }
 
 .footer-line-separator {
     width: 960px;
     height: auto;
     display: block;
-    align-self: flex-start;
     margin-left: 75px;
     margin-bottom: 67px;
 }
@@ -137,6 +138,7 @@
     width: 100%;
     height: auto;
     display: block;
+    align-self: center; /* Only the base pattern is centered */
 }
 
 .error {

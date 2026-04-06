@@ -35,10 +35,10 @@ export default function SpeciesDetail({ config, setConfig, editorVisible, onTogg
     };
 
     const heroVariants = {
-        hidden: { opacity: 0, scale: 1.05 },
+        hidden: { opacity: 0, filter: 'blur(15px)' },
         visible: { 
             opacity: 1, 
-            scale: 1,
+            filter: 'blur(0px)',
             transition: { duration: 0.8, ease: "easeOut" }
         }
     };
@@ -184,23 +184,32 @@ export default function SpeciesDetail({ config, setConfig, editorVisible, onTogg
                     )) || <p>Descrição em breve...</p>}
                 </motion.div>
 
-                {species.externalUrl && (
-                    <motion.div className="species-footer" variants={itemVariants}>
-                        <div className="footer-url-container">
-                            <span className="footer-url">{species.externalUrl}</span>
-                            <img 
-                                src="/assets/linha.svg" 
-                                alt="" 
-                                className="footer-line-svg" 
-                            />
-                        </div>
-                    </motion.div>
-                )}
-
             </motion.div>
 
             {/* Final Footer Image Page - Static (no animation) */}
-            <div className="species-final-footer">
+            <div className="species-final-footer" style={{ 
+                pointerEvents: 'auto',
+                bottom: '0px',
+                transform: `translateY(${- (sp.footerVerticalOffset ?? 0)}px)`
+            }}>
+                {species.externalUrl && (
+                    <div className="species-footer">
+                        <div className="footer-url-container" style={{ 
+                            paddingLeft: `${sp.footerUrlMarginLeft}px`,
+                            paddingTop: `${sp.footerUrlPaddingTop ?? 0}px`,
+                            marginBottom: `${sp.footerUrlMarginBottom ?? 0}px`
+                        }}>
+                            <span className="footer-url" style={{ 
+                                fontSize: `${sp.footerUrlSize}px`,
+                                letterSpacing: `${sp.footerUrlSpacing}px`,
+                                fontWeight: sp.footerUrlWeight,
+                                color: sp.footerUrlColor
+                            }}>
+                                {species.externalUrl}
+                            </span>
+                        </div>
+                    </div>
+                )}
                 <img 
                     src="/assets/linha.svg" 
                     alt="" 

@@ -1,0 +1,345 @@
+.extincao-page {
+    position: relative;
+    width: 1080px;
+    height: 1920px;
+    overflow: hidden;
+    background: #000;
+}
+
+.extincao-page .top-bar {
+    position: relative;
+    z-index: 12;
+}
+
+/* ── Carrossel ───────────────────────────────────────────── */
+.extincao-carousel {
+    position: absolute;
+    top: 100px;
+    left: 0;
+    right: 0;
+    bottom: 230px;
+    overflow: hidden;
+    z-index: 3;
+    cursor: grab;
+    touch-action: pan-y;
+}
+
+.extincao-carousel:active {
+    cursor: grabbing;
+}
+
+.extincao-track {
+    display: flex;
+    width: max-content;
+    height: 100%;
+    transition: transform 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* ── Slide base ──────────────────────────────────────────── */
+.extincao-slide {
+    width: 1080px;
+    height: 100%;
+    flex-shrink: 0;
+    position: relative;
+    overflow: hidden;
+}
+
+.slide-bg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* Collage cobre o slide mantendo proporção, alinhada ao topo */
+.collage-fill {
+    object-fit: cover;
+    object-position: top center;
+}
+
+.slide-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom,
+            rgba(0, 10, 30, 0.45) 0%,
+            rgba(0, 10, 30, 0.20) 35%,
+            rgba(0, 10, 30, 0.55) 60%,
+            rgba(0, 10, 30, 0.80) 100%);
+    pointer-events: none;
+    z-index: 1;
+}
+
+.overlay-heavy {
+    background: linear-gradient(to bottom,
+            rgba(0, 10, 40, 0.70) 0%,
+            rgba(0, 10, 40, 0.55) 40%,
+            rgba(0, 10, 40, 0.75) 100%);
+}
+
+.slide-inner {
+    position: relative;
+    z-index: 2;
+    padding: 120px 70px 0 70px;
+    height: 100%;
+    box-sizing: border-box;
+}
+
+/* ── Slide tipo: ocean-text (páginas 1 e 2) ──────────────── */
+.extincao-titles {
+    margin-bottom: 60px;
+}
+
+.extincao-label {
+    display: block;
+    font-family: 'Blender Pro', sans-serif;
+    font-size: 42px;
+    font-weight: 400;
+    letter-spacing: 6px;
+    color: rgba(255, 255, 255, 0.80);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+}
+
+.extincao-title {
+    font-family: 'Blender Pro', sans-serif;
+    font-size: 116px;
+    font-weight: 900;
+    letter-spacing: 3px;
+    color: #ffffff;
+    text-transform: uppercase;
+    line-height: 1;
+    margin: 0 0 20px 0;
+}
+
+.extincao-separator {
+    width: 200px;
+    height: 3px;
+    background: #005fff;
+}
+
+.extincao-text {
+    font-family: 'Canva Sans', sans-serif;
+    font-size: 38px;
+    font-weight: 400;
+    line-height: 1.55;
+    color: #ffffff;
+}
+
+.extincao-text p {
+    margin: 0 0 1.4em 0;
+}
+
+.extincao-text p:last-child {
+    margin-bottom: 0;
+}
+
+/* ── Slide tipo: photo-collage (páginas 3 e 5) ───────────── */
+.collage-title-overlay {
+    position: absolute;
+    top: 60px;
+    left: 70px;
+    z-index: 2;
+}
+
+.collage-title {
+    font-family: 'Blender Pro', sans-serif;
+    font-size: 72px;
+    font-weight: 900;
+    letter-spacing: 2px;
+    color: #ffffff;
+    text-transform: uppercase;
+    margin: 0;
+    text-shadow: 0 2px 20px rgba(0, 0, 0, 0.8);
+}
+
+/* ── Slide tipo: riscos (página 4) ──────────────────────── */
+.riscos-title {
+    font-family: 'Blender Pro', sans-serif;
+    font-size: 72px;
+    font-weight: 900;
+    letter-spacing: 2px;
+    color: #ffffff;
+    text-transform: uppercase;
+    line-height: 1.1;
+    margin: 0 0 40px 0;
+}
+
+.riscos-lead {
+    font-family: 'Canva Sans', sans-serif;
+    font-size: 36px;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #ffffff;
+    margin: 0 0 50px 0;
+}
+
+.riscos-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+}
+
+.riscos-list li {
+    font-family: 'Canva Sans', sans-serif;
+    font-size: 36px;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #ffffff;
+    padding-left: 24px;
+    border-left: 3px solid #005fff;
+}
+
+/* ── Slide tipo: links (página 6) ───────────────────────── */
+.links-title {
+    font-family: 'Blender Pro', sans-serif;
+    font-size: 100px;
+    font-weight: 900;
+    letter-spacing: 3px;
+    color: #ffffff;
+    text-transform: uppercase;
+    margin: 0 0 50px 0;
+}
+
+.links-text {
+    font-family: 'Canva Sans', sans-serif;
+    font-size: 38px;
+    font-weight: 400;
+    line-height: 1.55;
+    color: #ffffff;
+    margin: 0 0 80px 0;
+}
+
+.qrcode-placeholder {
+    width: 400px;
+    height: 400px;
+    border: 6px solid #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.qrcode-label {
+    font-family: 'Blender Pro', sans-serif;
+    font-size: 48px;
+    font-weight: 700;
+    letter-spacing: 4px;
+    color: #f5c400;
+    text-transform: uppercase;
+}
+
+/* ── Setas de navegação ──────────────────────────────────── */
+.carousel-arrow {
+    position: absolute;
+    top: 93%;
+    transform: translateY(-50%);
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    background: rgba(0, 95, 255, 0.85);
+    border: none;
+    color: #ffffff;
+    font-size: 64px;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 10;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+    transition: background 0.2s, transform 0.2s;
+    padding: 0;
+}
+
+.carousel-arrow:hover {
+    background: #005fff;
+    transform: translateY(-50%) scale(1.1);
+}
+
+.arrow-left {
+    left: 30px;
+}
+
+.arrow-right {
+    right: 30px;
+}
+
+/* ── Indicadores de página ───────────────────────────────── */
+.extincao-indicator {
+    position: absolute;
+    bottom: 248px;
+    right: 70px;
+    display: flex;
+    gap: 14px;
+    align-items: center;
+    z-index: 4;
+    pointer-events: none;
+}
+
+.indicator-dot {
+    width: 48px;
+    height: 4px;
+    border-radius: 2px;
+    background: rgba(255, 255, 255, 0.30);
+    transition: background 0.3s;
+}
+
+.indicator-dot.active {
+    background: #005fff;
+}
+
+/* ── Rodapé estático ─────────────────────────────────────── */
+.extincao-footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    pointer-events: none;
+    z-index: 3;
+}
+
+.extincao-linha {
+    width: 960px;
+    height: auto;
+    display: block;
+    margin-left: 75px;
+    margin-bottom: 67px;
+}
+
+.extincao-rodape {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* ── Botão voltar ────────────────────────────────────────── */
+.extincao-back-button {
+    position: fixed;
+    z-index: 1000;
+    bottom: 40px;
+    left: 40px;
+    width: 80px;
+    height: 80px;
+    background: #005fff;
+    border-radius: 50%;
+    color: white;
+    font-size: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+    transition: transform 0.2s;
+}
+
+.extincao-back-button:hover {
+    transform: scale(1.1);
+}

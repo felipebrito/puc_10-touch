@@ -41,7 +41,12 @@ export const menuItems = [
     {
         id: 'peixe-boi',
         label: 'PEIXE-BOI\nMARINHO',
+        scientificName: 'PEIXE-BOI MARINHO',
+        binomialName: 'Trichechus manatus',
         image: '/assets/images/peixe_boi.png',
+        guideImage: '/assets/guides/page-18.png',
+        description: `Apesar do nome, eles são gentis mamíferos de até 4 metros de comprimento que se alimentam de vegetação marinha.\nEles têm um corpo grande e cilíndrico, com uma cauda em forma de remo, que os ajuda a se mover lentamente pela água.\n\nInfelizmente, eles são animais muito vulneráveis e estão ameaçados de extinção principalmente por conta da perda de habitat e colisões com embarcações.\nEstima-se que existam menos de mil indivíduos no país e que a população brasileira está distribuída de forma descontínua ao longo da costa, do estado de Alagoas até o Amapá, e a espécie é classificada como "Em perigo" de extinção.`,
+        externalUrl: 'https://vivaopeixeboi.org.br/',
     },
     {
         id: 'tubaroes',

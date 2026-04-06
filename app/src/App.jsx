@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Home from './views/Home';
 import SpeciesDetail from './views/SpeciesDetail';
+import ExtincaoPage from './views/ExtincaoPage';
 import { loadConfig } from './components/DesignEditor';
 
 function App() {
@@ -27,8 +28,12 @@ function App() {
                         />
                     } 
                 />
-                <Route 
-                    path="/species/:id" 
+                <Route
+                    path="/species/perigo-extincao"
+                    element={<ExtincaoPage />}
+                />
+                <Route
+                    path="/species/:id"
                     element={
                         <SpeciesDetail 
                             config={config} 

@@ -43,7 +43,7 @@ const DEFAULT_CONFIG = {
         overlayOpacity: 0.85,
     },
     bottomBar: {
-        height: 64,
+        height: 59,
     },
     cardOverrides: {
         1: { labelBottom: 60, labelLeft: 16 },
@@ -74,21 +74,33 @@ const DEFAULT_CONFIG = {
         textSize: 40,
         textLineHeight: 1.1,
         paddingHorizontal: 75,
-        paddingTop: 62,
+        paddingTop: 0,
         rowGap: 23,
         backButtonSize: 60,
         backButtonBottom: 39,
         backButtonLeft: 40,
         // White bar overlay
         whiteBarWidth: 375,
-        whiteBarBottom: -7,
+        whiteBarBottom: -51,
         whiteBarRight: 0,
         whiteBarOpacity: 1,
+        // Footer URL text
+        footerUrlSize: 24,
+        footerUrlSpacing: -1,
+        footerUrlWeight: 300,
+        footerUrlMarginLeft: 85,
+        footerUrlMarginBottom: -32,
+        footerUrlPaddingTop: 0,
+        footerUrlColor: '#005fff',
+        // Footer overall position (Vertical displacement)
+        footerVerticalOffset: -6,
     },
 };
 
 function deepMerge(target, source) {
     const result = { ...target };
+    if (!source) return result;
+    
     for (const key of Object.keys(source)) {
         if (source[key] && typeof source[key] === 'object' && !Array.isArray(source[key])) {
             result[key] = deepMerge(target[key] || {}, source[key]);
@@ -429,6 +441,47 @@ export default function DesignEditor({ config, setConfig, visible, onToggle, sel
                             onChange={v => update('speciesPage', 'whiteBarRight', v)} />
                         <Slider label="Opacidade" value={config.speciesPage.whiteBarOpacity} max={1} step={0.05}
                             onChange={v => update('speciesPage', 'whiteBarOpacity', v)} />
+                    </ControlGroup>
+
+                        {/* Footer URL */}
+                        <ControlGroup label="🔗 Endereço do Site" defaultOpen={true}>
+                            <Slider label="Tamanho Fonte" value={config.speciesPage.footerUrlSize} max={100}
+                                onChange={v => update('speciesPage', 'footerUrlSize', v)} />
+                            <Slider label="Espaçamento Letra" value={config.speciesPage.footerUrlSpacing} min={-5} max={20}
+                                onChange={v => update('speciesPage', 'footerUrlSpacing', v)} />
+                            <Slider label="Peso Fonte" value={config.speciesPage.footerUrlWeight} min={100} max={900} step={100}
+                                onChange={v => update('speciesPage', 'footerUrlWeight', v)} />
+                            <Slider label="Margem Esquerda" value={config.speciesPage.footerUrlMarginLeft} max={200}
+                                onChange={v => update('speciesPage', 'footerUrlMarginLeft', v)} />
+                            <Slider label="Descer URL (Padding Top)" value={config.speciesPage.footerUrlPaddingTop} max={300}
+                                onChange={v => update('speciesPage', 'footerUrlPaddingTop', v)} />
+                            <Slider label="Respiro/Gap (URL -> Linha)" value={config.speciesPage.footerUrlMarginBottom} min={-300} max={300}
+                                onChange={v => update('speciesPage', 'footerUrlMarginBottom', v)} />
+                            
+                            <Slider label="Eixo Vertical Rodapé (Subir/Descer)" value={config.speciesPage.footerVerticalOffset} min={-1000} max={1000}
+                                onChange={v => update('speciesPage', 'footerVerticalOffset', v)} />
+                            <p style={{ fontSize: '11px', color: '#888', marginTop: '-8px', marginLeft: '12px' }}>
+                                (Valores Negativos = Descer | Positivos = Subir)
+                            </p>
+                            
+                            <button 
+                                onClick={() => {
+                                    update('speciesPage', 'footerVerticalOffset', 0);
+                                    update('speciesPage', 'footerUrlMarginBottom', 32);
+                                }}
+                                style={{ margin: '10px 12px', padding: '4px 8px', fontSize: '12px' }}
+                            >
+                                Resetar Rodapé (0)
+                            </button>
+                        
+                        <div className="editor-row">
+                            <label>Cor do Link</label>
+                            <input
+                                type="color"
+                                value={config.speciesPage.footerUrlColor || '#005fff'}
+                                onChange={(e) => update('speciesPage', 'footerUrlColor', e.target.value)}
+                            />
+                        </div>
                     </ControlGroup>
                 </ControlGroup>
             </div>
