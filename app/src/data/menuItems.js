@@ -26,12 +26,20 @@ export const menuItems = [
     {
         id: 'baleia-jubarte',
         label: 'BALEIA\nJUBARTE',
+        scientificName: 'BALEIAS JUBARTE',
+        binomialName: 'Megaptera novaeangliae',
         image: '/assets/images/baleia_jubarte.png',
+        guideImage: '/assets/guides/page-12.png',
+        description: `A baleia-jubarte pode chegar a 16 metros de comprimento e pesar mais de 30 toneladas, mas mesmo com esse tamanho impressionante, é famosa por suas acrobacias: salta fora d'água com surpreendente elegância!\n\nIsto é possível graças as suas nadadeiras peitorais extremamente longas, até um terço do comprimento corporal, a maior entre as baleias. Outro destaque é o "canto" que os machos emitem — uma série de sons complexos e misteriosos que podem durar até meia hora e viajar por quilômetros de distância.\n\nAlém disso, são migradoras incríveis: viajam milhares de quilômetros todos os anos entre águas polares (onde se alimentam) e tropicais (onde se reproduzem). No Brasil, se concentram no litoral da Bahia.`,
     },
     {
         id: 'baleia-franca',
         label: 'BALEIA\nFRANCA - AUSTRAL',
+        scientificName: 'BALEIA-FRANCA-AUSTRAL',
+        binomialName: 'Eubalaena australis',
         image: '/assets/images/baleia_franca.png',
+        guideImage: '/assets/guides/page-13.png',
+        description: `As baleias francas austrais podem ser reconhecidas pela presença de calosidades no corpo, cobertas por pequenos parasitas chamados "piolhos-de-baleia" que formam um padrão tão exclusivo que os cientistas usam para identificar cada indivíduo, como se fossem impressões digitais. No Brasil elas podem ser encontradas no inverno no litoral de Santa Catarina.`,
     },
     {
         id: 'tartarugas-marinhas',

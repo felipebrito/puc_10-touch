@@ -9,7 +9,12 @@ export default function SpeciesDetail({ config, setConfig, editorVisible, onTogg
     const { id } = useParams();
     // Procura no menu principal ou nos detalhes específicos de sub-páginas
     const species = menuItems.find(item => item.id === id) || speciesDetails[id];
-    const sp = config.speciesPage;
+    
+    // Merge global speciesPage config with any specific override for this ID
+    const sp = {
+        ...config.speciesPage,
+        ...(config.speciesPageOverrides?.[id] || {})
+    };
 
     if (!species) return <div className="error">Espécie não encontrada</div>;
 

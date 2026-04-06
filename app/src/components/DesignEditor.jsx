@@ -1,4 +1,5 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
+import { useLocation } from 'react-router-dom';
 import './DesignEditor.css';
 
 const CARD_NAMES = [
@@ -95,6 +96,44 @@ const DEFAULT_CONFIG = {
         // Footer overall position (Vertical displacement)
         footerVerticalOffset: -6,
     },
+    speciesPageOverrides: {
+        "baleia-jubarte": {
+            "heroHeight": 625,
+            "heroMarginBottom": 64,
+            "maskIntensity": 0,
+            "titleSize": 89,
+            "titleSpacing": 4,
+            "titleWeight": 900,
+            "titleLineHeight": 1.5,
+            "titleParenthesesSize": 61,
+            "subtitleSize": 53,
+            "subtitleSpacing": 2,
+            "subtitleLineHeight": 1.3,
+            "subtitleMarginTop": -21,
+            "scientificNameWeight": 400,
+            "scientificNameItalic": false,
+            "textSize": 36,
+            "textLineHeight": 1.1,
+            "paddingHorizontal": 75,
+            "paddingTop": 0,
+            "rowGap": 23,
+            "backButtonSize": 60,
+            "backButtonBottom": 39,
+            "backButtonLeft": 40,
+            "whiteBarWidth": 375,
+            "whiteBarBottom": -51,
+            "whiteBarRight": 0,
+            "whiteBarOpacity": 1,
+            "footerUrlSize": 24,
+            "footerUrlSpacing": -1,
+            "footerUrlWeight": 300,
+            "footerUrlMarginLeft": 85,
+            "footerUrlMarginBottom": -32,
+            "footerUrlPaddingTop": 0,
+            "footerUrlColor": "#005fff",
+            "footerVerticalOffset": -6
+        }
+    }
 };
 
 function deepMerge(target, source) {
@@ -196,13 +235,65 @@ function Checkbox({ label, checked, onChange }) {
 }
 
 export default function DesignEditor({ config, setConfig, visible, onToggle, selectedCard, setSelectedCard }) {
+    const location = useLocation();
+    
+    // Detect current species from URL
+    const currentSpeciesId = useMemo(() => {
+        const match = location.pathname.match(/^\/species\/(.+)$/);
+        // Ignore the static "extinction" slide-based page if it uses the same route pattern
+        if (match && match[1] !== 'perigo-extincao') return match[1];
+        return null;
+    }, [location.pathname]);
+
+    const hasSpeciesOverride = currentSpeciesId && !!config.speciesPageOverrides?.[currentSpeciesId];
+
     const update = useCallback((section, key, value) => {
         setConfig(prev => {
-            const next = { ...prev, [section]: { ...prev[section], [key]: value } };
+            const next = { ...prev };
+            
+            // If we are on a species page and editing "speciesPage" section
+            if (section === 'speciesPage' && currentSpeciesId) {
+                const overrides = { ...prev.speciesPageOverrides } || {};
+                const currentOverride = overrides[currentSpeciesId] || {};
+                
+                // If species has an override, update the override
+                if (overrides[currentSpeciesId]) {
+                    overrides[currentSpeciesId] = { ...currentOverride, [key]: value };
+                    next.speciesPageOverrides = overrides;
+                } else {
+                    // Otherwise update global
+                    next[section] = { ...prev[section], [key]: value };
+                }
+            } else {
+                // Standard global update
+                next[section] = { ...prev[section], [key]: value };
+            }
+
             saveConfig(next);
             return next;
         });
-    }, [setConfig]);
+    }, [setConfig, currentSpeciesId]);
+
+    const toggleSpeciesOverride = useCallback((enabled) => {
+        if (!currentSpeciesId) return;
+        
+        setConfig(prev => {
+            const next = { ...prev };
+            const overrides = { ...prev.speciesPageOverrides } || {};
+            
+            if (enabled) {
+                // Initialize override with current global values
+                overrides[currentSpeciesId] = { ...prev.speciesPage };
+            } else {
+                // Remove override
+                delete overrides[currentSpeciesId];
+            }
+            
+            next.speciesPageOverrides = overrides;
+            saveConfig(next);
+            return next;
+        });
+    }, [setConfig, currentSpeciesId]);
 
     const updateCardOverride = useCallback((index, key, value) => {
         setConfig(prev => {
@@ -393,97 +484,125 @@ export default function DesignEditor({ config, setConfig, visible, onToggle, sel
                 </ControlGroup>
 
                 {/* SPECIES PAGE */}
-                <ControlGroup label="🐋 Página de Espécie" defaultOpen={false}>
-                    <Slider label="Hero Height" value={config.speciesPage.heroHeight} max={1000}
-                        onChange={v => update('speciesPage', 'heroHeight', v)} />
-                    <Slider label="Hero Margin Bottom" value={config.speciesPage.heroMarginBottom} min={-100} max={200}
-                        onChange={v => update('speciesPage', 'heroMarginBottom', v)} />
-                    <Slider label="Mask Intensity" value={config.speciesPage.maskIntensity} max={200}
-                        onChange={v => update('speciesPage', 'maskIntensity', v)} />
-                    <Slider label="Name Size" value={config.speciesPage.titleSize} max={120}
-                        onChange={v => update('speciesPage', 'titleSize', v)} />
-                    <Slider label="Name Weight" value={config.speciesPage.titleWeight} min={100} max={900} step={100}
-                        onChange={v => update('speciesPage', 'titleWeight', v)} />
-                    <Slider label="Name Line Height" value={config.speciesPage.titleLineHeight} max={2.5} step={0.1}
-                        onChange={v => update('speciesPage', 'titleLineHeight', v)} />
-                    <Slider label="Name (Parens) Size" value={config.speciesPage.titleParenthesesSize} max={120}
-                        onChange={v => update('speciesPage', 'titleParenthesesSize', v)} />
-                    <Slider label="Scientific Size" value={config.speciesPage.subtitleSize} max={100}
-                        onChange={v => update('speciesPage', 'subtitleSize', v)} />
-                    <Slider label="Scientific Weight" value={config.speciesPage.scientificNameWeight} min={100} max={900} step={100}
-                        onChange={v => update('speciesPage', 'scientificNameWeight', v)} />
-                    <Slider label="Scientific Line Height" value={config.speciesPage.subtitleLineHeight} max={2.5} step={0.1}
-                        onChange={v => update('speciesPage', 'subtitleLineHeight', v)} />
-                    <Slider label="Scientific Margin Top" value={config.speciesPage.subtitleMarginTop} min={-100} max={200}
-                        onChange={v => update('speciesPage', 'subtitleMarginTop', v)} />
-                    <Checkbox label="Scientific Italic" checked={config.speciesPage.scientificNameItalic}
-                        onChange={v => update('speciesPage', 'scientificNameItalic', v)} />
-                    <Slider label="Text Size" value={config.speciesPage.textSize} max={60}
-                        onChange={v => update('speciesPage', 'textSize', v)} />
-                    <Slider label="Text Line Height" value={config.speciesPage.textLineHeight} max={2.5} step={0.1}
-                        onChange={v => update('speciesPage', 'textLineHeight', v)} />
-                    <Slider label="Padding H" value={config.speciesPage.paddingHorizontal} max={200}
-                        onChange={v => update('speciesPage', 'paddingHorizontal', v)} />
-                    <Slider label="Padding T" value={config.speciesPage.paddingTop} max={200}
-                        onChange={v => update('speciesPage', 'paddingTop', v)} />
-                    <Slider label="Row Gap" value={config.speciesPage.rowGap} max={100}
-                        onChange={v => update('speciesPage', 'rowGap', v)} />
-                    <Slider label="Back Btn Bottom" value={config.speciesPage.backButtonBottom} max={200}
-                        onChange={v => update('speciesPage', 'backButtonBottom', v)} />
-
-                    {/* WHITE BAR OVERLAY CONTROLS */}
-                    <ControlGroup label="⬜ Barra Branca" defaultOpen={true}>
-                        <Slider label="Largura" value={config.speciesPage.whiteBarWidth} max={1080}
-                            onChange={v => update('speciesPage', 'whiteBarWidth', v)} />
-                        <Slider label="Bottom" value={config.speciesPage.whiteBarBottom} min={-200} max={200}
-                            onChange={v => update('speciesPage', 'whiteBarBottom', v)} />
-                        <Slider label="Right" value={config.speciesPage.whiteBarRight} min={-200} max={200}
-                            onChange={v => update('speciesPage', 'whiteBarRight', v)} />
-                        <Slider label="Opacidade" value={config.speciesPage.whiteBarOpacity} max={1} step={0.05}
-                            onChange={v => update('speciesPage', 'whiteBarOpacity', v)} />
-                    </ControlGroup>
-
-                        {/* Footer URL */}
-                        <ControlGroup label="🔗 Endereço do Site" defaultOpen={true}>
-                            <Slider label="Tamanho Fonte" value={config.speciesPage.footerUrlSize} max={100}
-                                onChange={v => update('speciesPage', 'footerUrlSize', v)} />
-                            <Slider label="Espaçamento Letra" value={config.speciesPage.footerUrlSpacing} min={-5} max={20}
-                                onChange={v => update('speciesPage', 'footerUrlSpacing', v)} />
-                            <Slider label="Peso Fonte" value={config.speciesPage.footerUrlWeight} min={100} max={900} step={100}
-                                onChange={v => update('speciesPage', 'footerUrlWeight', v)} />
-                            <Slider label="Margem Esquerda" value={config.speciesPage.footerUrlMarginLeft} max={200}
-                                onChange={v => update('speciesPage', 'footerUrlMarginLeft', v)} />
-                            <Slider label="Descer URL (Padding Top)" value={config.speciesPage.footerUrlPaddingTop} max={300}
-                                onChange={v => update('speciesPage', 'footerUrlPaddingTop', v)} />
-                            <Slider label="Respiro/Gap (URL -> Linha)" value={config.speciesPage.footerUrlMarginBottom} min={-300} max={300}
-                                onChange={v => update('speciesPage', 'footerUrlMarginBottom', v)} />
+                {(() => {
+                    const sp = hasSpeciesOverride ? config.speciesPageOverrides[currentSpeciesId] : config.speciesPage;
+                    return (
+                        <ControlGroup label="🐋 Página da Espécie" defaultOpen={true}>
+                            {currentSpeciesId && (
+                                <div className="editor-species-override">
+                                    <Checkbox 
+                                        label={`Sobrescrever Estilo (${currentSpeciesId.toUpperCase()})`}
+                                        checked={hasSpeciesOverride}
+                                        onChange={toggleSpeciesOverride}
+                                    />
+                                    {hasSpeciesOverride && (
+                                        <p style={{ fontSize: '11px', color: '#005fff', marginTop: '-8px', marginBottom: '15px' }}>
+                                            ✓ Editando apenas esta espécie.
+                                        </p>
+                                    )}
+                                </div>
+                            )}
                             
-                            <Slider label="Eixo Vertical Rodapé (Subir/Descer)" value={config.speciesPage.footerVerticalOffset} min={-1000} max={1000}
-                                onChange={v => update('speciesPage', 'footerVerticalOffset', v)} />
-                            <p style={{ fontSize: '11px', color: '#888', marginTop: '-8px', marginLeft: '12px' }}>
-                                (Valores Negativos = Descer | Positivos = Subir)
-                            </p>
+                            <Slider label="Hero Height" value={sp.heroHeight} max={1000}
+                                onChange={v => update('speciesPage', 'heroHeight', v)} />
+                            <Slider label="Hero Margin Bottom" value={sp.heroMarginBottom} min={-100} max={200}
+                                onChange={v => update('speciesPage', 'heroMarginBottom', v)} />
+                            <Slider label="Mask Intensity" value={sp.maskIntensity} max={200}
+                                onChange={v => update('speciesPage', 'maskIntensity', v)} />
+                            <Slider label="Name Size" value={sp.titleSize} max={120}
+                                onChange={v => update('speciesPage', 'titleSize', v)} />
+                            <Slider label="Name Weight" value={sp.titleWeight} min={100} max={900} step={100}
+                                onChange={v => update('speciesPage', 'titleWeight', v)} />
+                            <Slider label="Name Line Height" value={sp.titleLineHeight} max={2.5} step={0.1}
+                                onChange={v => update('speciesPage', 'titleLineHeight', v)} />
+                            <Slider label="Name (Parens) Size" value={sp.titleParenthesesSize} max={120}
+                                onChange={v => update('speciesPage', 'titleParenthesesSize', v)} />
+                            <Slider label="Scientific Size" value={sp.subtitleSize} max={100}
+                                onChange={v => update('speciesPage', 'subtitleSize', v)} />
+                            <Slider label="Scientific Spacing" value={sp.subtitleSpacing} max={20} step={0.1}
+                                onChange={v => update('speciesPage', 'subtitleSpacing', v)} />
+                            <Slider label="Scientific Line Height" value={sp.subtitleLineHeight} max={2.5} step={0.1}
+                                onChange={v => update('speciesPage', 'subtitleLineHeight', v)} />
+                            <Slider label="Scientific Margin Top" value={sp.subtitleMarginTop} min={-100} max={100}
+                                onChange={v => update('speciesPage', 'subtitleMarginTop', v)} />
+                            <Slider label="Scientific Weight" value={sp.scientificNameWeight} min={100} max={900} step={100}
+                                onChange={v => update('speciesPage', 'scientificNameWeight', v)} />
+                            <Checkbox label="Scientific Italic" checked={sp.scientificNameItalic}
+                                onChange={v => update('speciesPage', 'scientificNameItalic', v)} />
                             
-                            <button 
-                                onClick={() => {
-                                    update('speciesPage', 'footerVerticalOffset', 0);
-                                    update('speciesPage', 'footerUrlMarginBottom', 32);
-                                }}
-                                style={{ margin: '10px 12px', padding: '4px 8px', fontSize: '12px' }}
-                            >
-                                Resetar Rodapé (0)
-                            </button>
-                        
-                        <div className="editor-row">
-                            <label>Cor do Link</label>
-                            <input
-                                type="color"
-                                value={config.speciesPage.footerUrlColor || '#005fff'}
-                                onChange={(e) => update('speciesPage', 'footerUrlColor', e.target.value)}
-                            />
-                        </div>
-                    </ControlGroup>
-                </ControlGroup>
+                            <Slider label="Text Size" value={sp.textSize} max={60}
+                                onChange={v => update('speciesPage', 'textSize', v)} />
+                            <Slider label="Text Line Height" value={sp.textLineHeight} max={2.5} step={0.1}
+                                onChange={v => update('speciesPage', 'textLineHeight', v)} />
+                            
+                            <Slider label="Padding Horizontal" value={sp.paddingHorizontal} max={200}
+                                onChange={v => update('speciesPage', 'paddingHorizontal', v)} />
+                            <Slider label="Padding Top" value={sp.paddingTop} max={400}
+                                onChange={v => update('speciesPage', 'paddingTop', v)} />
+                            <Slider label="Row Gap" value={sp.rowGap} max={100}
+                                onChange={v => update('speciesPage', 'rowGap', v)} />
+                            
+                            <ControlGroup label="⬅️ Botão Voltar" defaultOpen={false}>
+                                <Slider label="Tamanho" value={sp.backButtonSize} max={150}
+                                    onChange={v => update('speciesPage', 'backButtonSize', v)} />
+                                <Slider label="Posição Bottom" value={sp.backButtonBottom} max={200}
+                                    onChange={v => update('speciesPage', 'backButtonBottom', v)} />
+                                <Slider label="Posição Left" value={sp.backButtonLeft} max={200}
+                                    onChange={v => update('speciesPage', 'backButtonLeft', v)} />
+                            </ControlGroup>
+
+                            <ControlGroup label="⬜ Barra Branca" defaultOpen={false}>
+                                <Slider label="Largura" value={sp.whiteBarWidth} max={1080}
+                                    onChange={v => update('speciesPage', 'whiteBarWidth', v)} />
+                                <Slider label="Posição Bottom" value={sp.whiteBarBottom} min={-200} max={200}
+                                    onChange={v => update('speciesPage', 'whiteBarBottom', v)} />
+                                <Slider label="Transparência" value={sp.whiteBarOpacity} max={1} step={0.05}
+                                    onChange={v => update('speciesPage', 'whiteBarOpacity', v)} />
+                            </ControlGroup>
+
+                            {/* Footer URL */}
+                            <ControlGroup label="🔗 Endereço do Site" defaultOpen={true}>
+                                <Slider label="Tamanho Fonte" value={sp.footerUrlSize} max={100}
+                                    onChange={v => update('speciesPage', 'footerUrlSize', v)} />
+                                <Slider label="Espaçamento Letra" value={sp.footerUrlSpacing} min={-5} max={20}
+                                    onChange={v => update('speciesPage', 'footerUrlSpacing', v)} />
+                                <Slider label="Peso Fonte" value={sp.footerUrlWeight} min={100} max={900} step={100}
+                                    onChange={v => update('speciesPage', 'footerUrlWeight', v)} />
+                                <Slider label="Margem Esquerda" value={sp.footerUrlMarginLeft} max={200}
+                                    onChange={v => update('speciesPage', 'footerUrlMarginLeft', v)} />
+                                <Slider label="Descer URL (Padding Top)" value={sp.footerUrlPaddingTop} max={300}
+                                    onChange={v => update('speciesPage', 'footerUrlPaddingTop', v)} />
+                                <Slider label="Respiro/Gap (URL -> Linha)" value={sp.footerUrlMarginBottom} min={-300} max={300}
+                                    onChange={v => update('speciesPage', 'footerUrlMarginBottom', v)} />
+                                
+                                <Slider label="Eixo Vertical Rodapé (Subir/Descer)" value={sp.footerVerticalOffset} min={-1000} max={1000}
+                                    onChange={v => update('speciesPage', 'footerVerticalOffset', v)} />
+                                <p style={{ fontSize: '11px', color: '#888', marginTop: '-8px', marginLeft: '12px' }}>
+                                    (Valores Negativos = Descer | Positivos = Subir)
+                                </p>
+                                
+                                <button 
+                                    onClick={() => {
+                                        update('speciesPage', 'footerVerticalOffset', 0);
+                                        update('speciesPage', 'footerUrlMarginBottom', 32);
+                                    }}
+                                    style={{ margin: '10px 12px', padding: '4px 8px', fontSize: '12px' }}
+                                >
+                                    Resetar Rodapé (0)
+                                </button>
+                            
+                                <div className="editor-row">
+                                    <label>Cor do Link</label>
+                                    <input 
+                                        type="color" 
+                                        value={sp.footerUrlColor} 
+                                        onChange={e => update('speciesPage', 'footerUrlColor', e.target.value)} 
+                                    />
+                                </div>
+                            </ControlGroup>
+                        </ControlGroup>
+                    );
+                })()}
             </div>
         </div>
     );
