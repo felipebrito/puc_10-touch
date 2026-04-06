@@ -84,24 +84,20 @@ html, body, #root {
 }
 
 #root {
+    width: 100%;
+    height: 100%;
     display: flex;
-    flex-direction: column;
-    position: relative;
-    /* Strict 9:16 Aspect Ratio Lock */
-    height: 100vh;
-    width: calc(100vh * (9 / 16));
-    max-width: 100vw;
-    margin: 0 auto;
-    background-color: var(--color-bg-dark);
-    box-shadow: 0 0 100px rgba(0, 0, 0, 0.8);
+    justify-content: center;
+    align-items: flex-start;
+    background-color: #000;
     overflow: hidden;
+    position: relative;
 }
 
 body {
-    background-color: #000; /* Backdrop for wide screens */
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    background-color: #000;
+    margin: 0;
+    padding: 0;
     overflow: hidden;
 }
 
