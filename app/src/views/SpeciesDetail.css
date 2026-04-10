@@ -1,5 +1,7 @@
 .species-detail {
-    position: relative;
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 1080px;
     height: 1920px;
     background: #fff;
@@ -81,11 +83,17 @@
     margin-top: 32px;
 }
 
+.species-detail-wrapper {
+    position: relative;
+    width: 1080px;
+    height: 1920px;
+}
+
 .detail-navigation {
-    position: fixed;
+    position: absolute;
     bottom: 40px;
     left: 40px;
-    z-index: 1000;
+    z-index: 10000;
     display: flex;
     align-items: center;
     gap: 15px;

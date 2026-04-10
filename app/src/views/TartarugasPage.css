@@ -217,7 +217,7 @@
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    z-index: 10;
+    z-index: 10000;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
     transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     padding: 0;
@@ -301,8 +301,8 @@
 
 /* ── Botão voltar ────────────────────────────────────────── */
 .tartarugas-back-button {
-    position: fixed;
-    z-index: 1000;
+    position: absolute;
+    z-index: 10000;
     bottom: 40px;
     left: 40px;
     width: 80px;

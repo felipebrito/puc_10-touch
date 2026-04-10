@@ -48,13 +48,32 @@ export default function SpeciesDetail({ config, setConfig, editorVisible, onTogg
         }
     };
 
-    const backPath = (() => {
+    const backInfo = (() => {
         const sharkIds = ['tubarao-mangona', 'tubarao-martelo', 'cacao-anjo'];
-        if (sharkIds.includes(id)) return '/species/tubaroes';
+        const rayIds = ['raia-jamanta'];
+
+        if (sharkIds.includes(id)) return { path: '/species/tubaroes', label: 'Tubarões' };
+        if (rayIds.includes(id)) return { path: '/species/arraias', label: 'Arraias' };
         return null;
     })();
 
     return (
+        <div className="species-detail-wrapper">
+            <div className="detail-navigation">
+                <Link to="/" className="back-button-home" style={{
+                    width: `${sp.backButtonSize}px`,
+                    height: `${sp.backButtonSize}px`,
+                }}>
+                    <img src="/assets/images/home.svg" alt="Home" className="home-icon-svg" />
+                </Link>
+
+                {backInfo && (
+                    <Link to={backInfo.path} className="back-button-category">
+                        {backInfo.label}
+                    </Link>
+                )}
+            </div>
+
         <motion.div
             className="species-detail"
             initial="hidden"
@@ -62,26 +81,6 @@ export default function SpeciesDetail({ config, setConfig, editorVisible, onTogg
             variants={containerVariants}
         >
             <TopBar />
-
-            <div className="detail-navigation">
-                <Link to="/" className="back-button-home" style={{
-                    width: `${sp.backButtonSize}px`,
-                    height: `${sp.backButtonSize}px`,
-                    bottom: `${sp.backButtonBottom}px`,
-                    left: `${sp.backButtonLeft}px`
-                }}>
-                    <img src="/assets/images/home.svg" alt="Home" className="home-icon-svg" />
-                </Link>
-
-                {backPath && (
-                    <Link to={backPath} className="back-button-category" style={{
-                        bottom: `${sp.backButtonBottom}px`,
-                        left: `${sp.backButtonLeft + sp.backButtonSize + 20}px`
-                    }}>
-                        Tubarões
-                    </Link>
-                )}
-            </div>
 
 
             <div className="species-hero" style={{ height: `${sp.heroHeight}px`, marginBottom: `${sp.heroMarginBottom ?? 40}px` }}>
@@ -229,5 +228,6 @@ export default function SpeciesDetail({ config, setConfig, editorVisible, onTogg
                 setSelectedCard={() => { }}
             />
         </motion.div>
+        </div>
     );
 }

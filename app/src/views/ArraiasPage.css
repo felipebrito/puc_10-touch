@@ -1,4 +1,4 @@
-.tubaroes-page {
+.arraias-page {
     position: relative;
     width: 1080px;
     height: 1920px;
@@ -6,12 +6,12 @@
     background: #000;
 }
 
-.tubaroes-page .top-bar {
+.arraias-page .top-bar {
     position: relative;
     z-index: 12;
 }
 
-.tubaroes-static-content {
+.arraias-static-content {
     position: absolute;
     top: 100px;
     left: 0;
@@ -20,7 +20,7 @@
     z-index: 3;
 }
 
-.shark-text-inner {
+.ray-text-inner {
     padding: 80px 70px 0 70px;
     height: 100%;
     box-sizing: border-box;
@@ -28,7 +28,7 @@
     flex-direction: column;
 }
 
-.shark-title {
+.ray-title {
     font-family: 'Blender Pro', sans-serif;
     font-size: 72px;
     font-weight: 900;
@@ -39,7 +39,7 @@
     margin: 0 0 24px 0;
 }
 
-.shark-separator {
+.ray-separator {
     width: 200px;
     height: 3px;
     background: #005fff;
@@ -47,7 +47,7 @@
     flex-shrink: 0;
 }
 
-.shark-paragraphs {
+.ray-paragraphs {
     font-family: 'Canva Sans', sans-serif;
     font-size: 34px;
     font-weight: 400;
@@ -56,25 +56,24 @@
     margin-bottom: 60px;
 }
 
-.shark-paragraphs p {
+.ray-paragraphs p {
     margin: 0 0 1.2em 0;
 }
 
-.shark-species-section {
+.ray-species-section {
     width: 100%;
     margin-top: auto;
     padding-bottom: 40px;
 }
 
 /* Reset or adjust MenuGrid within this view if needed */
-.shark-species-section .menu-grid {
+.ray-species-section .menu-grid {
     padding: 0 !important;
-    /* Reuse Home logic but override padding if necessary */
     row-gap: 30px;
 }
 
 /* ── Rodapé estático ─────────────────────────────────────── */
-.tubaroes-footer {
+.arraias-footer {
     position: absolute;
     bottom: 0;
     left: 0;
@@ -86,7 +85,7 @@
     z-index: 3;
 }
 
-.tubaroes-linha {
+.arraias-linha {
     width: 960px;
     height: auto;
     display: block;
@@ -94,14 +93,14 @@
     margin-bottom: 67px;
 }
 
-.tubaroes-rodape {
+.arraias-rodape {
     width: 100%;
     height: auto;
     display: block;
 }
 
 /* ── Botão voltar ────────────────────────────────────────── */
-.tubaroes-back-button {
+.arraias-back-button {
     position: absolute;
     z-index: 10000;
     bottom: 40px;
@@ -121,19 +120,19 @@
     transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-.tubaroes-back-button:active {
+.arraias-back-button:active {
     transform: scale(0.92);
     border-color: #ffffff;
     box-shadow: 0 0 20px rgba(255, 255, 255, 0.5), 0 4px 15px rgba(0, 0, 0, 0.4);
 }
 
-.tubaroes-back-button .home-icon-svg {
+.arraias-back-button .home-icon-svg {
     width: 60%;
     height: 60%;
     filter: brightness(0) invert(1);
     object-fit: contain;
 }
 
-.tubaroes-back-button:hover {
+.arraias-back-button:hover {
     transform: scale(1.1);
 }
