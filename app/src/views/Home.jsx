@@ -30,8 +30,11 @@ export default function Home({ config, setConfig, editorVisible, onToggleEditor 
     const navigate = useNavigate();
 
     const handleItemClick = (item) => {
-        // Navigate to species detail page
-        navigate(`/species/${item.id}`);
+        if (item.id === 'raias' || item.id === 'arraias') {
+            navigate('/species/raia-jamanta');
+        } else {
+            navigate(`/species/${item.id}`);
+        }
     };
 
     const tc = config.title;

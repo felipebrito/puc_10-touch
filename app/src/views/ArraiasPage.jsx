@@ -6,7 +6,7 @@ import MenuGrid from '../components/MenuGrid';
 import './ArraiasPage.css';
 
 const RAY_SPECIES = [
-    { id: 'raia-jamanta', label: 'RAIA-\nJAMANTA', image: '/assets/images/raia_jamanta.png' },
+    { id: 'raia-jamanta', label: 'RAIA\nJAMANTA', image: '/assets/images/raia_jamanta.png' },
 ];
 
 const containerVariants = {

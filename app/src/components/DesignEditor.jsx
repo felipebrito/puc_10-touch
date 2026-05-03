@@ -1,6 +1,6 @@
-import { useState, useEffect, useCallback, useMemo } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useLocation } from 'react-router-dom';
-import designConfig from '../data/designConfig.json';
+import { saveConfig, getCardLabelStyle } from '../utils/designUtils';
 import './DesignEditor.css';
 
 const CARD_NAMES = [
@@ -8,51 +8,6 @@ const CARD_NAMES = [
     'Baleia Jubarte', 'Baleia Franca', 'Tartarugas',
     'Peixe-Boi', 'Tubarões', 'Arraias',
 ];
-
-const DEFAULT_CONFIG = designConfig;
-
-function deepMerge(target, source) {
-    const result = { ...target };
-    if (!source) return result;
-    
-    for (const key of Object.keys(source)) {
-        if (source[key] && typeof source[key] === 'object' && !Array.isArray(source[key])) {
-            result[key] = deepMerge(target[key] || {}, source[key]);
-        } else {
-            result[key] = source[key];
-        }
-    }
-    return result;
-}
-
-function loadConfig() {
-    try {
-        const saved = localStorage.getItem('puc10-design-config');
-        if (saved) {
-            return deepMerge(DEFAULT_CONFIG, JSON.parse(saved));
-        }
-    } catch (e) { /* ignore */ }
-    return DEFAULT_CONFIG;
-}
-
-function saveConfig(config) {
-    localStorage.setItem('puc10-design-config', JSON.stringify(config));
-}
-
-// Get resolved label style for a specific card index
-function getCardLabelStyle(config, index) {
-    const g = config.grid;
-    const override = config.cardOverrides?.[index] || {};
-    return {
-        labelSize: override.labelSize ?? g.labelSize,
-        labelBottom: override.labelBottom ?? g.labelBottom,
-        labelLeft: override.labelLeft ?? g.labelLeft,
-        labelRight: override.labelRight ?? g.labelRight,
-        labelLetterSpacing: override.labelLetterSpacing ?? g.labelLetterSpacing,
-        labelLineHeight: override.labelLineHeight ?? g.labelLineHeight,
-        labelShadowBlur: override.labelShadowBlur ?? g.labelShadowBlur,
-    };
-}
 
 function ControlGroup({ label, children, defaultOpen = true }) {
     const [open, setOpen] = useState(defaultOpen);
@@ -67,31 +22,32 @@ function ControlGroup({ label, children, defaultOpen = true }) {
     );
 }
 
-function Slider({ label, value, onChange, min = 0, max = 300, step = 1, unit = 'px' }) {
+function Slider({ label, value = 0, onChange, min = 0, max = 300, step = 1, unit = 'px' }) {
+    const displayValue = value ?? 0;
     return (
         <div className="editor-slider">
             <label>
                 <span className="editor-slider-label">{label}</span>
-                <span className="editor-slider-value">{value}{unit}</span>
+                <span className="editor-slider-value">{displayValue}{unit}</span>
             </label>
             <input
                 type="range"
                 min={min}
                 max={max}
                 step={step}
-                value={value}
+                value={displayValue}
                 onChange={(e) => onChange(parseFloat(e.target.value))}
             />
         </div>
     );
 }
 
-function ColorInput({ label, value, onChange }) {
+function ColorInput({ label, value = '#ffffff', onChange }) {
     return (
         <div className="editor-color">
             <label>
                 <span className="editor-slider-label">{label}</span>
-                <input type="color" value={value} onChange={(e) => onChange(e.target.value)} />
+                <input type="color" value={value || '#ffffff'} onChange={(e) => onChange(e.target.value)} />
                 <span className="editor-slider-value">{value}</span>
             </label>
         </div>
@@ -102,7 +58,7 @@ function Checkbox({ label, checked, onChange }) {
     return (
         <div className="editor-checkbox">
             <label>
-                <input type="checkbox" checked={checked} onChange={(e) => onChange(e.target.checked)} />
+                <input type="checkbox" checked={!!checked} onChange={(e) => onChange(e.target.checked)} />
                 <span className="editor-slider-label">{label}</span>
             </label>
         </div>
@@ -113,40 +69,71 @@ export default function DesignEditor({ config, setConfig, visible, onToggle, sel
     const location = useLocation();
     
     // Detect current species from URL
-    const currentSpeciesId = useMemo(() => {
-        const match = location.pathname.match(/^\/species\/(.+)$/);
-        if (match) return match[1];
-        return null;
+    const [currentSpeciesId, setCurrentSpeciesId] = useState(null);
+    const [activeSlide, setActiveSlide] = useState(undefined);
+
+    useEffect(() => {
+        const id = location.pathname.split('/').pop();
+        setCurrentSpeciesId(id || null);
+        // Reset slide when changing page
+        setActiveSlide(window.__currentSlideIndex);
     }, [location.pathname]);
+
+    // Listen for slide changes from species pages
+    useEffect(() => {
+        const handleSlideChange = () => {
+            setActiveSlide(window.__currentSlideIndex);
+        };
+        window.addEventListener('slide-changed', handleSlideChange);
+        // Also poll occasionally as fallback
+        const interval = setInterval(handleSlideChange, 1000);
+        
+        return () => {
+            window.removeEventListener('slide-changed', handleSlideChange);
+            clearInterval(interval);
+        };
+    }, []);
 
     const hasSpeciesOverride = currentSpeciesId && !!config.speciesPageOverrides?.[currentSpeciesId];
 
     const update = useCallback((section, key, value) => {
+        console.log(`[Editor] Updating ${section}.${key} = ${value} (Slide: ${activeSlide})`);
         setConfig(prev => {
+            // 1. Shallow clone the root
             const next = { ...prev };
             
-            // If we are on a species page and editing "speciesPage" section
-            if (section === 'speciesPage' && currentSpeciesId) {
-                const overrides = { ...prev.speciesPageOverrides } || {};
-                const currentOverride = overrides[currentSpeciesId] || {};
+            // 2. Clone the specific section we are editing
+            next[section] = { ...(prev[section] || {}) };
+            
+            // 3. Special handling for speciesPageOverrides
+            if (section === 'speciesPage' && currentSpeciesId && hasSpeciesOverride) {
+                // Ensure speciesPageOverrides is also cloned
+                next.speciesPageOverrides = { ...(prev.speciesPageOverrides || {}) };
+                const speciesOverride = { ...(next.speciesPageOverrides[currentSpeciesId] || {}) };
                 
-                // If species has an override, update the override
-                if (overrides[currentSpeciesId]) {
-                    overrides[currentSpeciesId] = { ...currentOverride, [key]: value };
-                    next.speciesPageOverrides = overrides;
+                // If we have a specific slide active, update its slideOverride
+                if (activeSlide !== undefined) {
+                    const slideOverrides = { ...(speciesOverride.slideOverrides || {}) };
+                    slideOverrides[activeSlide] = { 
+                        ...(slideOverrides[activeSlide] || {}),
+                        [key]: value 
+                    };
+                    speciesOverride.slideOverrides = slideOverrides;
                 } else {
-                    // Otherwise update global
-                    next[section] = { ...prev[section], [key]: value };
+                    // Otherwise update species-wide override
+                    speciesOverride[key] = value;
                 }
+                
+                next.speciesPageOverrides[currentSpeciesId] = speciesOverride;
             } else {
-                // Standard global update
-                next[section] = { ...prev[section], [key]: value };
+                // Standard global update (either other sections or speciesPage without override)
+                next[section][key] = value;
             }
 
             saveConfig(next);
             return next;
         });
-    }, [setConfig, currentSpeciesId]);
+    }, [setConfig, currentSpeciesId, activeSlide]);
 
     const toggleSpeciesOverride = useCallback((enabled) => {
         if (!currentSpeciesId) return;
@@ -388,25 +375,64 @@ export default function DesignEditor({ config, setConfig, visible, onToggle, sel
                 {currentSpeciesId && currentSpeciesId !== 'perigo-extincao' && (
                     <>
                         {(() => {
-                            const sp = hasSpeciesOverride ? config.speciesPageOverrides[currentSpeciesId] : config.speciesPage;
+                            const slideIdx = activeSlide;
+                            // Resolve sp for display in editor: Global -> Species Override -> Slide Override
+                            let sp = {
+                                ...config.speciesPage,
+                                ...(hasSpeciesOverride ? (config.speciesPageOverrides?.[currentSpeciesId] || {}) : {})
+                            };
+                            
+                            // Merge slide-specific overrides if they exist
+                            if (hasSpeciesOverride && slideIdx !== undefined && sp.slideOverrides?.[slideIdx]) {
+                                sp = { ...sp, ...sp.slideOverrides[slideIdx] };
+                            }
+
                             return (
                                 <div className="species-editor-section">
                                     <h4 style={{ color: '#005fff', marginBottom: '15px' }}>🐋 Página da Espécie</h4>
                                     
                                     <div className="editor-species-override">
                                         <Checkbox 
-                                            label={`Sobrescrever Estilo (${currentSpeciesId.toUpperCase()})`}
-                                            checked={hasSpeciesOverride}
+                                            label={`Habilitar Override (${currentSpeciesId})`} 
+                                            checked={hasSpeciesOverride} 
                                             onChange={toggleSpeciesOverride}
                                         />
                                         {hasSpeciesOverride && (
-                                            <p style={{ fontSize: '11px', color: '#005fff', marginTop: '-8px', marginBottom: '15px' }}>
-                                                ✓ Editando apenas esta espécie.
-                                            </p>
+                                            <div style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
+                                                <p style={{ fontSize: '11px', color: '#005fff', marginTop: '-8px', marginBottom: '5px' }}>
+                                                    ✓ Editando apenas esta espécie. 
+                                                    {slideIdx !== undefined && <span style={{ fontWeight: 'bold' }}> (Slide {slideIdx + 1})</span>}
+                                                </p>
+                                                <button 
+                                                    onClick={() => {
+                                                        if (window.confirm('Deseja resetar TODA a configuração desta espécie e voltar ao padrão?')) {
+                                                            setConfig(prev => {
+                                                                const next = { ...prev };
+                                                                delete next.speciesPageOverrides[currentSpeciesId];
+                                                                saveConfig(next);
+                                                                return next;
+                                                            });
+                                                        }
+                                                    }}
+                                                    style={{ 
+                                                        alignSelf: 'flex-start', 
+                                                        fontSize: '10px', 
+                                                        padding: '2px 6px', 
+                                                        background: '#444', 
+                                                        color: '#fff', 
+                                                        border: 'none', 
+                                                        borderRadius: '3px',
+                                                        marginBottom: '15px',
+                                                        cursor: 'pointer'
+                                                    }}
+                                                >
+                                                    🗑️ Resetar Espécie
+                                                </button>
+                                            </div>
                                         )}
                                     </div>
 
-                                    {/* Hide Hero settings for Full Background pages */}
+                                    {/* Hide Hero settings for Full Background pages (like Tartarugas) */}
                                     {!['tartarugas-marinhas', 'tubaroes', 'arraias'].includes(currentSpeciesId) && (
                                         <ControlGroup label="🖼️ Imagem de Topo (Hero)" defaultOpen={false}>
                                             <Slider label="Altura Hero" value={sp.heroHeight} max={1000}
@@ -655,4 +681,4 @@ export default function DesignEditor({ config, setConfig, visible, onToggle, sel
     );
 }
 
-export { DEFAULT_CONFIG, loadConfig, saveConfig, getCardLabelStyle };
+

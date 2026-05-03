@@ -73,7 +73,7 @@ export const menuItems = [
         image: '/assets/images/thumb_tubaroes.png',
     },
     {
-        id: 'arraias',
+        id: 'raias',
         label: 'RAIAS',
         image: '/assets/images/thumb_raias.png',
     },
@@ -109,12 +109,14 @@ export const speciesDetails = {
         externalUrl: '',
     },
     'raia-jamanta': {
-        label: 'RAIA-\nJAMANTA',
-        scientificName: 'RAIA-JAMANTA',
+        label: 'RAIA\nJAMANTA',
+        scientificName: 'RAIA JAMANTA',
         binomialName: 'Mobula birostris',
         image: '/assets/images/raia_jamanta.png',
+        heroImage: '/assets/images/raia-jamanta/hero.png',
+        footerImage: '/assets/images/raia-jamanta/footer.png',
         guideImage: '/assets/guides/revisao-22-04/page-26.jpg',
-        description: `_Mobula birostris_, também chamada de jamanta, é a maior raia conhecida, atingindo até 710 cm de largura de disco. Tem distribuição circunglobal em águas temperadas e tropicais.\n\nAs maiores populações ocorrem ao longo das áreas das plataformas continentais suportadas pela ressurgência, próximo a cadeias de ilhas e elevações submarinas. Espécie pelágica, suscetível à rede de emalhe-de-superfície e meia-água, sendo ocasionalmente capturada no arrasto-de-fundo (provavelmente no levantar e descer das redes).\n\n_M. birostris_ foi categorizada como Em Perigo (EN) pela Lista Vermelha da IUCN.`,
+        description: `Maior raia conhecida, pode atingir mais de 7m de largura de disco. Tem distribuição global em águas temperadas e tropicais.\n\nAs maiores populações ocorrem ao longo das áreas das plataformas continentais, próximo a cadeias de ilhas e elevações submarinas.\n\nÉ suscetível à rede de emalhe-de-superfície e meia-água, sendo ocasionalmente capturada no arrasto-de-fundo (provavelmente no levantar e descer das redes).`,
         externalUrl: '',
     }
 };

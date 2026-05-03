@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { getCardLabelStyle } from './DesignEditor';
+import { getCardLabelStyle } from '../utils/designUtils';
 import './MenuGrid.css';
 
 const containerVariants = {

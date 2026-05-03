@@ -8,7 +8,8 @@ import TartarugasPage from './views/TartarugasPage';
 import TubaroesPage from './views/TubaroesPage';
 import ArraiasPage from './views/ArraiasPage';
 import GuideOverlay from './components/GuideOverlay';
-import DesignEditor, { loadConfig } from './components/DesignEditor';
+import DesignEditor from './components/DesignEditor';
+import { loadConfig } from './utils/designUtils';
 
 const INACTIVITY_TIMEOUT = 120;
 const WARNING_START = 60;
@@ -100,7 +101,7 @@ function AppContent({ config, setConfig, editorVisible, toggleEditor, setInactiv
                     element={<TubaroesPage config={config} />}
                 />
                 <Route
-                    path="/species/arraias"
+                    path="/species/raias"
                     element={<ArraiasPage config={config} />}
                 />
                 <Route

@@ -47,14 +47,7 @@ export default function SpeciesDetail({ config, setConfig, editorVisible, onTogg
         }
     };
 
-    const backInfo = (() => {
-        const sharkIds = ['tubarao-mangona', 'tubarao-martelo', 'cacao-anjo'];
-        const rayIds = ['raia-jamanta'];
 
-        if (sharkIds.includes(id)) return { path: '/species/tubaroes', label: 'Tubarões' };
-        if (rayIds.includes(id)) return { path: '/species/arraias', label: 'Arraias' };
-        return null;
-    })();
 
     // Helper para formatar texto (negrito e itálico)
     const renderText = (text) => ({
@@ -72,12 +65,6 @@ export default function SpeciesDetail({ config, setConfig, editorVisible, onTogg
                 }}>
                     <img src="/assets/images/home.svg" alt="Home" className="home-icon-svg" />
                 </Link>
-
-                {backInfo && (
-                    <Link to={backInfo.path} className="back-button-category">
-                        {backInfo.label}
-                    </Link>
-                )}
             </div>
 
         <motion.div
