@@ -2,7 +2,6 @@ import { useParams, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { menuItems, speciesDetails } from '../data/menuItems';
 import TopBar from '../components/TopBar';
-import DesignEditor from '../components/DesignEditor';
 import './SpeciesDetail.css';
 
 export default function SpeciesDetail({ config, setConfig, editorVisible, onToggleEditor }) {
@@ -56,6 +55,13 @@ export default function SpeciesDetail({ config, setConfig, editorVisible, onTogg
         if (rayIds.includes(id)) return { path: '/species/arraias', label: 'Arraias' };
         return null;
     })();
+
+    // Helper para formatar texto (negrito e itálico)
+    const renderText = (text) => ({
+        __html: text
+            .replace(/\*\*(.*?)\*\*/g, `<strong style="font-weight:bold;">$1</strong>`)
+            .replace(/_(.*?)_/g, `<em style="font-style:italic;">$1</em>`)
+    });
 
     return (
         <div className="species-detail-wrapper">
@@ -164,7 +170,7 @@ export default function SpeciesDetail({ config, setConfig, editorVisible, onTogg
                             lineHeight: sp.subtitleLineHeight,
                             marginTop: `${sp.subtitleMarginTop}px`,
                             textTransform: 'none',
-                            fontStyle: sp.scientificNameItalic ? 'italic' : 'normal'
+                            fontStyle: 'italic'
                         }}
                         variants={itemVariants}
                     >
@@ -181,7 +187,7 @@ export default function SpeciesDetail({ config, setConfig, editorVisible, onTogg
                     variants={itemVariants}
                 >
                     {species.description?.split('\n\n').map((para, i) => (
-                        <p key={i}>{para}</p>
+                        <p key={i} dangerouslySetInnerHTML={renderText(para)} />
                     )) || <p>Descrição em breve...</p>}
                 </motion.div>
 
@@ -219,14 +225,6 @@ export default function SpeciesDetail({ config, setConfig, editorVisible, onTogg
                 <img src="/assets/rodape.png" alt="" className="rodape-image" />
             </div>
 
-            <DesignEditor
-                config={config}
-                setConfig={setConfig}
-                visible={editorVisible}
-                onToggle={onToggleEditor}
-                selectedCard={null}
-                setSelectedCard={() => { }}
-            />
         </motion.div>
         </div>
     );

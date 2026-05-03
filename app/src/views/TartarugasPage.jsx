@@ -28,7 +28,7 @@ const slides = [
         type: 'turtle-text',
         title: 'TARTARUGAS\nMARINHAS',
         paragraphs: [
-            'No Brasil ocorrem cinco das setes espécies de tartarugas marinhas: tartaruga-de-couro (Dermochelys coriacea), tartaruga-cabeçuda (Caretta caretta), tartaruga-oliva (Lepidochelys olivacea), tartaruga-de-pente (Eretmochelys imbricata) e a tartaruga-verde (Chelonia mydas).',
+            'No Brasil ocorrem cinco das setes espécies de tartarugas marinhas: tartaruga-de-couro (_Dermochelys coriacea_), tartaruga-cabeçuda (_Caretta caretta_), tartaruga-oliva (_Lepidochelys olivacea_), tartaruga-de-pente (_Eretmochelys imbricata_) e a tartaruga-verde (_Chelonia mydas_).',
             'Elas colocam ovos nas áreas das praias das regiões mais quentes do país, inclusive em Fernando de Noronha, mas jovens e adultos vivem e se alimentam em alto-mar tendo ampla distribuição, inclusive no litoral do RS. Elas podem viver por muitas décadas, algumas até próximo de 100 anos. Uma curiosidade é que a temperatura da areia onde os ovos se desenvolvem é que determina o sexo em que o embrião vai se desenvolver.',
             'Normalmente temperaturas mais altas determinam fêmeas enquanto mais baixas desenvolvem machos. Por isso o aumento da temperatura do oceano é uma grande preocupação para a conservação destas espécies.',
         ],
@@ -150,6 +150,13 @@ export default function TartarugasPage() {
 function SlideContent({ slide, isActive }) {
     const animate = isActive ? 'visible' : 'hidden';
 
+    // Helper para formatar texto (negrito e itálico)
+    const renderText = (text) => ({
+        __html: text
+            .replace(/\*\*(.*?)\*\*/g, `<strong style="font-weight:bold;">$1</strong>`)
+            .replace(/_(.*?)_/g, `<em style="font-style:italic;">$1</em>`)
+    });
+
     if (slide.type === 'turtle-text') {
         return (
             <div className="tartarugas-slide slide-turtle-text">
@@ -166,7 +173,7 @@ function SlideContent({ slide, isActive }) {
                     </motion.h1>
                     <motion.div className="turtle-separator" variants={itemVariants} />
                     <motion.div className="turtle-paragraphs" variants={itemVariants}>
-                        {slide.paragraphs.map((p, i) => <p key={i}>{p}</p>)}
+                        {slide.paragraphs.map((p, i) => <p key={i} dangerouslySetInnerHTML={renderText(p)} />)}
                         {slide.url && (
                             <p className="turtle-url">{slide.url}</p>
                         )}

@@ -24,6 +24,13 @@ const itemVariants = {
 export default function TubaroesPage({ config }) {
     const navigate = useNavigate();
 
+    // Helper para formatar texto (negrito e itálico)
+    const renderText = (text) => ({
+        __html: text
+            .replace(/\*\*(.*?)\*\*/g, `<strong style="font-weight:bold;">$1</strong>`)
+            .replace(/_(.*?)_/g, `<em style="font-style:italic;">$1</em>`)
+    });
+
     const handleItemClick = (item) => {
         navigate(`/species/${item.id}`);
     };
@@ -58,7 +65,7 @@ export default function TubaroesPage({ config }) {
                         </motion.h1>
                         <motion.div className="shark-separator" variants={itemVariants} />
                         <motion.div className="shark-paragraphs" variants={itemVariants}>
-                            {content.paragraphs.map((p, i) => <p key={i}>{p}</p>)}
+                            {content.paragraphs.map((p, i) => <p key={i} dangerouslySetInnerHTML={renderText(p)} />)}
                         </motion.div>
 
                         <motion.div className="shark-species-section" variants={itemVariants}>

@@ -1,2 +1,9 @@
-Amb10_Tela_Touch_1080X1920.pdf
-Amb10_Tela_Touch_1080X1920.pdf
+node_modules
+dist
+.DS_Store
+*.mp4
+*.zip
+*.pdf
+TOUCH 10/
+app/node_modules
+app/dist

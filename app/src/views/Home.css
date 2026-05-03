@@ -6,6 +6,37 @@
     background-color: var(--color-bg-dark);
 }
 
+.home-bg-static {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+
+.home-bg-static img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.home-bg-static .video-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        to bottom,
+        rgba(0, 0, 0, 0.4) 0%,
+        rgba(0, 0, 0, 0) 40%,
+        rgba(0, 0, 0, 0) 60%,
+        rgba(0, 0, 0, 0.4) 100%
+    );
+    z-index: 2;
+}
+
 .home-content {
     position: relative;
     z-index: 2;
@@ -49,7 +80,16 @@
     background-color: var(--color-white);
     border-radius: 2px;
     flex-shrink: 0;
-    align-self: center; /* Centers the line on the page regardless of parent flex start alignment */
+}
+
+.home-description {
+    font-family: var(--font-book);
+    font-weight: 300;
+    color: var(--color-white);
+    margin-bottom: 0;
+    opacity: 0.95;
+    line-height: 1.1;
+    text-align: left;
 }
 
 /* ========================

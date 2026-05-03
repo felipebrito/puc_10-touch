@@ -18,6 +18,8 @@ Aplicação interativa para totem vertical (1080x1920) desenvolvida para a PUC-P
   - Posicionamento individual de labels por card (Overrides).
 - **Modo Guia**: Overlay semi-transparente (tecla 👁️) do design original para alinhamento pixel-perfect.
 - **Navegação por Teclado (Editor)**: Teclas `1-9` para selecionar cards individuais e realizar ajustes finos.
+- **Módulo Perigo de Extinção**: Carrossel interativo com 9 slides integrando vídeo, fotos de alta fidelidade e sistema de QR Code.
+- **Transições Premium**: Efeitos de Fade-Blur sincronizados entre conteúdo e fundo.
 - **Performance**: Vídeo de fundo em loop e carregamento otimizado de assets.
 
 ## 🛠️ Configuração de Desenvolvimento

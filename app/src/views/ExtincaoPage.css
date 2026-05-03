@@ -3,7 +3,55 @@
     width: 1080px;
     height: 1920px;
     overflow: hidden;
-    background: #000;
+    background: #0f2634;
+}
+
+.extincao-bg-static {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+
+.extincao-bg-static img,
+.extincao-bg-image,
+.extincao-bg-video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.extincao-seals {
+    margin-top: auto;
+    padding-bottom: 60px;
+    display: flex;
+    justify-content: flex-start;
+}
+
+.seals-img {
+    max-width: 100%;
+    height: auto;
+}
+
+.extincao-bg-static .video-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        to bottom,
+        rgba(0, 0, 0, 0.4) 0%,
+        rgba(0, 0, 0, 0) 40%,
+        rgba(0, 0, 0, 0) 60%,
+        rgba(0, 0, 0, 0.4) 100%
+    );
+    z-index: 2;
 }
 
 .extincao-page .top-bar {
@@ -29,10 +77,9 @@
 }
 
 .extincao-track {
-    display: flex;
-    width: max-content;
+    position: relative;
+    width: 100%;
     height: 100%;
-    transition: transform 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
 /* ── Slide base ──────────────────────────────────────────── */
@@ -44,7 +91,8 @@
     overflow: hidden;
 }
 
-.slide-bg {
+.extincao-bg-video,
+.extincao-bg-image {
     position: absolute;
     inset: 0;
     width: 100%;
@@ -82,7 +130,7 @@
 .slide-inner {
     position: relative;
     z-index: 2;
-    padding: 120px 70px 0 70px;
+    padding: 219px 86px 0 86px;
     height: 100%;
     box-sizing: border-box;
 }
@@ -95,29 +143,32 @@
 .extincao-label {
     display: block;
     font-family: 'Blender Pro', sans-serif;
-    font-size: 42px;
-    font-weight: 400;
-    letter-spacing: 6px;
-    color: rgba(255, 255, 255, 0.80);
+    font-size: 73px;
+    font-weight: 300;
+    letter-spacing: 8.7px;
+    color: #ffffff;
     text-transform: uppercase;
-    margin-bottom: 6px;
+    margin-bottom: 0px;
+    opacity: 0.95;
+    line-height: 1.1;
 }
 
 .extincao-title {
     font-family: 'Blender Pro', sans-serif;
-    font-size: 116px;
+    font-size: 142px;
     font-weight: 900;
-    letter-spacing: 3px;
+    letter-spacing: 9.6px;
     color: #ffffff;
     text-transform: uppercase;
-    line-height: 1;
-    margin: 0 0 20px 0;
+    line-height: 0.95;
+    margin: 0;
 }
 
 .extincao-separator {
-    width: 200px;
-    height: 3px;
-    background: #005fff;
+    width: 922px;
+    height: 4.5px;
+    background: #ffffff;
+    margin-top: 10px;
 }
 
 .extincao-text {
@@ -285,7 +336,8 @@
 .extincao-indicator {
     position: absolute;
     bottom: 248px;
-    right: 70px;
+    left: 50%;
+    transform: translateX(-50%);
     display: flex;
     gap: 14px;
     align-items: center;

@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback, useMemo } from 'react';
 import { useLocation } from 'react-router-dom';
+import designConfig from '../data/designConfig.json';
 import './DesignEditor.css';
 
 const CARD_NAMES = [
@@ -8,133 +9,7 @@ const CARD_NAMES = [
     'Peixe-Boi', 'Tubarões', 'Arraias',
 ];
 
-const DEFAULT_CONFIG = {
-    topBar: {
-        height: 101,
-        fontSize: 42,
-        letterSpacing: 14,
-        bgColor: '#005fff',
-    },
-    title: {
-        paddingTop: 215,
-        paddingLeft: 79,
-        subtitleSize: 73,
-        subtitleSpacing: 6.9,
-        titleSize: 142,
-        titleSpacing: 9.6,
-        lineWidth: 320,
-        lineHeight: 4,
-        lineMarginTop: 34,
-    },
-    grid: {
-        paddingTop: 130,
-        paddingHorizontal: 43,
-        gap: 11,
-        columns: 3,
-        cardBorderWidth: 3,
-        cardBorderRadius: 6,
-        cardBorderColor: '#005fff',
-        labelSize: 30,
-        labelBottom: 24,
-        labelLeft: 21,
-        labelRight: 21,
-        labelLetterSpacing: 1.5,
-        labelLineHeight: 1.1,
-        labelShadowBlur: 6,
-        overlayOpacity: 0.85,
-    },
-    bottomBar: {
-        height: 59,
-    },
-    cardOverrides: {
-        1: { labelBottom: 60, labelLeft: 16 },
-        2: { labelBottom: 58 },
-        3: { labelBottom: 41 },
-        4: { labelRight: 21, labelSize: 30, labelBottom: 32 },
-        5: { labelRight: 20, labelLeft: 27 },
-        6: { labelBottom: 35, labelLeft: 21 },
-        7: { labelBottom: 49 },
-        8: { labelBottom: 50 },
-    },
-    // Species Page
-    speciesPage: {
-        heroHeight: 625,
-        heroMarginBottom: 64,
-        maskIntensity: 0,
-        titleSize: 89,
-        titleSpacing: 4,
-        titleWeight: 900,
-        titleLineHeight: 1.5,
-        titleParenthesesSize: 61,
-        subtitleSize: 53,
-        subtitleSpacing: 2,
-        subtitleLineHeight: 1.3,
-        subtitleMarginTop: -21,
-        scientificNameWeight: 400,
-        scientificNameItalic: false,
-        textSize: 40,
-        textLineHeight: 1.1,
-        paddingHorizontal: 75,
-        paddingTop: 0,
-        rowGap: 23,
-        backButtonSize: 60,
-        backButtonBottom: 39,
-        backButtonLeft: 40,
-        // White bar overlay
-        whiteBarWidth: 375,
-        whiteBarBottom: -51,
-        whiteBarRight: 0,
-        whiteBarOpacity: 1,
-        // Footer URL text
-        footerUrlSize: 24,
-        footerUrlSpacing: -1,
-        footerUrlWeight: 300,
-        footerUrlMarginLeft: 85,
-        footerUrlMarginBottom: -32,
-        footerUrlPaddingTop: 0,
-        footerUrlColor: '#005fff',
-        // Footer overall position (Vertical displacement)
-        footerVerticalOffset: -6,
-    },
-    speciesPageOverrides: {
-        "baleia-jubarte": {
-            "heroHeight": 625,
-            "heroMarginBottom": 64,
-            "maskIntensity": 0,
-            "titleSize": 89,
-            "titleSpacing": 4,
-            "titleWeight": 900,
-            "titleLineHeight": 1.5,
-            "titleParenthesesSize": 61,
-            "subtitleSize": 53,
-            "subtitleSpacing": 2,
-            "subtitleLineHeight": 1.3,
-            "subtitleMarginTop": -21,
-            "scientificNameWeight": 400,
-            "scientificNameItalic": false,
-            "textSize": 36,
-            "textLineHeight": 1.1,
-            "paddingHorizontal": 75,
-            "paddingTop": 0,
-            "rowGap": 23,
-            "backButtonSize": 60,
-            "backButtonBottom": 39,
-            "backButtonLeft": 40,
-            "whiteBarWidth": 375,
-            "whiteBarBottom": -51,
-            "whiteBarRight": 0,
-            "whiteBarOpacity": 1,
-            "footerUrlSize": 24,
-            "footerUrlSpacing": -1,
-            "footerUrlWeight": 300,
-            "footerUrlMarginLeft": 85,
-            "footerUrlMarginBottom": -32,
-            "footerUrlPaddingTop": 0,
-            "footerUrlColor": "#005fff",
-            "footerVerticalOffset": -6
-        }
-    }
-};
+const DEFAULT_CONFIG = designConfig;
 
 function deepMerge(target, source) {
     const result = { ...target };
@@ -240,8 +115,7 @@ export default function DesignEditor({ config, setConfig, visible, onToggle, sel
     // Detect current species from URL
     const currentSpeciesId = useMemo(() => {
         const match = location.pathname.match(/^\/species\/(.+)$/);
-        // Ignore the static "extinction" slide-based page if it uses the same route pattern
-        if (match && match[1] !== 'perigo-extincao') return match[1];
+        if (match) return match[1];
         return null;
     }, [location.pathname]);
 
@@ -352,9 +226,29 @@ export default function DesignEditor({ config, setConfig, visible, onToggle, sel
     };
 
     const handleReset = () => {
-        setConfig(DEFAULT_CONFIG);
-        saveConfig(DEFAULT_CONFIG);
-        setSelectedCard(null);
+        if (confirm('Deseja resetar para as configurações iniciais?')) {
+            setConfig(DEFAULT_CONFIG);
+            saveConfig(DEFAULT_CONFIG);
+            setSelectedCard(null);
+        }
+    };
+
+    const handleSaveToFile = async () => {
+        try {
+            const response = await fetch('/api/save-config', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(config, null, 2)
+            });
+            if (response.ok) {
+                alert('✅ Configurações salvas no arquivo designConfig.json!');
+            } else {
+                throw new Error('Erro ao salvar no servidor');
+            }
+        } catch (err) {
+            console.error(err);
+            alert('❌ Erro ao salvar arquivo. Verifique se o servidor está rodando.');
+        }
     };
 
     if (!visible) {
@@ -369,74 +263,338 @@ export default function DesignEditor({ config, setConfig, visible, onToggle, sel
             <div className="editor-header">
                 <h3>🎨 Design Editor</h3>
                 <div className="editor-header-actions">
-                    <button onClick={handleExport} title="Exportar Config">📋</button>
+                    <button onClick={handleSaveToFile} title="Salvar no Arquivo (JSON)">💾</button>
+                    <button onClick={handleExport} title="Exportar Config (Clipboard)">📋</button>
                     <button onClick={handleReset} title="Reset">🔄</button>
                     <button onClick={onToggle}>✕</button>
                 </div>
             </div>
 
             <div className="editor-body">
-                {/* CARD SELECTOR */}
-                <ControlGroup label={`🏷️ Card ${selectedCard !== null ? `#${selectedCard + 1}: ${CARD_NAMES[selectedCard]}` : '(nenhum — tecle 1-9)'}`}>
-                    <div className="card-selector-grid">
-                        {CARD_NAMES.map((name, i) => (
-                            <button
-                                key={i}
-                                className={`card-selector-btn ${selectedCard === i ? 'active' : ''} ${config.cardOverrides?.[i] ? 'has-override' : ''}`}
-                                onClick={() => setSelectedCard(selectedCard === i ? null : i)}
-                            >
-                                {i + 1}
-                            </button>
-                        ))}
-                    </div>
-
-                    {selectedCard !== null && resolved && (
-                        <>
-                            <div className="card-selected-info">
-                                <span>Editando: <strong>{CARD_NAMES[selectedCard]}</strong></span>
-                                {hasOverride && (
-                                    <button className="card-reset-btn" onClick={() => resetCardOverride(selectedCard)}>
-                                        Resetar para global
+                {/* HOME ONLY SECTIONS */}
+                {location.pathname === '/' && (
+                    <>
+                        {/* CARD SELECTOR */}
+                        <ControlGroup label={`🏷️ Card ${selectedCard !== null ? `#${selectedCard + 1}: ${CARD_NAMES[selectedCard]}` : '(nenhum — tecle 1-9)'}`}>
+                            <div className="card-selector-grid">
+                                {CARD_NAMES.map((name, i) => (
+                                    <button
+                                        key={i}
+                                        className={`card-selector-btn ${selectedCard === i ? 'active' : ''} ${config.cardOverrides?.[i] ? 'has-override' : ''}`}
+                                        onClick={() => setSelectedCard(selectedCard === i ? null : i)}
+                                    >
+                                        {i + 1}
                                     </button>
-                                )}
+                                ))}
                             </div>
-                            <Slider label="Font Size" value={resolved.labelSize} max={60}
-                                onChange={v => updateCardOverride(selectedCard, 'labelSize', v)} />
-                            <Slider label="Bottom" value={resolved.labelBottom} max={80}
-                                onChange={v => updateCardOverride(selectedCard, 'labelBottom', v)} />
-                            <Slider label="Left" value={resolved.labelLeft} max={60}
-                                onChange={v => updateCardOverride(selectedCard, 'labelLeft', v)} />
-                            <Slider label="Right" value={resolved.labelRight} max={60}
-                                onChange={v => updateCardOverride(selectedCard, 'labelRight', v)} />
-                            <Slider label="Letter Spacing" value={resolved.labelLetterSpacing} max={8} step={0.1}
-                                onChange={v => updateCardOverride(selectedCard, 'labelLetterSpacing', v)} />
-                            <Slider label="Line Height" value={resolved.labelLineHeight} max={2} step={0.05}
-                                onChange={v => updateCardOverride(selectedCard, 'labelLineHeight', v)} />
-                            <Slider label="Shadow Blur" value={resolved.labelShadowBlur} max={20}
-                                onChange={v => updateCardOverride(selectedCard, 'labelShadowBlur', v)} />
-                        </>
-                    )}
-                </ControlGroup>
 
-                {/* GLOBAL LABEL DEFAULTS */}
-                <ControlGroup label="🏷️ Labels (Global)" defaultOpen={false}>
-                    <Slider label="Font Size" value={config.grid.labelSize} max={60}
-                        onChange={v => update('grid', 'labelSize', v)} />
-                    <Slider label="Bottom" value={config.grid.labelBottom} max={80}
-                        onChange={v => update('grid', 'labelBottom', v)} />
-                    <Slider label="Left" value={config.grid.labelLeft} max={60}
-                        onChange={v => update('grid', 'labelLeft', v)} />
-                    <Slider label="Right" value={config.grid.labelRight} max={60}
-                        onChange={v => update('grid', 'labelRight', v)} />
-                    <Slider label="Letter Spacing" value={config.grid.labelLetterSpacing} max={8} step={0.1}
-                        onChange={v => update('grid', 'labelLetterSpacing', v)} />
-                    <Slider label="Line Height" value={config.grid.labelLineHeight} max={2} step={0.05}
-                        onChange={v => update('grid', 'labelLineHeight', v)} />
-                    <Slider label="Shadow Blur" value={config.grid.labelShadowBlur} max={20}
-                        onChange={v => update('grid', 'labelShadowBlur', v)} />
-                </ControlGroup>
+                            {selectedCard !== null && resolved && (
+                                <>
+                                    <div className="card-selected-info">
+                                        <span>Editando: <strong>{CARD_NAMES[selectedCard]}</strong></span>
+                                        {hasOverride && (
+                                            <button className="card-reset-btn" onClick={() => resetCardOverride(selectedCard)}>
+                                                Resetar para global
+                                            </button>
+                                        )}
+                                    </div>
+                                    <Slider label="Font Size" value={resolved.labelSize} max={60}
+                                        onChange={v => updateCardOverride(selectedCard, 'labelSize', v)} />
+                                    <Slider label="Bottom" value={resolved.labelBottom} max={80}
+                                        onChange={v => updateCardOverride(selectedCard, 'labelBottom', v)} />
+                                    <Slider label="Left" value={resolved.labelLeft} max={60}
+                                        onChange={v => updateCardOverride(selectedCard, 'labelLeft', v)} />
+                                    <Slider label="Right" value={resolved.labelRight} max={60}
+                                        onChange={v => updateCardOverride(selectedCard, 'labelRight', v)} />
+                                    <Slider label="Letter Spacing" value={resolved.labelLetterSpacing} max={8} step={0.1}
+                                        onChange={v => updateCardOverride(selectedCard, 'labelLetterSpacing', v)} />
+                                    <Slider label="Line Height" value={resolved.labelLineHeight} max={2} step={0.05}
+                                        onChange={v => updateCardOverride(selectedCard, 'labelLineHeight', v)} />
+                                    <Slider label="Shadow Blur" value={resolved.labelShadowBlur} max={20}
+                                        onChange={v => updateCardOverride(selectedCard, 'labelShadowBlur', v)} />
+                                </>
+                            )}
+                        </ControlGroup>
 
-                {/* TOP BAR */}
+                        {/* GLOBAL LABEL DEFAULTS */}
+                        <ControlGroup label="🏷️ Labels (Global)" defaultOpen={false}>
+                            <Slider label="Font Size" value={config.grid.labelSize} max={60}
+                                onChange={v => update('grid', 'labelSize', v)} />
+                            <Slider label="Bottom" value={config.grid.labelBottom} max={80}
+                                onChange={v => update('grid', 'labelBottom', v)} />
+                            <Slider label="Left" value={config.grid.labelLeft} max={60}
+                                onChange={v => update('grid', 'labelLeft', v)} />
+                            <Slider label="Right" value={config.grid.labelRight} max={60}
+                                onChange={v => update('grid', 'labelRight', v)} />
+                            <Slider label="Letter Spacing" value={config.grid.labelLetterSpacing} max={8} step={0.1}
+                                onChange={v => update('grid', 'labelLetterSpacing', v)} />
+                            <Slider label="Line Height" value={config.grid.labelLineHeight} max={2} step={0.05}
+                                onChange={v => update('grid', 'labelLineHeight', v)} />
+                            <Slider label="Shadow Blur" value={config.grid.labelShadowBlur} max={20}
+                                onChange={v => update('grid', 'labelShadowBlur', v)} />
+                        </ControlGroup>
+
+                        {/* TITLE */}
+                        <ControlGroup label="📝 Título" defaultOpen={false}>
+                            <Slider label="Padding Top" value={config.title.paddingTop} max={400}
+                                onChange={v => update('title', 'paddingTop', v)} />
+                            <Slider label="Padding Left" value={config.title.paddingLeft} max={200}
+                                onChange={v => update('title', 'paddingLeft', v)} />
+                            <Slider label="Subtítulo Size" value={config.title.subtitleSize} max={150}
+                                onChange={v => update('title', 'subtitleSize', v)} />
+                            <Slider label="Subtítulo Spacing" value={config.title.subtitleSpacing} max={20} step={0.1}
+                                onChange={v => update('title', 'subtitleSpacing', v)} />
+                            <Slider label="Título Size" value={config.title.titleSize} max={200}
+                                onChange={v => update('title', 'titleSize', v)} />
+                            <Slider label="Título Spacing" value={config.title.titleSpacing} max={20} step={0.1}
+                                onChange={v => update('title', 'titleSpacing', v)} />
+                            <Slider label="Linha Width" value={config.title.lineWidth} max={1080}
+                                onChange={v => update('title', 'lineWidth', v)} />
+                            <Slider label="Linha Height" value={config.title.lineHeight} max={10} step={0.5}
+                                onChange={v => update('title', 'lineHeight', v)} />
+                            <Slider label="Linha Margin Top" value={config.title.lineMarginTop} max={60}
+                                onChange={v => update('title', 'lineMarginTop', v)} />
+                            <Slider label="Desc. Size" value={config.title.descriptionSize || 32} max={100}
+                                onChange={v => update('title', 'descriptionSize', v)} />
+                            <Slider label="Desc. Spacing" value={config.title.descriptionSpacing || 1.5} max={20} step={0.1}
+                                onChange={v => update('title', 'descriptionSpacing', v)} />
+                            <Slider label="Desc. Margin Top" value={config.title.descriptionMarginTop || 45} max={200}
+                                onChange={v => update('title', 'descriptionMarginTop', v)} />
+                            <Slider label="Desc. Weight" value={config.title.descriptionWeight || 300} min={100} max={900} step={100}
+                                onChange={v => update('title', 'descriptionWeight', v)} />
+                        </ControlGroup>
+
+                        {/* GRID */}
+                        <ControlGroup label="📦 Grid Menu" defaultOpen={false}>
+                            <Slider label="Padding Top" value={config.grid.paddingTop} max={200}
+                                onChange={v => update('grid', 'paddingTop', v)} />
+                            <Slider label="Padding H" value={config.grid.paddingHorizontal} max={200}
+                                onChange={v => update('grid', 'paddingHorizontal', v)} />
+                            <Slider label="Gap" value={config.grid.gap} max={60}
+                                onChange={v => update('grid', 'gap', v)} />
+                            <Slider label="Border Width" value={config.grid.cardBorderWidth} max={10} step={0.5}
+                                onChange={v => update('grid', 'cardBorderWidth', v)} />
+                            <Slider label="Border Radius" value={config.grid.cardBorderRadius} max={30}
+                                onChange={v => update('grid', 'cardBorderRadius', v)} />
+                            <ColorInput label="Border Color" value={config.grid.cardBorderColor}
+                                onChange={v => update('grid', 'cardBorderColor', v)} />
+                            <Slider label="Overlay Opacity" value={config.grid.overlayOpacity} max={1} step={0.05}
+                                onChange={v => update('grid', 'overlayOpacity', v)} />
+                        </ControlGroup>
+                    </>
+                )}
+
+                {/* SPECIES PAGE SECTIONS */}
+                {currentSpeciesId && currentSpeciesId !== 'perigo-extincao' && (
+                    <>
+                        {(() => {
+                            const sp = hasSpeciesOverride ? config.speciesPageOverrides[currentSpeciesId] : config.speciesPage;
+                            return (
+                                <ControlGroup label="🐋 Página da Espécie" defaultOpen={true}>
+                                    <div className="editor-species-override">
+                                        <Checkbox 
+                                            label={`Sobrescrever Estilo (${currentSpeciesId.toUpperCase()})`}
+                                            checked={hasSpeciesOverride}
+                                            onChange={toggleSpeciesOverride}
+                                        />
+                                        {hasSpeciesOverride && (
+                                            <p style={{ fontSize: '11px', color: '#005fff', marginTop: '-8px', marginBottom: '15px' }}>
+                                                ✓ Editando apenas esta espécie.
+                                            </p>
+                                        )}
+                                    </div>
+                                    
+                                    <Slider label="Hero Height" value={sp.heroHeight} max={1000}
+                                        onChange={v => update('speciesPage', 'heroHeight', v)} />
+                                    <Slider label="Hero Margin Bottom" value={sp.heroMarginBottom} min={-100} max={200}
+                                        onChange={v => update('speciesPage', 'heroMarginBottom', v)} />
+                                    <Slider label="Mask Intensity" value={sp.maskIntensity} max={200}
+                                        onChange={v => update('speciesPage', 'maskIntensity', v)} />
+                                    <Slider label="Name Size" value={sp.titleSize} max={120}
+                                        onChange={v => update('speciesPage', 'titleSize', v)} />
+                                    <Slider label="Name Weight" value={sp.titleWeight} min={100} max={900} step={100}
+                                        onChange={v => update('speciesPage', 'titleWeight', v)} />
+                                    <Slider label="Name Line Height" value={sp.titleLineHeight} max={2.5} step={0.1}
+                                        onChange={v => update('speciesPage', 'titleLineHeight', v)} />
+                                    <Slider label="Name (Parens) Size" value={sp.titleParenthesesSize} max={120}
+                                        onChange={v => update('speciesPage', 'titleParenthesesSize', v)} />
+                                    <Slider label="Scientific Size" value={sp.subtitleSize} max={100}
+                                        onChange={v => update('speciesPage', 'subtitleSize', v)} />
+                                    <Slider label="Scientific Spacing" value={sp.subtitleSpacing} max={20} step={0.1}
+                                        onChange={v => update('speciesPage', 'subtitleSpacing', v)} />
+                                    <Slider label="Scientific Line Height" value={sp.subtitleLineHeight} max={2.5} step={0.1}
+                                        onChange={v => update('speciesPage', 'subtitleLineHeight', v)} />
+                                    <Slider label="Scientific Margin Top" value={sp.subtitleMarginTop} min={-100} max={100}
+                                        onChange={v => update('speciesPage', 'subtitleMarginTop', v)} />
+                                    <Slider label="Scientific Weight" value={sp.scientificNameWeight} min={100} max={900} step={100}
+                                        onChange={v => update('speciesPage', 'scientificNameWeight', v)} />
+                                    <Checkbox label="Scientific Italic" checked={sp.scientificNameItalic}
+                                        onChange={v => update('speciesPage', 'scientificNameItalic', v)} />
+                                    
+                                    <Slider label="Text Size" value={sp.textSize} max={60}
+                                        onChange={v => update('speciesPage', 'textSize', v)} />
+                                    <Slider label="Text Line Height" value={sp.textLineHeight} max={2.5} step={0.1}
+                                        onChange={v => update('speciesPage', 'textLineHeight', v)} />
+                                    
+                                    <Slider label="Padding Horizontal" value={sp.paddingHorizontal} max={200}
+                                        onChange={v => update('speciesPage', 'paddingHorizontal', v)} />
+                                    <Slider label="Padding Top" value={sp.paddingTop} max={400}
+                                        onChange={v => update('speciesPage', 'paddingTop', v)} />
+                                    <Slider label="Row Gap" value={sp.rowGap} max={100}
+                                        onChange={v => update('speciesPage', 'rowGap', v)} />
+                                    
+                                    <ControlGroup label="⬅️ Botão Voltar" defaultOpen={false}>
+                                        <Slider label="Tamanho" value={sp.backButtonSize} max={150}
+                                            onChange={v => update('speciesPage', 'backButtonSize', v)} />
+                                        <Slider label="Posição Bottom" value={sp.backButtonBottom} max={200}
+                                            onChange={v => update('speciesPage', 'backButtonBottom', v)} />
+                                        <Slider label="Posição Left" value={sp.backButtonLeft} max={200}
+                                            onChange={v => update('speciesPage', 'backButtonLeft', v)} />
+                                    </ControlGroup>
+
+                                    <ControlGroup label="⬜ Barra Branca" defaultOpen={false}>
+                                        <Slider label="Largura" value={sp.whiteBarWidth} max={1080}
+                                            onChange={v => update('speciesPage', 'whiteBarWidth', v)} />
+                                        <Slider label="Posição Bottom" value={sp.whiteBarBottom} min={-200} max={200}
+                                            onChange={v => update('speciesPage', 'whiteBarBottom', v)} />
+                                        <Slider label="Transparência" value={sp.whiteBarOpacity} max={1} step={0.05}
+                                            onChange={v => update('speciesPage', 'whiteBarOpacity', v)} />
+                                    </ControlGroup>
+
+                                    <ControlGroup label="🔗 Endereço do Site" defaultOpen={true}>
+                                        <Slider label="Tamanho Fonte" value={sp.footerUrlSize} max={100}
+                                            onChange={v => update('speciesPage', 'footerUrlSize', v)} />
+                                        <Slider label="Espaçamento Letra" value={sp.footerUrlSpacing} min={-5} max={20}
+                                            onChange={v => update('speciesPage', 'footerUrlSpacing', v)} />
+                                        <Slider label="Peso Fonte" value={sp.footerUrlWeight} min={100} max={900} step={100}
+                                            onChange={v => update('speciesPage', 'footerUrlWeight', v)} />
+                                        <Slider label="Margem Esquerda" value={sp.footerUrlMarginLeft} max={200}
+                                            onChange={v => update('speciesPage', 'footerUrlMarginLeft', v)} />
+                                        <Slider label="Descer URL (Padding Top)" value={sp.footerUrlPaddingTop} max={300}
+                                            onChange={v => update('speciesPage', 'footerUrlPaddingTop', v)} />
+                                        <Slider label="Respiro/Gap (URL -> Linha)" value={sp.footerUrlMarginBottom} min={-300} max={300}
+                                            onChange={v => update('speciesPage', 'footerUrlMarginBottom', v)} />
+                                        
+                                        <Slider label="Eixo Vertical Rodapé (Subir/Descer)" value={sp.footerVerticalOffset} min={-1000} max={1000}
+                                            onChange={v => update('speciesPage', 'footerVerticalOffset', v)} />
+                                        <p style={{ fontSize: '11px', color: '#888', marginTop: '-8px', marginLeft: '12px' }}>
+                                            (Valores Negativos = Descer | Positivos = Subir)
+                                        </p>
+                                        
+                                        <button 
+                                            onClick={() => {
+                                                update('speciesPage', 'footerVerticalOffset', 0);
+                                                update('speciesPage', 'footerUrlMarginBottom', 32);
+                                            }}
+                                            style={{ margin: '10px 12px', padding: '4px 8px', fontSize: '12px' }}
+                                        >
+                                            Resetar Rodapé (0)
+                                        </button>
+                                    
+                                        <div className="editor-row">
+                                            <label>Cor do Link</label>
+                                            <input 
+                                                type="color" 
+                                                value={sp.footerUrlColor} 
+                                                onChange={e => update('speciesPage', 'footerUrlColor', e.target.value)} 
+                                            />
+                                        </div>
+                                    </ControlGroup>
+                                </ControlGroup>
+                            );
+                        })()}
+                    </>
+                )}
+
+                {/* EXTINCTION PAGE SECTIONS */}
+                {currentSpeciesId === 'perigo-extincao' && (
+                    <ControlGroup label="💀 Página Extinção" defaultOpen={true}>
+                        <div className="slide-selector" style={{ display: 'flex', gap: '5px', marginBottom: '20px', padding: '0 10px' }}>
+                            {[1, 2, 3, 4, 5, 6, 7].map(num => (
+                                <button
+                                    key={num}
+                                    onClick={() => {
+                                        window.dispatchEvent(new CustomEvent('goto-slide', { detail: num - 1 }));
+                                    }}
+                                    style={{
+                                        flex: 1,
+                                        padding: '8px 0',
+                                        background: '#222',
+                                        border: '1px solid #444',
+                                        color: '#fff',
+                                        borderRadius: '4px',
+                                        fontSize: '11px',
+                                        cursor: 'pointer'
+                                    }}
+                                >
+                                    S{num}
+                                </button>
+                            ))}
+                        </div>
+
+                        <Slider label="Padding Top" value={config.extincaoPage?.paddingTop} max={600}
+                            onChange={v => update('extincaoPage', 'paddingTop', v)} />
+                        <Slider label="Padding Left" value={config.extincaoPage?.paddingLeft} max={400}
+                            onChange={v => update('extincaoPage', 'paddingLeft', v)} />
+                        
+                        <ControlGroup label="📝 Títulos" defaultOpen={true}>
+                            <Slider label="Subtítulo Size" value={config.extincaoPage?.subtitleSize} max={150}
+                                onChange={v => update('extincaoPage', 'subtitleSize', v)} />
+                            <Slider label="Subtítulo Spacing" value={config.extincaoPage?.subtitleSpacing} max={40} step={0.1}
+                                onChange={v => update('extincaoPage', 'subtitleSpacing', v)} />
+                            <Slider label="Subtítulo Weight" value={config.extincaoPage?.subtitleWeight} min={100} max={900} step={100}
+                                onChange={v => update('extincaoPage', 'subtitleWeight', v)} />
+                            <Slider label="Subtítulo Line Height" value={config.extincaoPage?.subtitleLineHeight} min={0.5} max={3} step={0.05}
+                                onChange={v => update('extincaoPage', 'subtitleLineHeight', v)} />
+                            <Slider label="Subtítulo Width" value={config.extincaoPage?.subtitleWidth} max={1080}
+                                onChange={v => update('extincaoPage', 'subtitleWidth', v)} />
+                            <Slider label="Subtítulo Margin Top" value={config.extincaoPage?.subtitleMarginTop} max={200}
+                                onChange={v => update('extincaoPage', 'subtitleMarginTop', v)} />
+
+                            <Slider label="Título Size" value={config.extincaoPage?.titleSize} max={200}
+                                onChange={v => update('extincaoPage', 'titleSize', v)} />
+                            <Slider label="Título Spacing" value={config.extincaoPage?.titleSpacing} max={40} step={0.1}
+                                onChange={v => update('extincaoPage', 'titleSpacing', v)} />
+                            <Slider label="Título Weight" value={config.extincaoPage?.titleWeight} min={100} max={900} step={100}
+                                onChange={v => update('extincaoPage', 'titleWeight', v)} />
+                            <Slider label="Título Line Height" value={config.extincaoPage?.titleLineHeight} min={0.5} max={3} step={0.05}
+                                onChange={v => update('extincaoPage', 'titleLineHeight', v)} />
+                            <Slider label="Título Width" value={config.extincaoPage?.titleWidth} max={1080}
+                                onChange={v => update('extincaoPage', 'titleWidth', v)} />
+                            <Slider label="Título Margin Top" value={config.extincaoPage?.titleMarginTop} max={200}
+                                onChange={v => update('extincaoPage', 'titleMarginTop', v)} />
+
+                            <Slider label="Linha Width" value={config.extincaoPage?.lineWidth} max={1080}
+                                onChange={v => update('extincaoPage', 'lineWidth', v)} />
+                            <Slider label="Linha Height" value={config.extincaoPage?.lineHeight} max={20} step={0.5}
+                                onChange={v => update('extincaoPage', 'lineHeight', v)} />
+                            <Slider label="Linha Margin Top" value={config.extincaoPage?.lineMarginTop} max={100}
+                                onChange={v => update('extincaoPage', 'lineMarginTop', v)} />
+                        </ControlGroup>
+
+                        <ControlGroup label="📄 Texto" defaultOpen={true}>
+                            <Slider label="Largura" value={config.extincaoPage?.textWidth} max={1080}
+                                onChange={v => update('extincaoPage', 'textWidth', v)} />
+                            <Slider label="Tamanho Fonte" value={config.extincaoPage?.textSize} max={100}
+                                onChange={v => update('extincaoPage', 'textSize', v)} />
+                            <Slider label="Line Height" value={config.extincaoPage?.textLineHeight} max={3} step={0.05}
+                                onChange={v => update('extincaoPage', 'textLineHeight', v)} />
+                            <Slider label="Margin Top" value={config.extincaoPage?.textMarginTop} max={300}
+                                onChange={v => update('extincaoPage', 'textMarginTop', v)} />
+                            <Slider label="Weight" value={config.extincaoPage?.textWeight} min={100} max={900} step={100}
+                                onChange={v => update('extincaoPage', 'textWeight', v)} />
+                        </ControlGroup>
+
+                        <ControlGroup label="🛡️ Selos (Slide 3)" defaultOpen={false}>
+                            <Slider label="Largura Selos" value={config.extincaoPage?.sealsWidth} max={1000}
+                                onChange={v => update('extincaoPage', 'sealsWidth', v)} />
+                            <Slider label="Margem Top" value={config.extincaoPage?.sealsMarginTop} max={300}
+                                onChange={v => update('extincaoPage', 'sealsMarginTop', v)} />
+                        </ControlGroup>
+                    </ControlGroup>
+                )}
+
+                {/* ALWAYS VISIBLE GLOBAL SECTIONS */}
                 <ControlGroup label="🔵 Top Bar" defaultOpen={false}>
                     <Slider label="Altura" value={config.topBar.height} max={200}
                         onChange={v => update('topBar', 'height', v)} />
@@ -446,172 +604,10 @@ export default function DesignEditor({ config, setConfig, visible, onToggle, sel
                         onChange={v => update('topBar', 'letterSpacing', v)} />
                 </ControlGroup>
 
-                {/* TITLE */}
-                <ControlGroup label="📝 Título" defaultOpen={false}>
-                    <Slider label="Padding Top" value={config.title.paddingTop} max={400}
-                        onChange={v => update('title', 'paddingTop', v)} />
-                    <Slider label="Padding Left" value={config.title.paddingLeft} max={200}
-                        onChange={v => update('title', 'paddingLeft', v)} />
-                    <Slider label="Subtítulo Size" value={config.title.subtitleSize} max={150}
-                        onChange={v => update('title', 'subtitleSize', v)} />
-                    <Slider label="Subtítulo Spacing" value={config.title.subtitleSpacing} max={20} step={0.1}
-                        onChange={v => update('title', 'subtitleSpacing', v)} />
-                    <Slider label="Título Size" value={config.title.titleSize} max={200}
-                        onChange={v => update('title', 'titleSize', v)} />
-                    <Slider label="Título Spacing" value={config.title.titleSpacing} max={20} step={0.1}
-                        onChange={v => update('title', 'titleSpacing', v)} />
-                    <Slider label="Linha Width" value={config.title.lineWidth} max={1080}
-                        onChange={v => update('title', 'lineWidth', v)} />
-                    <Slider label="Linha Height" value={config.title.lineHeight} max={10} step={0.5}
-                        onChange={v => update('title', 'lineHeight', v)} />
-                    <Slider label="Linha Margin Top" value={config.title.lineMarginTop} max={60}
-                        onChange={v => update('title', 'lineMarginTop', v)} />
-                </ControlGroup>
-
-                {/* GRID */}
-                <ControlGroup label="📦 Grid Menu" defaultOpen={false}>
-                    <Slider label="Padding Top" value={config.grid.paddingTop} max={200}
-                        onChange={v => update('grid', 'paddingTop', v)} />
-                    <Slider label="Padding H" value={config.grid.paddingHorizontal} max={200}
-                        onChange={v => update('grid', 'paddingHorizontal', v)} />
-                    <Slider label="Gap" value={config.grid.gap} max={60}
-                        onChange={v => update('grid', 'gap', v)} />
-                    <Slider label="Border Width" value={config.grid.cardBorderWidth} max={10} step={0.5}
-                        onChange={v => update('grid', 'cardBorderWidth', v)} />
-                    <Slider label="Border Radius" value={config.grid.cardBorderRadius} max={30}
-                        onChange={v => update('grid', 'cardBorderRadius', v)} />
-                    <ColorInput label="Border Color" value={config.grid.cardBorderColor}
-                        onChange={v => update('grid', 'cardBorderColor', v)} />
-                    <Slider label="Overlay Opacity" value={config.grid.overlayOpacity} max={1} step={0.05}
-                        onChange={v => update('grid', 'overlayOpacity', v)} />
-                </ControlGroup>
-
-                {/* BOTTOM BAR */}
                 <ControlGroup label="⬇️ Bottom Bar" defaultOpen={false}>
                     <Slider label="Altura" value={config.bottomBar.height} max={200}
                         onChange={v => update('bottomBar', 'height', v)} />
                 </ControlGroup>
-
-                {/* SPECIES PAGE */}
-                {(() => {
-                    const sp = hasSpeciesOverride ? config.speciesPageOverrides[currentSpeciesId] : config.speciesPage;
-                    return (
-                        <ControlGroup label="🐋 Página da Espécie" defaultOpen={true}>
-                            {currentSpeciesId && (
-                                <div className="editor-species-override">
-                                    <Checkbox 
-                                        label={`Sobrescrever Estilo (${currentSpeciesId.toUpperCase()})`}
-                                        checked={hasSpeciesOverride}
-                                        onChange={toggleSpeciesOverride}
-                                    />
-                                    {hasSpeciesOverride && (
-                                        <p style={{ fontSize: '11px', color: '#005fff', marginTop: '-8px', marginBottom: '15px' }}>
-                                            ✓ Editando apenas esta espécie.
-                                        </p>
-                                    )}
-                                </div>
-                            )}
-                            
-                            <Slider label="Hero Height" value={sp.heroHeight} max={1000}
-                                onChange={v => update('speciesPage', 'heroHeight', v)} />
-                            <Slider label="Hero Margin Bottom" value={sp.heroMarginBottom} min={-100} max={200}
-                                onChange={v => update('speciesPage', 'heroMarginBottom', v)} />
-                            <Slider label="Mask Intensity" value={sp.maskIntensity} max={200}
-                                onChange={v => update('speciesPage', 'maskIntensity', v)} />
-                            <Slider label="Name Size" value={sp.titleSize} max={120}
-                                onChange={v => update('speciesPage', 'titleSize', v)} />
-                            <Slider label="Name Weight" value={sp.titleWeight} min={100} max={900} step={100}
-                                onChange={v => update('speciesPage', 'titleWeight', v)} />
-                            <Slider label="Name Line Height" value={sp.titleLineHeight} max={2.5} step={0.1}
-                                onChange={v => update('speciesPage', 'titleLineHeight', v)} />
-                            <Slider label="Name (Parens) Size" value={sp.titleParenthesesSize} max={120}
-                                onChange={v => update('speciesPage', 'titleParenthesesSize', v)} />
-                            <Slider label="Scientific Size" value={sp.subtitleSize} max={100}
-                                onChange={v => update('speciesPage', 'subtitleSize', v)} />
-                            <Slider label="Scientific Spacing" value={sp.subtitleSpacing} max={20} step={0.1}
-                                onChange={v => update('speciesPage', 'subtitleSpacing', v)} />
-                            <Slider label="Scientific Line Height" value={sp.subtitleLineHeight} max={2.5} step={0.1}
-                                onChange={v => update('speciesPage', 'subtitleLineHeight', v)} />
-                            <Slider label="Scientific Margin Top" value={sp.subtitleMarginTop} min={-100} max={100}
-                                onChange={v => update('speciesPage', 'subtitleMarginTop', v)} />
-                            <Slider label="Scientific Weight" value={sp.scientificNameWeight} min={100} max={900} step={100}
-                                onChange={v => update('speciesPage', 'scientificNameWeight', v)} />
-                            <Checkbox label="Scientific Italic" checked={sp.scientificNameItalic}
-                                onChange={v => update('speciesPage', 'scientificNameItalic', v)} />
-                            
-                            <Slider label="Text Size" value={sp.textSize} max={60}
-                                onChange={v => update('speciesPage', 'textSize', v)} />
-                            <Slider label="Text Line Height" value={sp.textLineHeight} max={2.5} step={0.1}
-                                onChange={v => update('speciesPage', 'textLineHeight', v)} />
-                            
-                            <Slider label="Padding Horizontal" value={sp.paddingHorizontal} max={200}
-                                onChange={v => update('speciesPage', 'paddingHorizontal', v)} />
-                            <Slider label="Padding Top" value={sp.paddingTop} max={400}
-                                onChange={v => update('speciesPage', 'paddingTop', v)} />
-                            <Slider label="Row Gap" value={sp.rowGap} max={100}
-                                onChange={v => update('speciesPage', 'rowGap', v)} />
-                            
-                            <ControlGroup label="⬅️ Botão Voltar" defaultOpen={false}>
-                                <Slider label="Tamanho" value={sp.backButtonSize} max={150}
-                                    onChange={v => update('speciesPage', 'backButtonSize', v)} />
-                                <Slider label="Posição Bottom" value={sp.backButtonBottom} max={200}
-                                    onChange={v => update('speciesPage', 'backButtonBottom', v)} />
-                                <Slider label="Posição Left" value={sp.backButtonLeft} max={200}
-                                    onChange={v => update('speciesPage', 'backButtonLeft', v)} />
-                            </ControlGroup>
-
-                            <ControlGroup label="⬜ Barra Branca" defaultOpen={false}>
-                                <Slider label="Largura" value={sp.whiteBarWidth} max={1080}
-                                    onChange={v => update('speciesPage', 'whiteBarWidth', v)} />
-                                <Slider label="Posição Bottom" value={sp.whiteBarBottom} min={-200} max={200}
-                                    onChange={v => update('speciesPage', 'whiteBarBottom', v)} />
-                                <Slider label="Transparência" value={sp.whiteBarOpacity} max={1} step={0.05}
-                                    onChange={v => update('speciesPage', 'whiteBarOpacity', v)} />
-                            </ControlGroup>
-
-                            {/* Footer URL */}
-                            <ControlGroup label="🔗 Endereço do Site" defaultOpen={true}>
-                                <Slider label="Tamanho Fonte" value={sp.footerUrlSize} max={100}
-                                    onChange={v => update('speciesPage', 'footerUrlSize', v)} />
-                                <Slider label="Espaçamento Letra" value={sp.footerUrlSpacing} min={-5} max={20}
-                                    onChange={v => update('speciesPage', 'footerUrlSpacing', v)} />
-                                <Slider label="Peso Fonte" value={sp.footerUrlWeight} min={100} max={900} step={100}
-                                    onChange={v => update('speciesPage', 'footerUrlWeight', v)} />
-                                <Slider label="Margem Esquerda" value={sp.footerUrlMarginLeft} max={200}
-                                    onChange={v => update('speciesPage', 'footerUrlMarginLeft', v)} />
-                                <Slider label="Descer URL (Padding Top)" value={sp.footerUrlPaddingTop} max={300}
-                                    onChange={v => update('speciesPage', 'footerUrlPaddingTop', v)} />
-                                <Slider label="Respiro/Gap (URL -> Linha)" value={sp.footerUrlMarginBottom} min={-300} max={300}
-                                    onChange={v => update('speciesPage', 'footerUrlMarginBottom', v)} />
-                                
-                                <Slider label="Eixo Vertical Rodapé (Subir/Descer)" value={sp.footerVerticalOffset} min={-1000} max={1000}
-                                    onChange={v => update('speciesPage', 'footerVerticalOffset', v)} />
-                                <p style={{ fontSize: '11px', color: '#888', marginTop: '-8px', marginLeft: '12px' }}>
-                                    (Valores Negativos = Descer | Positivos = Subir)
-                                </p>
-                                
-                                <button 
-                                    onClick={() => {
-                                        update('speciesPage', 'footerVerticalOffset', 0);
-                                        update('speciesPage', 'footerUrlMarginBottom', 32);
-                                    }}
-                                    style={{ margin: '10px 12px', padding: '4px 8px', fontSize: '12px' }}
-                                >
-                                    Resetar Rodapé (0)
-                                </button>
-                            
-                                <div className="editor-row">
-                                    <label>Cor do Link</label>
-                                    <input 
-                                        type="color" 
-                                        value={sp.footerUrlColor} 
-                                        onChange={e => update('speciesPage', 'footerUrlColor', e.target.value)} 
-                                    />
-                                </div>
-                            </ControlGroup>
-                        </ControlGroup>
-                    );
-                })()}
             </div>
         </div>
     );

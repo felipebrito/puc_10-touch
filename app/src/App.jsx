@@ -7,7 +7,8 @@ import ExtincaoPage from './views/ExtincaoPage';
 import TartarugasPage from './views/TartarugasPage';
 import TubaroesPage from './views/TubaroesPage';
 import ArraiasPage from './views/ArraiasPage';
-import { loadConfig } from './components/DesignEditor';
+import GuideOverlay from './components/GuideOverlay';
+import DesignEditor, { loadConfig } from './components/DesignEditor';
 
 const INACTIVITY_TIMEOUT = 120;
 const WARNING_START = 60;
@@ -73,6 +74,16 @@ function App() {
     const [inactivityProgress, setInactivityProgress] = useState(0);
 
     useEffect(() => {
+        const handleKeyDown = (e) => {
+            if (e.key.toLowerCase() === 'c' || e.key.toLowerCase() === 'p') {
+                toggleEditor();
+            }
+        };
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+    }, [editorVisible]);
+
+    useEffect(() => {
         const handleResize = () => {
             const s = window.innerHeight / 1920;
             setScale(s);
@@ -97,6 +108,7 @@ function App() {
                     position: 'relative'
                 }}
             >
+                <GuideOverlay />
                 <Routes>
                     <Route
                         path="/"
@@ -111,7 +123,7 @@ function App() {
                     />
                     <Route
                         path="/species/perigo-extincao"
-                        element={<ExtincaoPage />}
+                        element={<ExtincaoPage config={config} />}
                     />
                     <Route
                         path="/species/tartarugas-marinhas"
@@ -138,6 +150,14 @@ function App() {
                     />
                 </Routes>
                 <BottomBar inactivityProgress={inactivityProgress} />
+                
+                {/* Global Design Editor Overlay */}
+                <DesignEditor
+                    config={config}
+                    setConfig={setConfig}
+                    visible={editorVisible}
+                    onToggle={toggleEditor}
+                />
             </div>
         </Router>
     );

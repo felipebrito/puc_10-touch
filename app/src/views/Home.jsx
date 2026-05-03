@@ -1,11 +1,9 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import BackgroundVideo from '../components/BackgroundVideo';
 import TopBar from '../components/TopBar';
 import BottomBar from '../components/BottomBar';
 import MenuGrid from '../components/MenuGrid';
-import DesignEditor from '../components/DesignEditor';
 import { menuItems } from '../data/menuItems';
 import './Home.css';
 
@@ -40,7 +38,10 @@ export default function Home({ config, setConfig, editorVisible, onToggleEditor 
 
     return (
         <div className="home-view">
-            <BackgroundVideo variant="full" />
+            <div className="home-bg-static">
+                <img src="/assets/images/home_bg.png" alt="background" />
+                <div className="video-overlay" />
+            </div>
             <TopBar />
 
             <div className="home-content">
@@ -85,6 +86,18 @@ export default function Home({ config, setConfig, editorVisible, onToggleEditor 
                         }}
                         variants={titleItemVariants}
                     />
+                    <motion.p
+                        className="home-description"
+                        style={{
+                            fontSize: `${tc.descriptionSize}px`,
+                            letterSpacing: `${tc.descriptionSpacing}px`,
+                            marginTop: `${tc.descriptionMarginTop}px`,
+                            fontWeight: tc.descriptionWeight || 300,
+                        }}
+                        variants={titleItemVariants}
+                    >
+                        Exemplos de espécies em risco e suas principais ameaças:
+                    </motion.p>
                 </motion.div>
 
                 {/* Menu Grid */}
@@ -103,15 +116,6 @@ export default function Home({ config, setConfig, editorVisible, onToggleEditor 
 
             <BottomBar />
 
-            {/* WYSIWYG Editor */}
-            <DesignEditor
-                config={config}
-                setConfig={setConfig}
-                visible={editorVisible}
-                onToggle={onToggleEditor}
-                selectedCard={selectedCard}
-                setSelectedCard={setSelectedCard}
-            />
         </div>
     );
 }
