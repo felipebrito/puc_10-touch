@@ -2,6 +2,24 @@
 
 Todas as mudanças notáveis neste projeto serão documentadas neste arquivo.
 
+## [1.2.0] - 2026-05-03
+
+### Adicionado
+- **Raia Jamanta (Mobula birostris)**: Implementação completa da nova espécie com ativos de alta fidelidade e design premium "estilo Baleia".
+- **Design Utils (Modularização)**: Criado `designUtils.js` para isolar a lógica de configuração do `DesignEditor.jsx`, resolvendo conflitos de Fast Refresh do Vite.
+- **Hero & Footer Premium**: Integração de imagens gigantes de topo e rodapés institucionais específicos para a Raia Jamanta.
+
+### Melhorado
+- **Estabilidade do Editor**: Implementados fallbacks de valor (`?? 0`) em todos os sliders, eliminando avisos de "uncontrolled input" do React.
+- **Navegação Simplificada**:
+  - Atalho direto: Menu **RAIAS** agora leva diretamente à Raia Jamanta, otimizando o fluxo do usuário.
+  - UI Limpa: Remoção do botão de "Voltar para Categoria" nas páginas de detalhes para foco total na Home.
+- **SEO & URLs**: Rota de Arraias renomeada oficialmente para `/species/raias`.
+
+### Corrigido
+- **Amnésia de Slide**: A função de atualização do Editor agora respeita o índice de slide ativo em tempo real, permitindo calibrações granulares sem travamentos.
+- **Sintaxe JSON**: Corrigidos erros de fechamento de chaves no `designConfig.json` que impediam o carregamento de configurações personalizadas.
+
 ## [1.1.0] - 2026-05-03
 
 ### Adicionado
