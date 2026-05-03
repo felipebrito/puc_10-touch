@@ -62,8 +62,8 @@ const slides = [
         footerImage: '/assets/images/tubaroes/mangona_footer.png',
         guideImage: '/assets/guides/revisao-22-04/page-23.jpg',
         paragraphs: [
-            'A principal ameaça aos tubarões e raias é a perda de habitat, principalmente nas áreas costeiras e praias, devido à urbanização descontrolada e atividades industriais, tais como portos e dragagens em zonas de estuários, que alteram ou destroem as áreas de reprodução, alimentação e abrigo.',
-            'As mudanças climáticas, que têm aumentado as temperaturas e a acidificação dos oceanos, alteram as cadeias alimentares e a distribuição das espécies, ampliando seu risco de extinção. Confira a seguir detalhes sobre algumas dessas espécies.'
+            'É um tubarão de grande porte, com distribuição costeira no mundo inteiro. No Brasil, ocorre no Sudeste e Sul. O comprimento máximo comprovado da espécie é de aproximadamente 3,2m, chegando a pesar por volta de 300 kg.',
+            'Produz apenas dois filhotes por gestação. Como resultado, as taxas anuais de crescimento da população são muito baixas, reduzindo sua capacidade de sustentar as ameaças causadas pela pesca.'
         ],
     },
     {
