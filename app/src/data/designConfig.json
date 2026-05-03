@@ -155,10 +155,10 @@
       "footerUrlMarginBottom": -32,
       "footerUrlPaddingTop": 0,
       "footerUrlColor": "#005fff",
-      "footerVerticalOffset": 69,
+      "footerVerticalOffset": 83,
       "textMaxWidth": 1065,
-      "footerScale": 0.77,
-      "footerHorizontalOffset": 84
+      "footerScale": 0.87,
+      "footerHorizontalOffset": 71
     },
     "boto": {
       "heroHeight": 625,

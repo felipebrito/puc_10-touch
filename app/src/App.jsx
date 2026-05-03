@@ -146,7 +146,36 @@ function App() {
         };
         handleResize();
         window.addEventListener('resize', handleResize);
-        return () => window.removeEventListener('resize', handleResize);
+        
+        // --- Touch Ripple Feedback ---
+        const createRipple = (e) => {
+            // Se for touch, pega a coordenada do dedo. Se for mouse, pega do clique.
+            const x = e.touches ? e.touches[0].clientX : e.clientX;
+            const y = e.touches ? e.touches[0].clientY : e.clientY;
+            
+            const ripple = document.createElement('div');
+            ripple.className = 'touch-ripple';
+            ripple.style.left = `${x}px`;
+            ripple.style.top = `${y}px`;
+            
+            document.body.appendChild(ripple);
+            
+            // Remove a bolinha do HTML depois de 600ms (tempo exato da animação)
+            setTimeout(() => {
+                if (document.body.contains(ripple)) {
+                    document.body.removeChild(ripple);
+                }
+            }, 600);
+        };
+
+        window.addEventListener('mousedown', createRipple);
+        window.addEventListener('touchstart', createRipple, { passive: true });
+
+        return () => {
+            window.removeEventListener('resize', handleResize);
+            window.removeEventListener('mousedown', createRipple);
+            window.removeEventListener('touchstart', createRipple);
+        };
     }, []);
 
     const toggleEditor = () => setEditorVisible(!editorVisible);
