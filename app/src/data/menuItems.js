@@ -8,7 +8,7 @@ export const menuItems = [
     {
         id: 'boto',
         label: 'BOTO',
-        scientificName: 'BOTO (GOLFINHO DA TAINHA)',
+        scientificName: 'BOTO',
         binomialName: 'Tursiops gephyreus',
         image: '/assets/images/thumb_boto.png', // Thumb for menu
         heroImage: '/assets/images/boto/hero.png', // High-fidelity top image
@@ -19,7 +19,7 @@ export const menuItems = [
     {
         id: 'toninha',
         label: 'TONINHA',
-        scientificName: 'TONINHA (FRANCISCANA)',
+        scientificName: 'TONINHA',
         binomialName: 'Pontoporia blainvillei',
         image: '/assets/images/thumb_toninha.png',
         heroImage: '/assets/images/toninha/hero.png',
@@ -39,13 +39,13 @@ export const menuItems = [
         description: `A baleia-jubarte pode chegar a 16 metros de comprimento e pesar mais de 30 toneladas, mas mesmo com esse tamanho impressionante, é famosa por suas acrobacias: salta fora d’água com surpreendente elegância! Isto é possível graças às suas nadadeiras peitorais extremamente longas (até um terço do comprimento corporal), as maiores entre as baleias.\n\nOutro destaque, é o “canto” que os machos emitem - uma série de sons complexos e misteriosos que podem durar até meia hora e viajar por quilômetros de distância.\n\nAlém disso, são migradoras incríveis: viajam milhares de quilômetros todos os anos entre águas polares (onde se alimentam) e tropicais (onde se reproduzem). No Brasil, se concentram no litoral da Bahia.`,
     },
     {
-        id: 'baleia-franca',
-        label: 'BALEIA-FRANCA-\nAUSTRAL',
-        scientificName: 'BALEIA-FRANCA-AUSTRAL',
+        id: 'baleia-austral',
+        label: 'BALEIA\nAUSTRAL',
+        scientificName: 'BALEIA AUSTRAL',
         binomialName: 'Eubalaena australis',
         image: '/assets/images/thumb_baleia_franca.png',
-        heroImage: '/assets/images/franca/hero.png',
-        footerImage: '/assets/images/franca/footer.png',
+        heroImage: '/assets/images/baleia-austral/hero.png',
+        footerImage: '/assets/images/baleia-austral/footer.png',
         guideImage: '/assets/guides/revisao-22-04/page-15.jpg',
         description: `Podem ser reconhecidas pela presença de calosidades no corpo, cobertas por pequenos parasitas chamados "piolhos-de-baleia", os quais formam um padrão tão exclusivo que os cientistas usam para identificar cada indivíduo, como se fossem impressões digitais.\n\nNo Brasil, elas podem ser encontradas durante o inverno no litoral de Santa Catarina.`,
     },
@@ -57,8 +57,8 @@ export const menuItems = [
     },
     {
         id: 'peixe-boi',
-        label: 'PEIXE-BOI-\nMARINHO',
-        scientificName: 'PEIXE-BOI MARINHO',
+        label: 'PEIXE-BOI',
+        scientificName: 'PEIXE-BOI',
         binomialName: 'Trichechus manatus',
         image: '/assets/images/thumb_peixe_boi.png',
         heroImage: '/assets/images/peixe-boi/hero.png',
