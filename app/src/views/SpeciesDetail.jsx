@@ -97,7 +97,7 @@ export default function SpeciesDetail({ config, setConfig, editorVisible, onTogg
                         clipPath: `polygon(0 0, 100% 0, 100% 100%, ${sp.maskIntensity}px 100%)`
                     }}
                 >
-                    <img src={species.image} alt={species.label} className="hero-image" />
+                    <img src={species.heroImage || species.image} alt={species.label} className="hero-image" />
                 </motion.div>
 
                 {/* White Bar Overlay - Static (no animation) */}
@@ -182,7 +182,8 @@ export default function SpeciesDetail({ config, setConfig, editorVisible, onTogg
                     className="species-description"
                     style={{
                         fontSize: `${sp.textSize}px`,
-                        lineHeight: sp.textLineHeight
+                        lineHeight: sp.textLineHeight,
+                        maxWidth: `${sp.textMaxWidth ?? 800}px`
                     }}
                     variants={itemVariants}
                 >
@@ -193,11 +194,14 @@ export default function SpeciesDetail({ config, setConfig, editorVisible, onTogg
 
             </motion.div>
 
-            {/* Final Footer Image Page - Static (no animation) */}
+            {/* Final Footer Image Page */}
             <div className="species-final-footer" style={{
                 pointerEvents: 'auto',
-                bottom: '0px',
-                transform: `translateY(${- (sp.footerVerticalOffset ?? 0)}px)`
+                marginTop: 'auto',
+                width: '100%',
+                zIndex: 10,
+                transform: `translate(${sp.footerHorizontalOffset ?? 0}px, ${- (sp.footerVerticalOffset ?? 0)}px) scale(${sp.footerScale ?? 1})`,
+                transformOrigin: 'bottom left'
             }}>
                 {species.externalUrl && (
                     <div className="species-footer">
@@ -217,12 +221,14 @@ export default function SpeciesDetail({ config, setConfig, editorVisible, onTogg
                         </div>
                     </div>
                 )}
-                <img
-                    src="/assets/linha.svg"
-                    alt=""
-                    className="footer-line-separator"
-                />
-                <img src="/assets/rodape.png" alt="" className="rodape-image" />
+                {!species.footerImage && (
+                    <img
+                        src="/assets/linha.svg"
+                        alt=""
+                        className="footer-line-separator"
+                    />
+                )}
+                <img src={species.footerImage || "/assets/rodape.png"} alt="" className="rodape-image" />
             </div>
 
         </motion.div>

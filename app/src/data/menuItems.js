@@ -10,10 +10,11 @@ export const menuItems = [
         label: 'BOTO',
         scientificName: 'BOTO (GOLFINHO DA TAINHA)',
         binomialName: 'Tursiops gephyreus',
-        image: '/assets/images/thumb_boto.png',
+        image: '/assets/images/thumb_boto.png', // Thumb for menu
+        heroImage: '/assets/images/boto/hero.png', // High-fidelity top image
+        footerImage: '/assets/images/boto/footer.png', // Specific footer with seal
         guideImage: '/assets/guides/revisao-22-04/page-11.jpg',
-        description: `O boto é uma espécie de mamífero marinho que só ocorre nas águas costeiras do sul do Brasil, Uruguai e centro-norte da Argentina. A espécie está ameaçada de extinção com uma população estimada em menos de 500 indivíduos e que ainda está diminuindo.\n\nÉ famoso por suas interações com pescadores artesanais, um comportamento conhecido como pesca cooperativa, que ocorre principalmente na Barra do Rio Tramandaí (RS) e em Laguna (SC). Os botos, que residem nestas áreas, e os pescadores artesanais cooperam a décadas na pesca da tainha, que beneficiam ambas as partes.`,
-        externalUrl: 'https://www.ufrgs.br/ceclimar/projeto-botos-da-barra/',
+        description: `Espécie de mamífero marinho que só ocorre nas águas costeiras do sul do Brasil, Uruguai e centro-norte da Argentina. Ameaçada de extinção, possui uma população estimada em menos de 500 indivíduos, e que ainda está diminuindo.\n\nÉ famoso por interagir com pescadores artesanais, um comportamento conhecido como pesca cooperativa, que ocorre principalmente na Barra do Rio Tramandaí (RS) e em Laguna (SC). Os botos, que residem nestas áreas e os pescadores artesanais cooperam a décadas na pesca da tainha, o que traz benefícios para ambos.`,
     },
     {
         id: 'toninha',

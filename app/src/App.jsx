@@ -67,6 +67,61 @@ function InactivityManager({ onProgressChange }) {
     return null;
 }
 
+function AppContent({ config, setConfig, editorVisible, toggleEditor, setInactivityProgress, inactivityProgress }) {
+    const location = useLocation();
+    const isHome = location.pathname === '/';
+
+    return (
+        <>
+            <InactivityManager onProgressChange={setInactivityProgress} />
+            <GuideOverlay />
+            <Routes>
+                <Route
+                    path="/"
+                    element={
+                        <Home
+                            config={config}
+                            setConfig={setConfig}
+                            editorVisible={editorVisible}
+                            onToggleEditor={toggleEditor}
+                        />
+                    }
+                />
+                <Route
+                    path="/species/perigo-extincao"
+                    element={<ExtincaoPage config={config} />}
+                />
+                <Route
+                    path="/species/tartarugas-marinhas"
+                    element={<TartarugasPage />}
+                />
+                <Route
+                    path="/species/tubaroes"
+                    element={<TubaroesPage config={config} />}
+                />
+                <Route
+                    path="/species/arraias"
+                    element={<ArraiasPage config={config} />}
+                />
+                <Route
+                    path="/species/:id"
+                    element={
+                        <SpeciesDetail
+                            config={config}
+                            setConfig={setConfig}
+                            editorVisible={editorVisible}
+                            onToggleEditor={toggleEditor}
+                        />
+                    }
+                />
+            </Routes>
+            
+            {/* O padrão azul (BottomBar) só aparece na Home */}
+            {isHome && <BottomBar inactivityProgress={inactivityProgress} />}
+        </>
+    );
+}
+
 function App() {
     const [config, setConfig] = useState(loadConfig);
     const [editorVisible, setEditorVisible] = useState(false);
@@ -97,7 +152,6 @@ function App() {
 
     return (
         <Router>
-            <InactivityManager onProgressChange={setInactivityProgress} />
             <div
                 className="totem-scaler"
                 style={{
@@ -108,48 +162,14 @@ function App() {
                     position: 'relative'
                 }}
             >
-                <GuideOverlay />
-                <Routes>
-                    <Route
-                        path="/"
-                        element={
-                            <Home
-                                config={config}
-                                setConfig={setConfig}
-                                editorVisible={editorVisible}
-                                onToggleEditor={toggleEditor}
-                            />
-                        }
-                    />
-                    <Route
-                        path="/species/perigo-extincao"
-                        element={<ExtincaoPage config={config} />}
-                    />
-                    <Route
-                        path="/species/tartarugas-marinhas"
-                        element={<TartarugasPage />}
-                    />
-                    <Route
-                        path="/species/tubaroes"
-                        element={<TubaroesPage config={config} />}
-                    />
-                    <Route
-                        path="/species/arraias"
-                        element={<ArraiasPage config={config} />}
-                    />
-                    <Route
-                        path="/species/:id"
-                        element={
-                            <SpeciesDetail
-                                config={config}
-                                setConfig={setConfig}
-                                editorVisible={editorVisible}
-                                onToggleEditor={toggleEditor}
-                            />
-                        }
-                    />
-                </Routes>
-                <BottomBar inactivityProgress={inactivityProgress} />
+                <AppContent 
+                    config={config} 
+                    setConfig={setConfig} 
+                    editorVisible={editorVisible} 
+                    toggleEditor={toggleEditor} 
+                    setInactivityProgress={setInactivityProgress}
+                    inactivityProgress={inactivityProgress}
+                />
                 
                 {/* Global Design Editor Overlay */}
                 <DesignEditor

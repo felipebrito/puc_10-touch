@@ -433,6 +433,8 @@ export default function DesignEditor({ config, setConfig, visible, onToggle, sel
                                     
                                     <Slider label="Text Size" value={sp.textSize} max={60}
                                         onChange={v => update('speciesPage', 'textSize', v)} />
+                                    <Slider label="Text Max Width" value={sp.textMaxWidth} max={1080}
+                                        onChange={v => update('speciesPage', 'textMaxWidth', v)} />
                                     <Slider label="Text Line Height" value={sp.textLineHeight} max={2.5} step={0.1}
                                         onChange={v => update('speciesPage', 'textLineHeight', v)} />
                                     
@@ -475,8 +477,12 @@ export default function DesignEditor({ config, setConfig, visible, onToggle, sel
                                         <Slider label="Respiro/Gap (URL -> Linha)" value={sp.footerUrlMarginBottom} min={-300} max={300}
                                             onChange={v => update('speciesPage', 'footerUrlMarginBottom', v)} />
                                         
-                                        <Slider label="Eixo Vertical Rodapé (Subir/Descer)" value={sp.footerVerticalOffset} min={-1000} max={1000}
+                                        <Slider label="Posição Y (Vertical)" value={sp.footerVerticalOffset} min={-200} max={200}
                                             onChange={v => update('speciesPage', 'footerVerticalOffset', v)} />
+                                        <Slider label="Posição X (Horizontal)" value={sp.footerHorizontalOffset} min={-500} max={500}
+                                            onChange={v => update('speciesPage', 'footerHorizontalOffset', v)} />
+                                        <Slider label="Escala Rodapé" value={sp.footerScale || 1} min={0.1} max={3} step={0.01}
+                                            onChange={v => update('speciesPage', 'footerScale', v)} />
                                         <p style={{ fontSize: '11px', color: '#888', marginTop: '-8px', marginLeft: '12px' }}>
                                             (Valores Negativos = Descer | Positivos = Subir)
                                         </p>

@@ -38,7 +38,7 @@
     "overlayOpacity": 0.85
   },
   "bottomBar": {
-    "height": 101
+    "height": 92
   },
   "cardOverrides": {
     "0": {
@@ -98,9 +98,9 @@
     "scientificNameItalic": true,
     "textSize": 40,
     "textLineHeight": 1.1,
-    "paddingHorizontal": 75,
+    "paddingHorizontal": 72,
     "paddingTop": 0,
-    "rowGap": 23,
+    "rowGap": 52,
     "backButtonSize": 60,
     "backButtonBottom": 39,
     "backButtonLeft": 40,
@@ -112,10 +112,13 @@
     "footerUrlSpacing": -1,
     "footerUrlWeight": 300,
     "footerUrlMarginLeft": 85,
-    "footerUrlMarginBottom": -32,
+    "footerUrlMarginBottom": -42,
     "footerUrlPaddingTop": 0,
     "footerUrlColor": "#005fff",
-    "footerVerticalOffset": -6
+    "footerVerticalOffset": 68,
+    "footerHorizontalOffset": 75,
+    "textMaxWidth": 853,
+    "footerScale": 0.87
   },
   "speciesPageOverrides": {
     "baleia-jubarte": {
