@@ -3,21 +3,54 @@
     width: 1080px;
     height: 1920px;
     overflow: hidden;
-    background: #000;
+    background: #001a4d; /* Azul mais escuro/profundo para tubarões */
 }
 
-.tubaroes-page .top-bar {
-    position: relative;
-    z-index: 12;
+.tubaroes-bg-static {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
 }
 
-.tubaroes-static-content {
+.tubaroes-bg-static .bg-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* ── Carrossel ───────────────────────────────────────────── */
+.tubaroes-carousel {
     position: absolute;
     top: 100px;
     left: 0;
     right: 0;
-    bottom: 230px;
+    bottom: 0px;
+    overflow: hidden;
     z-index: 3;
+    cursor: grab;
+    touch-action: pan-y;
+}
+
+.tubaroes-carousel:active {
+    cursor: grabbing;
+}
+
+/* ── Slide base ──────────────────────────────────────────── */
+.tubaroes-slide {
+    width: 1080px;
+    height: 100%;
+    flex-shrink: 0;
+    position: relative;
+    overflow: hidden;
+    background: #fff; /* Fundo padrão branco para os slides de conteúdo */
+}
+
+/* Slides com BG imersivo (1 e 2) */
+.slide-shark-text {
+    background: transparent;
 }
 
 .shark-text-inner {
@@ -30,74 +63,177 @@
 
 .shark-title {
     font-family: 'Blender Pro', sans-serif;
-    font-size: 72px;
+    font-size: 110px;
     font-weight: 900;
     letter-spacing: 3px;
     color: #ffffff;
     text-transform: uppercase;
     line-height: 1.05;
-    margin: 0 0 24px 0;
-}
-
-.shark-separator {
-    width: 200px;
-    height: 3px;
-    background: #005fff;
-    margin-bottom: 56px;
-    flex-shrink: 0;
+    margin: 0;
 }
 
 .shark-paragraphs {
     font-family: 'Canva Sans', sans-serif;
-    font-size: 34px;
+    font-size: 36px;
     font-weight: 400;
-    line-height: 1.5;
+    line-height: 1.55;
     color: #ffffff;
-    margin-bottom: 60px;
 }
 
 .shark-paragraphs p {
-    margin: 0 0 1.2em 0;
+    margin: 0 0 1.3em 0;
 }
 
-.shark-species-section {
-    width: 100%;
-    margin-top: auto;
-    padding-bottom: 40px;
-}
-
-/* Reset or adjust MenuGrid within this view if needed */
-.shark-species-section .menu-grid {
-    padding: 0 !important;
-    /* Reuse Home logic but override padding if necessary */
-    row-gap: 30px;
-}
-
-/* ── Rodapé estático ─────────────────────────────────────── */
-.tubaroes-footer {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
+/* ── Slide tipo: species-detail (Slides 3, 4, 5) ────────── */
+.slide-species-detail {
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
-    pointer-events: none;
-    z-index: 3;
+    overflow-y: auto;
 }
 
-.tubaroes-linha {
-    width: 960px;
-    height: auto;
-    display: block;
-    margin-left: 75px;
-    margin-bottom: 67px;
-}
-
-.tubaroes-rodape {
+.species-hero {
+    position: relative;
     width: 100%;
-    height: auto;
-    display: block;
+    background: #002266;
+    flex-shrink: 0;
+}
+
+.hero-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.hero-mask {
+    position: absolute;
+    inset: 0;
+    background: #000;
+    pointer-events: none;
+}
+
+.species-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.species-title {
+    color: #005fff;
+    font-family: 'Blender Pro', sans-serif;
+    font-weight: 900;
+    text-transform: uppercase;
+    margin: 0;
+}
+
+.species-separator {
+    width: 200px;
+    height: 3px;
+    background: #005fff;
+    flex-shrink: 0;
+}
+
+.species-scientific {
+    color: #005fff;
+    font-family: 'Blender Pro', sans-serif;
+    font-weight: 400;
+    font-style: italic;
+    margin: 0;
+}
+
+.species-paragraphs {
+    font-family: 'Canva Sans', sans-serif;
+    font-weight: 400;
+    color: #333;
+}
+
+.species-paragraphs p {
+    margin-bottom: 1.5em;
+}
+
+.species-footer {
+    width: 100%;
+    margin-top: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.footer-line {
+    width: 960px;
+    margin-left: 75px;
+    margin-bottom: 30px;
+}
+
+.footer-image {
+    width: auto;
+    max-width: 100%;
+}
+
+/* ── Setas de navegação ──────────────────────────────────── */
+.carousel-arrow {
+    position: absolute;
+    top: 93%;
+    transform: translateY(-250%);
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    background: rgba(0, 95, 255, 0.85);
+    border: 3px solid transparent;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 10000;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+    transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    padding: 0;
+}
+
+.carousel-arrow:active {
+    transform: translateY(-250%) scale(0.92);
+}
+
+.carousel-arrow:hover {
+    background: #005fff;
+    transform: translateY(-250%) scale(1.1);
+}
+
+.arrow-icon-svg {
+    width: 60%;
+    height: 60%;
+    object-fit: contain;
+}
+
+.arrow-left { left: 30px; }
+.arrow-right { right: 30px; }
+
+/* ── Indicadores de página ───────────────────────────────── */
+.tubaroes-indicator {
+    position: absolute;
+    bottom: 170px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 14px;
+    align-items: center;
+    z-index: 4;
+}
+
+.indicator-dot {
+    width: 48px;
+    height: 4px;
+    border-radius: 2px;
+    background: rgba(0, 0, 0, 0.15); /* Padrão escuro para fundo branco */
+    transition: background 0.3s;
+}
+
+/* Ajuste para slides de texto (fundo escuro) */
+.slide-shark-text ~ .tubaroes-indicator .indicator-dot {
+    background: rgba(255, 255, 255, 0.30);
+}
+
+.indicator-dot.active {
+    background: #005fff !important;
 }
 
 /* ── Botão voltar ────────────────────────────────────────── */
@@ -110,30 +246,19 @@
     height: 80px;
     background: #005fff;
     border-radius: 50%;
-    border: 3px solid transparent;
-    color: white;
-    font-size: 28px;
     display: flex;
     align-items: center;
     justify-content: center;
-    text-decoration: none;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
     transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 .tubaroes-back-button:active {
     transform: scale(0.92);
-    border-color: #ffffff;
-    box-shadow: 0 0 20px rgba(255, 255, 255, 0.5), 0 4px 15px rgba(0, 0, 0, 0.4);
 }
 
 .tubaroes-back-button .home-icon-svg {
     width: 60%;
     height: 60%;
     filter: brightness(0) invert(1);
-    object-fit: contain;
-}
-
-.tubaroes-back-button:hover {
-    transform: scale(1.1);
 }

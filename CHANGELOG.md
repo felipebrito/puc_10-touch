@@ -2,8 +2,15 @@
 
 Todas as mudanças notáveis neste projeto serão documentadas neste arquivo.
 
-## [1.2.0] - 2026-05-03
+## [1.2.1] - 2026-05-03
 
+### Corrigido
+- **Editor de Design (Sliders)**: Resolvido o "fantasma do slider" onde valores residuais globais impediam a calibração de escala e posição na página de detalhes dos Tubarões.
+- **Escala de Selos**: Removido o travamento de largura máxima (`width: 100%`) no CSS dos rodapés (`.footer-image`), liberando o controle total da escala dos selos.
+- **Sincronização de Estado**: Refatorada a função de atualização do `DesignEditor` e a lógica de exibição, permitindo edição fluida, instantânea e sem atrasos na UI.
+- **Navegação de Slides**: Implementado suporte a parâmetros URL de forma intuitiva (ex: `?slide=3` para a Mangona) para facilitar a calibração direta.
+
+## [1.2.0] - 2026-05-03
 ### Adicionado
 - **Raia Jamanta (Mobula birostris)**: Implementação completa da nova espécie com ativos de alta fidelidade e design premium "estilo Baleia".
 - **Design Utils (Modularização)**: Criado `designUtils.js` para isolar a lógica de configuração do `DesignEditor.jsx`, resolvendo conflitos de Fast Refresh do Vite.

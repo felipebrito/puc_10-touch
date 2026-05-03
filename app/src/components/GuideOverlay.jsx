@@ -23,12 +23,18 @@ export default function GuideOverlay() {
         };
 
         const handleSlideChange = (e) => setCurrentExtincaoSlide(e.detail);
+        const handleGlobalSlideChange = () => {
+            // Trigger a re-render
+            setCurrentExtincaoSlide(prev => prev === -1 ? -2 : -1); 
+        };
 
         window.addEventListener('keydown', handleKeyDown);
         window.addEventListener('extincao-slide-changed', handleSlideChange);
+        window.addEventListener('slide-changed', handleGlobalSlideChange);
         return () => {
             window.removeEventListener('keydown', handleKeyDown);
             window.removeEventListener('extincao-slide-changed', handleSlideChange);
+            window.removeEventListener('slide-changed', handleGlobalSlideChange);
         };
     }, []);
 
@@ -47,10 +53,31 @@ export default function GuideOverlay() {
             3: '/assets/guides/revisao-22-04/page-05.jpg'
         };
         guideImage = mapping[currentExtincaoSlide] || '/assets/guides/revisao-22-04/page-02.jpg';
-    } else if (location.pathname === '/species/tubaroes') {
-        guideImage = '/assets/guides/revisao-22-04/page-23.jpg';
-    } else if (location.pathname === '/species/arraias') {
-        guideImage = '/assets/guides/revisao-22-04/page-25.jpg';
+    } else if (location.pathname === '/species/tubaroes' || location.pathname === '/species/tartarugas-marinhas') {
+        // Handle carousel-based pages using the global index
+        const index = window.__currentSlideIndex || 0;
+        
+        // This is a bit of a hack since we don't have direct access to the 'slides' array here
+        // but we can infer it or use a mapping. 
+        // For Tubaroes, we know the mapping:
+        if (location.pathname === '/species/tubaroes') {
+            const sharkMapping = {
+                0: '/assets/guides/revisao-22-04/page-21.jpg',
+                1: '/assets/guides/revisao-22-04/page-22.jpg',
+                2: '/assets/guides/revisao-22-04/page-23.jpg',
+                3: '/assets/guides/revisao-22-04/page-24.jpg',
+                4: '/assets/guides/revisao-22-04/page-25.jpg'
+            };
+            guideImage = sharkMapping[index];
+        } else if (location.pathname === '/species/tartarugas-marinhas') {
+             const turtleMapping = {
+                0: '/assets/guides/revisao-22-04/page-16.jpg',
+                1: '/assets/guides/revisao-22-04/page-17.jpg',
+                2: '/assets/guides/revisao-22-04/page-18.jpg',
+                3: '/assets/guides/revisao-22-04/page-19.jpg'
+            };
+            guideImage = turtleMapping[index];
+        }
     } else {
         const match = location.pathname.match(/^\/species\/(.+)$/);
         if (match) {

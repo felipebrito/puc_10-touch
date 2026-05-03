@@ -73,46 +73,49 @@ export default function DesignEditor({ config, setConfig, visible, onToggle, sel
     const [activeSlide, setActiveSlide] = useState(undefined);
 
     useEffect(() => {
-        const id = location.pathname.split('/').pop();
-        setCurrentSpeciesId(id || null);
-        // Reset slide when changing page
-        setActiveSlide(window.__currentSlideIndex);
-    }, [location.pathname]);
+        window.__designEditorVisible = visible;
+    }, [visible]);
 
-    // Listen for slide changes from species pages
     useEffect(() => {
         const handleSlideChange = () => {
             setActiveSlide(window.__currentSlideIndex);
+            
+            // Priority: Explicit Species ID from carousel slide > URL ID
+            const idFromWindow = window.__currentSpeciesId;
+            const idFromUrl = location.pathname.split('/').pop();
+            setCurrentSpeciesId(idFromWindow || (idFromUrl !== 'species' ? idFromUrl : null));
         };
+        
+        handleSlideChange(); // Initial check
+        
         window.addEventListener('slide-changed', handleSlideChange);
-        // Also poll occasionally as fallback
         const interval = setInterval(handleSlideChange, 1000);
         
         return () => {
             window.removeEventListener('slide-changed', handleSlideChange);
             clearInterval(interval);
         };
-    }, []);
+    }, [location.pathname]);
 
     const hasSpeciesOverride = currentSpeciesId && !!config.speciesPageOverrides?.[currentSpeciesId];
 
-    const update = useCallback((section, key, value) => {
-        console.log(`[Editor] Updating ${section}.${key} = ${value} (Slide: ${activeSlide})`);
+    const update = (section, key, value) => {
+        console.log(`[Editor] Attempting update: ${section}.${key} = ${value} (Target: ${currentSpeciesId})`);
         setConfig(prev => {
-            // 1. Shallow clone the root
             const next = { ...prev };
-            
-            // 2. Clone the specific section we are editing
             next[section] = { ...(prev[section] || {}) };
             
-            // 3. Special handling for speciesPageOverrides
-            if (section === 'speciesPage' && currentSpeciesId && hasSpeciesOverride) {
-                // Ensure speciesPageOverrides is also cloned
+            const targetId = currentSpeciesId;
+            const hasOverride = targetId && !!prev.speciesPageOverrides?.[targetId];
+
+            if (section === 'speciesPage' && targetId && hasOverride) {
                 next.speciesPageOverrides = { ...(prev.speciesPageOverrides || {}) };
-                const speciesOverride = { ...(next.speciesPageOverrides[currentSpeciesId] || {}) };
+                const speciesOverride = { ...(next.speciesPageOverrides[targetId] || {}) };
                 
-                // If we have a specific slide active, update its slideOverride
-                if (activeSlide !== undefined) {
+                const carouselIds = ['tubaroes', 'tartarugas-marinhas', 'arraias', 'perigo-extincao'];
+                const isCarousel = carouselIds.includes(targetId);
+
+                if (activeSlide !== undefined && isCarousel) {
                     const slideOverrides = { ...(speciesOverride.slideOverrides || {}) };
                     slideOverrides[activeSlide] = { 
                         ...(slideOverrides[activeSlide] || {}),
@@ -120,20 +123,21 @@ export default function DesignEditor({ config, setConfig, visible, onToggle, sel
                     };
                     speciesOverride.slideOverrides = slideOverrides;
                 } else {
-                    // Otherwise update species-wide override
                     speciesOverride[key] = value;
                 }
                 
-                next.speciesPageOverrides[currentSpeciesId] = speciesOverride;
+                next.speciesPageOverrides[targetId] = speciesOverride;
+                console.log(`[Editor] Saved to species override: ${targetId}`, speciesOverride);
             } else {
-                // Standard global update (either other sections or speciesPage without override)
                 next[section][key] = value;
+                console.log(`[Editor] Saved globally to: ${section}`, next[section]);
             }
 
             saveConfig(next);
             return next;
         });
-    }, [setConfig, currentSpeciesId, activeSlide]);
+    };
+
 
     const toggleSpeciesOverride = useCallback((enabled) => {
         if (!currentSpeciesId) return;
@@ -376,14 +380,17 @@ export default function DesignEditor({ config, setConfig, visible, onToggle, sel
                     <>
                         {(() => {
                             const slideIdx = activeSlide;
-                            // Resolve sp for display in editor: Global -> Species Override -> Slide Override
+                            // Resolve sp for display in editor
+                            const carouselIds = ['tubaroes', 'tartarugas-marinhas', 'arraias', 'perigo-extincao'];
+                            const isCarousel = carouselIds.includes(currentSpeciesId);
+                            
                             let sp = {
                                 ...config.speciesPage,
                                 ...(hasSpeciesOverride ? (config.speciesPageOverrides?.[currentSpeciesId] || {}) : {})
                             };
                             
-                            // Merge slide-specific overrides if they exist
-                            if (hasSpeciesOverride && slideIdx !== undefined && sp.slideOverrides?.[slideIdx]) {
+                            // Only apply slide-specific overrides if we are in a carousel-level view
+                            if (isCarousel && hasSpeciesOverride && slideIdx !== undefined && sp.slideOverrides?.[slideIdx]) {
                                 sp = { ...sp, ...sp.slideOverrides[slideIdx] };
                             }
 
@@ -432,8 +439,9 @@ export default function DesignEditor({ config, setConfig, visible, onToggle, sel
                                         )}
                                     </div>
 
-                                    {/* Hide Hero settings for Full Background pages (like Tartarugas) */}
-                                    {!['tartarugas-marinhas', 'tubaroes', 'arraias'].includes(currentSpeciesId) && (
+                                     {/* Hero settings visibility - Show for detail slides even in carousels */}
+                                     {(!['tartarugas-marinhas', 'tubaroes', 'arraias'].includes(currentSpeciesId) || 
+                                       (currentSpeciesId === 'tubaroes' && activeSlide >= 2)) && (
                                         <ControlGroup label="🖼️ Imagem de Topo (Hero)" defaultOpen={false}>
                                             <Slider label="Altura Hero" value={sp.heroHeight} max={1000}
                                                 onChange={v => update('speciesPage', 'heroHeight', v)} />
@@ -500,19 +508,31 @@ export default function DesignEditor({ config, setConfig, visible, onToggle, sel
                                                     update('speciesPage', 'paddingLeft', v);
                                                     update('speciesPage', 'paddingRight', v);
                                                 }} />
-                                            <Slider label="Descer Conteúdo (Top)" value={sp.paddingTop} max={800}
-                                                onChange={v => update('speciesPage', 'paddingTop', v)} />
-                                            <Slider label="Respiro (Gap)" value={sp.rowGap} max={150}
-                                                onChange={v => update('speciesPage', 'rowGap', v)} />
                                         </div>
+                                        <Slider label="Respiro/Gap (Blocos)" value={sp.rowGap} max={200}
+                                            onChange={v => update('speciesPage', 'rowGap', v)} />
+                                        <Slider label="Padding Top" value={sp.paddingTop} max={400}
+                                            onChange={v => update('speciesPage', 'paddingTop', v)} />
                                     </ControlGroup>
-                                    
+
+                                    <ControlGroup label="🛡️ Selo / Rodapé" defaultOpen={true}>
+                                        <Slider label="Posição Y (Vertical)" value={sp.footerVerticalOffset} min={-400} max={400}
+                                            onChange={v => update('speciesPage', 'footerVerticalOffset', v)} />
+                                        <Slider label="Posição X (Horizontal)" value={sp.footerHorizontalOffset} min={-500} max={500}
+                                            onChange={v => update('speciesPage', 'footerHorizontalOffset', v)} />
+                                        <Slider label="Escala" value={sp.footerScale || 1} min={0.1} max={3} step={0.01} unit=""
+                                            onChange={v => update('speciesPage', 'footerScale', v)} />
+                                        <p style={{ fontSize: '11px', color: '#888', marginTop: '-8px', marginLeft: '12px' }}>
+                                            (Negativo = Sobe | Positivo = Desce)
+                                        </p>
+                                    </ControlGroup>
+
                                     <ControlGroup label="⬅️ Botão Voltar" defaultOpen={false}>
-                                        <Slider label="Tamanho" value={sp.backButtonSize} max={150}
+                                        <Slider label="Tamanho" value={sp.backButtonSize} max={120}
                                             onChange={v => update('speciesPage', 'backButtonSize', v)} />
-                                        <Slider label="Posição Bottom" value={sp.backButtonBottom} max={200}
+                                        <Slider label="Margem Bottom" value={sp.backButtonBottom} max={200}
                                             onChange={v => update('speciesPage', 'backButtonBottom', v)} />
-                                        <Slider label="Posição Left" value={sp.backButtonLeft} max={200}
+                                        <Slider label="Margem Left" value={sp.backButtonLeft} max={200}
                                             onChange={v => update('speciesPage', 'backButtonLeft', v)} />
                                     </ControlGroup>
 
@@ -525,7 +545,7 @@ export default function DesignEditor({ config, setConfig, visible, onToggle, sel
                                             onChange={v => update('speciesPage', 'whiteBarOpacity', v)} />
                                     </ControlGroup>
 
-                                    <ControlGroup label="🔗 Endereço do Site" defaultOpen={true}>
+                                    <ControlGroup label="🔗 Endereço do Site" defaultOpen={false}>
                                         <Slider label="Tamanho Fonte" value={sp.footerUrlSize} max={100}
                                             onChange={v => update('speciesPage', 'footerUrlSize', v)} />
                                         <Slider label="Espaçamento Letra" value={sp.footerUrlSpacing} min={-5} max={20}
@@ -539,26 +559,6 @@ export default function DesignEditor({ config, setConfig, visible, onToggle, sel
                                         <Slider label="Respiro/Gap (URL -> Linha)" value={sp.footerUrlMarginBottom} min={-300} max={300}
                                             onChange={v => update('speciesPage', 'footerUrlMarginBottom', v)} />
                                         
-                                        <Slider label="Posição Y (Vertical)" value={sp.footerVerticalOffset} min={-200} max={200}
-                                            onChange={v => update('speciesPage', 'footerVerticalOffset', v)} />
-                                        <Slider label="Posição X (Horizontal)" value={sp.footerHorizontalOffset} min={-500} max={500}
-                                            onChange={v => update('speciesPage', 'footerHorizontalOffset', v)} />
-                                        <Slider label="Escala Rodapé" value={sp.footerScale || 1} min={0.1} max={3} step={0.01}
-                                            onChange={v => update('speciesPage', 'footerScale', v)} />
-                                        <p style={{ fontSize: '11px', color: '#888', marginTop: '-8px', marginLeft: '12px' }}>
-                                            (Valores Negativos = Descer | Positivos = Subir)
-                                        </p>
-                                        
-                                        <button 
-                                            onClick={() => {
-                                                update('speciesPage', 'footerVerticalOffset', 0);
-                                                update('speciesPage', 'footerUrlMarginBottom', 32);
-                                            }}
-                                            style={{ margin: '10px 12px', padding: '4px 8px', fontSize: '12px' }}
-                                        >
-                                            Resetar Rodapé (0)
-                                        </button>
-                                    
                                         <div className="editor-row">
                                             <label>Cor do Link</label>
                                             <input 
