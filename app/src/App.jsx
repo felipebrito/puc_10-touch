@@ -9,7 +9,7 @@ import TubaroesPage from './views/TubaroesPage';
 import ArraiasPage from './views/ArraiasPage';
 import GuideOverlay from './components/GuideOverlay';
 import DesignEditor from './components/DesignEditor';
-import { loadConfig } from './utils/designUtils';
+import { loadConfig, saveConfig } from './utils/designUtils';
 
 const INACTIVITY_TIMEOUT = 120;
 const WARNING_START = 60;
@@ -129,21 +129,43 @@ function App() {
     const [scale, setScale] = useState(1);
     const [inactivityProgress, setInactivityProgress] = useState(0);
 
+    // Save and sync config changes
+    const updateConfig = (newConfig) => {
+        setConfig(newConfig);
+        saveConfig(newConfig);
+    };
+
     useEffect(() => {
         const handleKeyDown = (e) => {
             if (e.key.toLowerCase() === 'c' || e.key.toLowerCase() === 'p') {
                 toggleEditor();
             }
+            // Screen rotation shortcuts
+            if (['1', '2', '3', '4'].includes(e.key)) {
+                const rotMap = { '1': 0, '2': 90, '3': 180, '4': 270 };
+                updateConfig({ ...config, appRotation: rotMap[e.key] });
+            }
         };
         window.addEventListener('keydown', handleKeyDown);
         return () => window.removeEventListener('keydown', handleKeyDown);
-    }, [editorVisible]);
+    }, [config, editorVisible]);
 
     useEffect(() => {
         const handleResize = () => {
-            const s = window.innerHeight / 1920;
+            const rot = config.appRotation || 0;
+            const W = window.innerWidth;
+            const H = window.innerHeight;
+            
+            // If rotated sideways, swap dimensions for scale calculation
+            let s = 1;
+            if (rot === 90 || rot === 270) {
+                s = Math.min(W / 1920, H / 1080);
+            } else {
+                s = Math.min(W / 1080, H / 1920);
+            }
             setScale(s);
         };
+        
         handleResize();
         window.addEventListener('resize', handleResize);
         
@@ -176,7 +198,7 @@ function App() {
             window.removeEventListener('mousedown', createRipple);
             window.removeEventListener('touchstart', createRipple);
         };
-    }, []);
+    }, [config.appRotation]);
 
     const toggleEditor = () => setEditorVisible(!editorVisible);
 
@@ -185,11 +207,13 @@ function App() {
             <div
                 className="totem-scaler"
                 style={{
-                    transform: `scale(${scale})`,
-                    transformOrigin: 'top center',
+                    position: 'absolute',
+                    top: '50%',
+                    left: '50%',
+                    transform: `translate(-50%, -50%) scale(${scale}) rotate(${config.appRotation || 0}deg)`,
+                    transformOrigin: 'center center',
                     width: '1080px',
-                    height: '1920px',
-                    position: 'relative'
+                    height: '1920px'
                 }}
             >
                 <AppContent 
