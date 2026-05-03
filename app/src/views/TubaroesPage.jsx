@@ -24,6 +24,13 @@ const itemVariants = {
 export default function TubaroesPage({ config }) {
     const navigate = useNavigate();
 
+    // Resolve design configuration
+    const speciesId = 'tubaroes';
+    const sp = {
+        ...config?.speciesPage,
+        ...(config?.speciesPageOverrides?.[speciesId] || {})
+    };
+
     // Helper para formatar texto (negrito e itálico)
     const renderText = (text) => ({
         __html: text
@@ -47,25 +54,60 @@ export default function TubaroesPage({ config }) {
         <div className="tubaroes-page">
             <BackgroundVideo variant="full" />
             <TopBar />
-            <Link to="/" className="tubaroes-back-button">
+            <Link to="/" className="tubaroes-back-button" style={{
+                 width: `${sp.backButtonSize ?? 80}px`,
+                 height: `${sp.backButtonSize ?? 80}px`,
+                 bottom: `${sp.backButtonBottom ?? 40}px`,
+                 left: `${sp.backButtonLeft ?? 40}px`,
+             }}>
                 <img src="/assets/images/home.svg" alt="Home" className="home-icon-svg" />
             </Link>
 
             <div className="tubaroes-static-content">
-                <div className="shark-text-inner">
+                <div className="shark-text-inner" style={{
+                        paddingLeft: `${sp.paddingHorizontal}px`,
+                        paddingRight: `${sp.paddingHorizontal}px`,
+                        paddingTop: `${sp.paddingTop + 80}px`,
+                        gap: `${sp.rowGap}px`
+                    }}>
                     <motion.div
                         initial="hidden"
                         animate="visible"
                         variants={containerVariants}
                     >
-                        <motion.h1 className="shark-title" variants={itemVariants}>
+                        <motion.h1 
+                            className="shark-title" 
+                            variants={itemVariants}
+                            style={{
+                                fontSize: `${sp.titleSize}px`,
+                                letterSpacing: `${sp.titleSpacing}px`,
+                                fontWeight: sp.titleWeight,
+                                lineHeight: sp.titleLineHeight
+                            }}
+                        >
                             {content.title.split('\n').map((line, i) => (
                                 <span key={i}>{line}<br /></span>
                             ))}
                         </motion.h1>
                         <motion.div className="shark-separator" variants={itemVariants} />
-                        <motion.div className="shark-paragraphs" variants={itemVariants}>
-                            {content.paragraphs.map((p, i) => <p key={i} dangerouslySetInnerHTML={renderText(p)} />)}
+                        <motion.div 
+                            className="shark-paragraphs" 
+                            variants={itemVariants}
+                            style={{
+                                fontSize: `${sp.textSize}px`,
+                                lineHeight: sp.textLineHeight,
+                                maxWidth: `${sp.textMaxWidth ?? 918}px`,
+                                display: 'flex',
+                                flexDirection: 'column',
+                                gap: `${sp.rowGap * 0.6}px`
+                            }}
+                        >
+                            {content.paragraphs.map((p, i) => (
+                                <p key={i} style={{ 
+                                    margin: 0,
+                                    fontWeight: sp.textWeight || 400
+                                }} dangerouslySetInnerHTML={renderText(p)} />
+                            ))}
                         </motion.div>
 
                         <motion.div className="shark-species-section" variants={itemVariants}>

@@ -93,7 +93,7 @@ function AppContent({ config, setConfig, editorVisible, toggleEditor, setInactiv
                 />
                 <Route
                     path="/species/tartarugas-marinhas"
-                    element={<TartarugasPage />}
+                    element={<TartarugasPage config={config} />}
                 />
                 <Route
                     path="/species/tubaroes"

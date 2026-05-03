@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import TopBar from '../components/TopBar';
 import BackgroundVideo from '../components/BackgroundVideo';
 import './TartarugasPage.css';
@@ -14,57 +14,80 @@ const VIDEOS = {
 
 const containerVariants = {
     hidden: { opacity: 0 },
-    visible: { opacity: 1, transition: { staggerChildren: 0.15, delayChildren: 0.2 } },
+    visible: {
+        opacity: 1,
+        transition: { staggerChildren: 0.15, delayChildren: 0.2 }
+    },
+    exit: {
+        opacity: 0,
+        transition: { staggerChildren: 0.05, staggerDirection: -1 }
+    }
 };
 
 const itemVariants = {
-    hidden: { opacity: 0, y: 30, filter: 'blur(10px)' },
-    visible: { opacity: 1, y: 0, filter: 'blur(0px)', transition: { duration: 0.6, ease: 'easeOut' } },
+    hidden: { opacity: 0, y: 20, filter: 'blur(10px)' },
+    visible: {
+        opacity: 1,
+        y: 0,
+        filter: 'blur(0px)',
+        transition: { duration: 0.6, ease: 'easeOut' }
+    },
+    exit: {
+        opacity: 0,
+        y: -20,
+        filter: 'blur(10px)',
+        transition: { duration: 0.4, ease: 'easeIn' }
+    }
 };
 
 const slides = [
-    // Slide 1 — página 14 (texto)
     {
         type: 'turtle-text',
-        title: 'TARTARUGAS\nMARINHAS',
+        title: 'TARTARUGAS-MARINHAS',
+        background: '/assets/images/tartarugas/bg.png',
         paragraphs: [
             'No Brasil ocorrem cinco das setes espécies de tartarugas marinhas: tartaruga-de-couro (_Dermochelys coriacea_), tartaruga-cabeçuda (_Caretta caretta_), tartaruga-oliva (_Lepidochelys olivacea_), tartaruga-de-pente (_Eretmochelys imbricata_) e a tartaruga-verde (_Chelonia mydas_).',
-            'Elas colocam ovos nas áreas das praias das regiões mais quentes do país, inclusive em Fernando de Noronha, mas jovens e adultos vivem e se alimentam em alto-mar tendo ampla distribuição, inclusive no litoral do RS. Elas podem viver por muitas décadas, algumas até próximo de 100 anos. Uma curiosidade é que a temperatura da areia onde os ovos se desenvolvem é que determina o sexo em que o embrião vai se desenvolver.',
-            'Normalmente temperaturas mais altas determinam fêmeas enquanto mais baixas desenvolvem machos. Por isso o aumento da temperatura do oceano é uma grande preocupação para a conservação destas espécies.',
+            'Põem ovos nas áreas de praia das regiões mais quentes do país, inclusive na ilha de Fernando de Noronha, mas jovens e adultos vivem e se alimentam em alto-mar, tendo ampla distribuição, inclusive no litoral do Rio Grande do Sul.',
+            'Podem viver por muitas décadas, algumas até próximo dos 100 anos. Uma curiosidade é que a temperatura da areia onde os ovos se desenvolvem é que determina o sexo em que o embrião vai se desenvolver.',
+            'Normalmente, temperaturas mais altas determinam fêmeas, enquanto mais baixas desenvolvem machos. Por isso, o aumento da temperatura dos oceanos é uma grande preocupação para a conservação destas espécies.'
         ],
     },
-    // Slide 2 — página 15 (vídeo tartaruga)
+    // Slide 2 — Imagem 2
     {
-        type: 'turtle-video',
-        video: VIDEOS.nadando_1,
+        type: 'turtle-image',
+        background: '/assets/images/tartarugas/slide2.jpg',
     },
-    // Slide 3 — página 16 (vídeo coral)
+    // Slide 3 — Imagem 3
     {
-        type: 'turtle-video',
-        video: VIDEOS.nadando_1,
+        type: 'turtle-image',
+        background: '/assets/images/tartarugas/slide3.jpg',
     },
-    // Slide 4 — página extra (vídeo tartaruga 2)
-    {
-        type: 'turtle-video',
-        video: VIDEOS.nadando_2,
-    },
-    // Slide 4 — página 17 (texto + URL)
+    // Slide 4 — Texto Final (Page 19)
     {
         type: 'turtle-text',
-        title: 'TARTARUGAS\nMARINHAS:',
+        title: 'É POSSÍVEL COMBATER A EXTINÇÃO: O SUCESSO DO PROJETO TAMAR',
+        background: '/assets/images/tartarugas/pg19_BG.png',
         paragraphs: [
-            'Apesar de ainda existirem ameaças importantes, hoje, após décadas de atividades do Projeto Tamar nas áreas prioritárias de desova, a destruição dos ovos se tornou muito rara e outras ameaças estão sendo controladas.',
-            'Com isso, quatro das espécies que ocorrem no Brasil estão com suas populações em processo de recuperação, e a tartaruga-verde deixou a lista de espécies em extinção. Isso só tem sido possível devido a atuação contínua do Tamar nas ações diretas de conservação e amplas atividades de educação ambiental e inclusão social nas áreas de mais ocorrência.',
-            'Conheça mais sobre as tartarugas marinhas e como participar na sua conservação no site:',
+            'Apesar de ainda existirem ameaças importantes, hoje, após décadas de atividades do Projeto Tamar nas áreas prioritárias de desova, a destruição dos ovos de tartarugas-marinhas tornou-se muito rara e outras ameaças a estas espécies estão sendo controladas.',
+            'Com isso, quatro das espécies que ocorrem no Brasil apresentam populações em processo de recuperação, e a tartaruga-verde deixou a lista de espécies em extinção.',
+            'Isto só tornou-se possível devido à atuação contínua do Projeto Tamar nas ações diretas de conservação e amplas atividades de educação ambiental e inclusão social nas áreas de maior ocorrência.',
+            'Conheça mais sobre as tartarugas-marinhas e como participar na sua conservação nos canais de comunicação do Projeto Tamar.'
         ],
-        url: 'https://www.tamar.org.br/',
+        url: '',
     },
 ];
 
-export default function TartarugasPage() {
+export default function TartarugasPage({ config }) {
     const [current, setCurrent] = useState(0);
     const dragStart = useRef(null);
     const isDragging = useRef(false);
+
+    // Resolve design configuration
+    const speciesId = 'tartarugas-marinhas';
+    const sp = {
+        ...config?.speciesPage,
+        ...(config?.speciesPageOverrides?.[speciesId] || {})
+    };
 
     const goTo = (index) => {
         if (index >= 0 && index < slides.length) setCurrent(index);
@@ -91,9 +114,13 @@ export default function TartarugasPage() {
 
     return (
         <div className="tartarugas-page">
-            <BackgroundVideo variant="full" />
             <TopBar />
-             <Link to="/" className="tartarugas-back-button">
+            <Link to="/" className="tartarugas-back-button" style={{
+                width: `${sp.backButtonSize ?? 80}px`,
+                height: `${sp.backButtonSize ?? 80}px`,
+                bottom: `${sp.backButtonBottom ?? 40}px`,
+                left: `${sp.backButtonLeft ?? 40}px`,
+            }}>
                 <img src="/assets/images/home.svg" alt="Home" className="home-icon-svg" />
             </Link>
 
@@ -104,14 +131,14 @@ export default function TartarugasPage() {
                 onPointerLeave={handlePointerCancel}
                 onPointerCancel={handlePointerCancel}
             >
-                <div
-                    className="tartarugas-track"
-                    style={{ transform: `translateX(${-current * 1080}px)` }}
-                >
-                    {slides.map((slide, index) => (
-                        <SlideContent key={index} slide={slide} isActive={index === current} />
-                    ))}
-                </div>
+                <AnimatePresence mode="wait">
+                    <SlideContent
+                        key={current}
+                        slide={slides[current]}
+                        isActive={true}
+                        sp={sp}
+                    />
+                </AnimatePresence>
 
                 {current > 0 && (
                     <button
@@ -131,25 +158,18 @@ export default function TartarugasPage() {
                         <img src="/assets/images/seta-direita.svg" alt="Próximo" className="arrow-icon-svg" />
                     </button>
                 )}
-</div>
+            </div>
 
             <div className="tartarugas-indicator">
                 {slides.map((_, i) => (
                     <div key={i} className={`indicator-dot-t ${i === current ? 'active' : ''}`} />
                 ))}
             </div>
-
-            <div className="tartarugas-footer">
-                <img src="/assets/linha.svg" alt="" className="tartarugas-linha" />
-                <img src="/assets/rodape.png" alt="" className="tartarugas-rodape" />
-            </div>
         </div>
     );
 }
 
-function SlideContent({ slide, isActive }) {
-    const animate = isActive ? 'visible' : 'hidden';
-
+function SlideContent({ slide, isActive, sp }) {
     // Helper para formatar texto (negrito e itálico)
     const renderText = (text) => ({
         __html: text
@@ -159,48 +179,115 @@ function SlideContent({ slide, isActive }) {
 
     if (slide.type === 'turtle-text') {
         return (
-            <div className="tartarugas-slide slide-turtle-text">
-                <motion.div
+            <motion.div
+                className="tartarugas-slide slide-turtle-text"
+                initial="hidden"
+                animate="visible"
+                exit="exit"
+                variants={containerVariants}
+            >
+                {slide.background && (
+                    <div className="tartarugas-bg-static">
+                        <img src={slide.background} alt="" className="bg-image" />
+                    </div>
+                )}
+                <div
                     className="turtle-text-inner"
-                    initial="hidden"
-                    animate={animate}
-                    variants={containerVariants}
+                    style={{
+                        paddingLeft: `${sp.paddingHorizontal}px`,
+                        paddingRight: `${sp.paddingHorizontal}px`,
+                        paddingTop: `${sp.paddingTop}px`,
+                        display: 'flex',
+                        flexDirection: 'column',
+                        gap: `${sp.rowGap}px`
+                    }}
                 >
-                    <motion.h1 className="turtle-title" variants={itemVariants}>
-                        {slide.title.split('\n').map((line, i) => (
-                            <span key={i}>{line}<br /></span>
-                        ))}
+                    <motion.h1
+                        className="turtle-title"
+                        variants={itemVariants}
+                        style={{
+                            fontSize: `${sp.titleSize}px`,
+                            letterSpacing: `${sp.titleSpacing}px`,
+                            fontWeight: sp.titleWeight,
+                            lineHeight: sp.titleLineHeight,
+                            marginBottom: 0
+                        }}
+                    >
+                        {slide.title}
                     </motion.h1>
-                    <motion.div className="turtle-separator" variants={itemVariants} />
-                    <motion.div className="turtle-paragraphs" variants={itemVariants}>
-                        {slide.paragraphs.map((p, i) => <p key={i} dangerouslySetInnerHTML={renderText(p)} />)}
+
+                    <motion.div
+                        className="turtle-paragraphs"
+                        variants={itemVariants}
+                        style={{
+                            fontSize: `${sp.textSize}px`,
+                            lineHeight: sp.textLineHeight,
+                            maxWidth: `${sp.textMaxWidth ?? 918}px`,
+                            display: 'flex',
+                            flexDirection: 'column',
+                            gap: `${sp.rowGap * 0.6}px`
+                        }}
+                    >
+                        {slide.paragraphs.map((p, i) => (
+                            <p key={i} style={{
+                                margin: 0,
+                                fontWeight: sp.textWeight || 400
+                            }} dangerouslySetInnerHTML={renderText(p)} />
+                        ))}
                         {slide.url && (
-                            <p className="turtle-url">{slide.url}</p>
+                            <p className="turtle-url" style={{
+                                fontSize: `${sp.footerUrlSize}px`,
+                                color: sp.footerUrlColor,
+                                marginTop: '10px'
+                            }}>{slide.url}</p>
                         )}
                     </motion.div>
-                </motion.div>
-            </div>
+                </div>
+            </motion.div>
         );
     }
 
     if (slide.type === 'turtle-video') {
         return (
-            <div className="tartarugas-slide slide-turtle-video">
-                <motion.video
+            <motion.div
+                className="tartarugas-slide slide-turtle-video"
+                initial={{ opacity: 0, filter: 'blur(10px)' }}
+                animate={{ opacity: 1, filter: 'blur(0px)' }}
+                exit={{ opacity: 0, filter: 'blur(10px)' }}
+                transition={{ duration: 0.6 }}
+            >
+                {slide.background && (
+                    <div className="tartarugas-bg-static">
+                        <img src={slide.background} alt="" className="bg-image" />
+                    </div>
+                )}
+                <video
+                    src={slide.video}
                     className="turtle-full-video"
                     autoPlay
                     loop
                     muted
                     playsInline
-                    initial={{ opacity: 0, filter: 'blur(15px)' }}
-                    animate={isActive
-                        ? { opacity: 1, filter: 'blur(0px)', transition: { duration: 0.8, ease: 'easeOut' } }
-                        : { opacity: 0, filter: 'blur(15px)' }
-                    }
-                >
-                    <source src={slide.video} type="video/mp4" />
-                </motion.video>
-            </div>
+                />
+            </motion.div>
+        );
+    }
+
+    if (slide.type === 'turtle-image') {
+        return (
+            <motion.div
+                className="tartarugas-slide slide-turtle-image"
+                initial={{ opacity: 0, filter: 'blur(10px)' }}
+                animate={{ opacity: 1, filter: 'blur(0px)' }}
+                exit={{ opacity: 0, filter: 'blur(10px)' }}
+                transition={{ duration: 0.6 }}
+            >
+                {slide.background && (
+                    <div className="tartarugas-bg-static">
+                        <img src={slide.background} alt="" className="bg-image" />
+                    </div>
+                )}
+            </motion.div>
         );
     }
 

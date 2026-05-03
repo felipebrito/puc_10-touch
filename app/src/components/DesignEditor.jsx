@@ -390,7 +390,9 @@ export default function DesignEditor({ config, setConfig, visible, onToggle, sel
                         {(() => {
                             const sp = hasSpeciesOverride ? config.speciesPageOverrides[currentSpeciesId] : config.speciesPage;
                             return (
-                                <ControlGroup label="🐋 Página da Espécie" defaultOpen={true}>
+                                <div className="species-editor-section">
+                                    <h4 style={{ color: '#005fff', marginBottom: '15px' }}>🐋 Página da Espécie</h4>
+                                    
                                     <div className="editor-species-override">
                                         <Checkbox 
                                             label={`Sobrescrever Estilo (${currentSpeciesId.toUpperCase()})`}
@@ -403,47 +405,73 @@ export default function DesignEditor({ config, setConfig, visible, onToggle, sel
                                             </p>
                                         )}
                                     </div>
-                                    
-                                    <Slider label="Hero Height" value={sp.heroHeight} max={1000}
-                                        onChange={v => update('speciesPage', 'heroHeight', v)} />
-                                    <Slider label="Hero Margin Bottom" value={sp.heroMarginBottom} min={-100} max={200}
-                                        onChange={v => update('speciesPage', 'heroMarginBottom', v)} />
-                                    <Slider label="Mask Intensity" value={sp.maskIntensity} max={200}
-                                        onChange={v => update('speciesPage', 'maskIntensity', v)} />
-                                    <Slider label="Name Size" value={sp.titleSize} max={120}
-                                        onChange={v => update('speciesPage', 'titleSize', v)} />
-                                    <Slider label="Name Weight" value={sp.titleWeight} min={100} max={900} step={100}
-                                        onChange={v => update('speciesPage', 'titleWeight', v)} />
-                                    <Slider label="Name Line Height" value={sp.titleLineHeight} max={2.5} step={0.1}
-                                        onChange={v => update('speciesPage', 'titleLineHeight', v)} />
-                                    <Slider label="Name (Parens) Size" value={sp.titleParenthesesSize} max={120}
-                                        onChange={v => update('speciesPage', 'titleParenthesesSize', v)} />
-                                    <Slider label="Scientific Size" value={sp.subtitleSize} max={100}
-                                        onChange={v => update('speciesPage', 'subtitleSize', v)} />
-                                    <Slider label="Scientific Spacing" value={sp.subtitleSpacing} max={20} step={0.1}
-                                        onChange={v => update('speciesPage', 'subtitleSpacing', v)} />
-                                    <Slider label="Scientific Line Height" value={sp.subtitleLineHeight} max={2.5} step={0.1}
-                                        onChange={v => update('speciesPage', 'subtitleLineHeight', v)} />
-                                    <Slider label="Scientific Margin Top" value={sp.subtitleMarginTop} min={-100} max={100}
-                                        onChange={v => update('speciesPage', 'subtitleMarginTop', v)} />
-                                    <Slider label="Scientific Weight" value={sp.scientificNameWeight} min={100} max={900} step={100}
-                                        onChange={v => update('speciesPage', 'scientificNameWeight', v)} />
-                                    <Checkbox label="Scientific Italic" checked={sp.scientificNameItalic}
-                                        onChange={v => update('speciesPage', 'scientificNameItalic', v)} />
-                                    
-                                    <Slider label="Text Size" value={sp.textSize} max={60}
-                                        onChange={v => update('speciesPage', 'textSize', v)} />
-                                    <Slider label="Text Max Width" value={sp.textMaxWidth} max={1080}
-                                        onChange={v => update('speciesPage', 'textMaxWidth', v)} />
-                                    <Slider label="Text Line Height" value={sp.textLineHeight} max={2.5} step={0.1}
-                                        onChange={v => update('speciesPage', 'textLineHeight', v)} />
-                                    
-                                    <Slider label="Padding Horizontal" value={sp.paddingHorizontal} max={200}
-                                        onChange={v => update('speciesPage', 'paddingHorizontal', v)} />
-                                    <Slider label="Padding Top" value={sp.paddingTop} max={400}
-                                        onChange={v => update('speciesPage', 'paddingTop', v)} />
-                                    <Slider label="Row Gap" value={sp.rowGap} max={100}
-                                        onChange={v => update('speciesPage', 'rowGap', v)} />
+
+                                    {/* Hide Hero settings for Full Background pages */}
+                                    {!['tartarugas-marinhas', 'tubaroes', 'arraias'].includes(currentSpeciesId) && (
+                                        <ControlGroup label="🖼️ Imagem de Topo (Hero)" defaultOpen={false}>
+                                            <Slider label="Altura Hero" value={sp.heroHeight} max={1000}
+                                                onChange={v => update('speciesPage', 'heroHeight', v)} />
+                                            <Slider label="Margem Bottom Hero" value={sp.heroMarginBottom} min={-100} max={200}
+                                                onChange={v => update('speciesPage', 'heroMarginBottom', v)} />
+                                            <Slider label="Intensidade Máscara" value={sp.maskIntensity} max={200}
+                                                onChange={v => update('speciesPage', 'maskIntensity', v)} />
+                                        </ControlGroup>
+                                    )}
+
+                                    <ControlGroup label="📝 Título" defaultOpen={true}>
+                                        <Slider label="Tamanho do Título" value={sp.titleSize} max={150}
+                                            onChange={v => update('speciesPage', 'titleSize', v)} />
+                                        <Slider label="Peso (Grosso/Fino)" value={sp.titleWeight} min={100} max={900} step={100}
+                                            onChange={v => update('speciesPage', 'titleWeight', v)} />
+                                        <Slider label="Espaçamento Letras" value={sp.titleSpacing} max={20}
+                                            onChange={v => update('speciesPage', 'titleSpacing', v)} />
+                                        <Slider label="Altura da Linha" value={sp.titleLineHeight} max={2.5} step={0.1}
+                                            onChange={v => update('speciesPage', 'titleLineHeight', v)} />
+                                        
+                                        {!['tartarugas-marinhas', 'tubaroes', 'arraias'].includes(currentSpeciesId) && (
+                                            <>
+                                                <Slider label="Tamanho (Parênteses)" value={sp.titleParenthesesSize || 60} max={120}
+                                                    onChange={v => update('speciesPage', 'titleParenthesesSize', v)} />
+                                                
+                                                <div style={{ borderTop: '1px solid #333', margin: '15px 0', paddingTop: '15px' }}>
+                                                    <p style={{ fontSize: '11px', color: '#005fff', marginBottom: '10px', fontWeight: 'bold' }}>SUBTÍTULO (CIENTÍFICO)</p>
+                                                    <Slider label="Tamanho" value={sp.subtitleSize} max={100}
+                                                        onChange={v => update('speciesPage', 'subtitleSize', v)} />
+                                                    <Slider label="Espaçamento" value={sp.subtitleSpacing} max={20} step={0.1}
+                                                        onChange={v => update('speciesPage', 'subtitleSpacing', v)} />
+                                                    <Slider label="Altura Linha" value={sp.subtitleLineHeight} max={2.5} step={0.1}
+                                                        onChange={v => update('speciesPage', 'subtitleLineHeight', v)} />
+                                                    <Slider label="Margem Topo" value={sp.subtitleMarginTop} min={-100} max={100}
+                                                        onChange={v => update('speciesPage', 'subtitleMarginTop', v)} />
+                                                    <Slider label="Peso" value={sp.scientificNameWeight} min={100} max={900} step={100}
+                                                        onChange={v => update('speciesPage', 'scientificNameWeight', v)} />
+                                                    <Checkbox label="Itálico" checked={sp.scientificNameItalic}
+                                                        onChange={v => update('speciesPage', 'scientificNameItalic', v)} />
+                                                </div>
+                                            </>
+                                        )}
+                                    </ControlGroup>
+
+                                    <ControlGroup label="📄 Texto (Descrição)" defaultOpen={true}>
+                                        <Slider label="Tamanho da Fonte" value={sp.textSize} max={60}
+                                            onChange={v => update('speciesPage', 'textSize', v)} />
+                                        <Slider label="Largura Máxima" value={sp.textMaxWidth} max={1080}
+                                            onChange={v => update('speciesPage', 'textMaxWidth', v)} />
+                                        <Slider label="Altura da Linha" value={sp.textLineHeight} max={2.5} step={0.1}
+                                            onChange={v => update('speciesPage', 'textLineHeight', v)} />
+                                        <Slider label="Peso da Fonte" value={sp.textWeight || 400} min={100} max={900} step={100}
+                                            onChange={v => update('speciesPage', 'textWeight', v)} />
+                                        
+                                        <div style={{ borderTop: '1px solid #333', margin: '15px 0', paddingTop: '15px' }}>
+                                            <p style={{ fontSize: '11px', color: '#005fff', marginBottom: '10px', fontWeight: 'bold' }}>LAYOUT / MARGENS</p>
+                                            <Slider label="Margem Lateral" value={sp.paddingHorizontal} max={300}
+                                                onChange={v => update('speciesPage', 'paddingHorizontal', v)} />
+                                            <Slider label="Descer Conteúdo (Top)" value={sp.paddingTop} max={800}
+                                                onChange={v => update('speciesPage', 'paddingTop', v)} />
+                                            <Slider label="Respiro (Gap)" value={sp.rowGap} max={150}
+                                                onChange={v => update('speciesPage', 'rowGap', v)} />
+                                        </div>
+                                    </ControlGroup>
                                     
                                     <ControlGroup label="⬅️ Botão Voltar" defaultOpen={false}>
                                         <Slider label="Tamanho" value={sp.backButtonSize} max={150}
@@ -506,7 +534,7 @@ export default function DesignEditor({ config, setConfig, visible, onToggle, sel
                                             />
                                         </div>
                                     </ControlGroup>
-                                </ControlGroup>
+                                </div>
                             );
                         })()}
                     </>

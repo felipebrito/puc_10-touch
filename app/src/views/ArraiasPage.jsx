@@ -22,6 +22,13 @@ const itemVariants = {
 export default function ArraiasPage({ config }) {
     const navigate = useNavigate();
 
+    // Resolve design configuration
+    const speciesId = 'arraias';
+    const sp = {
+        ...config?.speciesPage,
+        ...(config?.speciesPageOverrides?.[speciesId] || {})
+    };
+
     // Helper para formatar texto (negrito e itálico)
     const renderText = (text) => ({
         __html: text
@@ -37,7 +44,7 @@ export default function ArraiasPage({ config }) {
         title: 'ARRAIAS AMEAÇADAS\nDE EXTINÇÃO NO BRASIL',
         paragraphs: [
             'Os elasmobrânquios, onde estão inseridos as arraias e os tubarões, são geralmente capturados de forma incidental na pesca dirigida para espécies de peixes ósseos de alto valor comercial, como atuns, pescadas, tainhas, etc. Atualmente, diversas espécies de tubarões e raias vem sofrendo com reduções significativas em suas populações, com algumas espécies já consideradas extintas ou em vias de extinção.',
-            'A perda de habitat, principalmente nas áreas costeiras e praias, pela urbanização descontrolada e atividades industriais tais como portos e dragagens em zonas estuarinas, que alteram ou destroem as áreas de reprodução, alimentação e abrigo. As mudanças climáticas que têm aumentado as temperaturas e a acidificação dos oceanos, alterando as cadeias alimentares e a distribuição das espécies.',
+            'A perda de habitat, principalmente nas áreas costeiras e praias, pela urbanização descontrolada e atividades industriais tais como portos e dragagens em zonas estuarinas, que alteram ou destroem as áreas de reprodução, alimentação e abrigo. As mudanças climáticas que têm aumentado as temperaturas e a acidificação dos oceanos, alterando as cadeias alimentares e a distribution das espécies.',
         ],
     };
 
@@ -45,25 +52,60 @@ export default function ArraiasPage({ config }) {
         <div className="arraias-page">
             <BackgroundVideo variant="full" />
             <TopBar />
-            <Link to="/" className="arraias-back-button">
+            <Link to="/" className="arraias-back-button" style={{
+                 width: `${sp.backButtonSize ?? 80}px`,
+                 height: `${sp.backButtonSize ?? 80}px`,
+                 bottom: `${sp.backButtonBottom ?? 40}px`,
+                 left: `${sp.backButtonLeft ?? 40}px`,
+             }}>
                 <img src="/assets/images/home.svg" alt="Home" className="home-icon-svg" />
             </Link>
 
             <div className="arraias-static-content">
-                <div className="ray-text-inner">
+                <div className="ray-text-inner" style={{
+                        paddingLeft: `${sp.paddingHorizontal}px`,
+                        paddingRight: `${sp.paddingHorizontal}px`,
+                        paddingTop: `${sp.paddingTop + 80}px`,
+                        gap: `${sp.rowGap}px`
+                    }}>
                     <motion.div
                         initial="hidden"
                         animate="visible"
                         variants={containerVariants}
                     >
-                        <motion.h1 className="ray-title" variants={itemVariants}>
+                        <motion.h1 
+                            className="ray-title" 
+                            variants={itemVariants}
+                            style={{
+                                fontSize: `${sp.titleSize}px`,
+                                letterSpacing: `${sp.titleSpacing}px`,
+                                fontWeight: sp.titleWeight,
+                                lineHeight: sp.titleLineHeight
+                            }}
+                        >
                             {content.title.split('\n').map((line, i) => (
                                 <span key={i}>{line}<br /></span>
                             ))}
                         </motion.h1>
                         <motion.div className="ray-separator" variants={itemVariants} />
-                        <motion.div className="ray-paragraphs" variants={itemVariants}>
-                            {content.paragraphs.map((p, i) => <p key={i} dangerouslySetInnerHTML={renderText(p)} />)}
+                        <motion.div 
+                            className="ray-paragraphs" 
+                            variants={itemVariants}
+                            style={{
+                                fontSize: `${sp.textSize}px`,
+                                lineHeight: sp.textLineHeight,
+                                maxWidth: `${sp.textMaxWidth ?? 918}px`,
+                                display: 'flex',
+                                flexDirection: 'column',
+                                gap: `${sp.rowGap * 0.6}px`
+                            }}
+                        >
+                            {content.paragraphs.map((p, i) => (
+                                <p key={i} style={{ 
+                                    margin: 0,
+                                    fontWeight: sp.textWeight || 400
+                                }} dangerouslySetInnerHTML={renderText(p)} />
+                            ))}
                         </motion.div>
 
                         <motion.div className="ray-species-section" variants={itemVariants}>

@@ -51,8 +51,6 @@ export default function GuideOverlay() {
         guideImage = '/assets/guides/revisao-22-04/page-23.jpg';
     } else if (location.pathname === '/species/arraias') {
         guideImage = '/assets/guides/revisao-22-04/page-25.jpg';
-    } else if (location.pathname === '/species/tartarugas-marinhas') {
-        guideImage = '/assets/guides/revisao-22-04/page-14.jpg';
     } else {
         const match = location.pathname.match(/^\/species\/(.+)$/);
         if (match) {

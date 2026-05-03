@@ -3,7 +3,22 @@
     width: 1080px;
     height: 1920px;
     overflow: hidden;
-    background: #000;
+    background: #003f60;
+}
+
+.tartarugas-bg-static {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+}
+
+.tartarugas-bg-static .bg-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
 .tartarugas-page .top-bar {
@@ -17,7 +32,7 @@
     top: 100px;
     left: 0;
     right: 0;
-    bottom: 230px;
+    bottom: 0px;
     overflow: hidden;
     z-index: 3;
     cursor: grab;
@@ -204,7 +219,7 @@
 .carousel-arrow-t {
     position: absolute;
     top: 93%;
-    transform: translateY(-50%);
+    transform: translateY(-250%);
     width: 90px;
     height: 90px;
     border-radius: 50%;
@@ -224,14 +239,14 @@
 }
 
 .carousel-arrow-t:active {
-    transform: translateY(-50%) scale(0.92);
+    transform: translateY(-250%) scale(0.92);
     border-color: #ffffff;
     box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
 }
 
 .carousel-arrow-t:hover {
     background: #005fff;
-    transform: translateY(-50%) scale(1.1);
+    transform: translateY(-250%) scale(1.1);
 }
 
 .arrow-icon-svg {
@@ -251,8 +266,9 @@
 /* ── Indicadores de página ───────────────────────────────── */
 .tartarugas-indicator {
     position: absolute;
-    bottom: 248px;
-    right: 70px;
+    bottom: 170px;
+    left: 50%;
+    transform: translateX(-50%);
     display: flex;
     gap: 14px;
     align-items: center;
