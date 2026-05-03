@@ -90,8 +90,8 @@ const slides = [
         footerImage: '/assets/images/tubaroes/cacao_anjo_footer.png',
         guideImage: '/assets/guides/revisao-22-04/page-25.jpg',
         paragraphs: [
-            'O cação-anjo-de-asa-longa, também conhecido como tubarão-anjo-argentino, é uma espécie de peixe cartilaginoso, com um comprimento máximo de 1,4 metros, endêmica do Atlântico Sul ocidental.',
-            'As pescarias com redes de arrasto e emalhe são a principal ameaça sobre a espécie, e continuam a operar em seu habitat. A espécie é de longa vida e possui baixo potencial reprodutivo.'
+            'Também conhecido como tubarão-anjo-argentino, é uma espécie de peixe cartilaginoso, com um comprimento máximo de 1,4m, endêmica do Atlântico Sul ocidental. No Brasil, há registros da espécie desde o Rio de Janeiro até o Rio Grande do Sul. As pescarias com redes de arrasto e emalhe são a principal ameaça sobre a espécie.',
+            'O cação-anjo-de-asa-longa apresenta longa vida e baixo potencial reprodutivo.'
         ],
     },
 ];
