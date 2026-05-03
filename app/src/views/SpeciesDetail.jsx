@@ -120,7 +120,9 @@ export default function SpeciesDetail({ config, setConfig, editorVisible, onTogg
             <motion.div
                 className="species-content"
                 style={{
-                    padding: `${sp.paddingTop}px ${sp.paddingHorizontal}px`,
+                    paddingTop: `${sp.paddingTop}px`,
+                    paddingLeft: `${sp.paddingLeft ?? sp.paddingHorizontal}px`,
+                    paddingRight: `${sp.paddingRight ?? sp.paddingHorizontal}px`,
                     gap: `${sp.rowGap}px`
                 }}
             >

@@ -45,6 +45,9 @@ const slides = [
         type: 'turtle-text',
         title: 'TARTARUGAS-MARINHAS',
         background: '/assets/images/tartarugas/bg.png',
+        paddingLeft: 178,
+        paddingRight: 178,
+        textMaxWidth: 1080,
         paragraphs: [
             'No Brasil ocorrem cinco das setes espécies de tartarugas marinhas: tartaruga-de-couro (_Dermochelys coriacea_), tartaruga-cabeçuda (_Caretta caretta_), tartaruga-oliva (_Lepidochelys olivacea_), tartaruga-de-pente (_Eretmochelys imbricata_) e a tartaruga-verde (_Chelonia mydas_).',
             'Põem ovos nas áreas de praia das regiões mais quentes do país, inclusive na ilha de Fernando de Noronha, mas jovens e adultos vivem e se alimentam em alto-mar, tendo ampla distribuição, inclusive no litoral do Rio Grande do Sul.',
@@ -67,6 +70,9 @@ const slides = [
         type: 'turtle-text',
         title: 'É POSSÍVEL COMBATER A EXTINÇÃO: O SUCESSO DO PROJETO TAMAR',
         background: '/assets/images/tartarugas/pg19_BG.png',
+        paddingLeft: 178,
+        paddingRight: 178,
+        textMaxWidth: 1080,
         paragraphs: [
             'Apesar de ainda existirem ameaças importantes, hoje, após décadas de atividades do Projeto Tamar nas áreas prioritárias de desova, a destruição dos ovos de tartarugas-marinhas tornou-se muito rara e outras ameaças a estas espécies estão sendo controladas.',
             'Com isso, quatro das espécies que ocorrem no Brasil apresentam populações em processo de recuperação, e a tartaruga-verde deixou a lista de espécies em extinção.',
@@ -194,12 +200,13 @@ function SlideContent({ slide, isActive, sp }) {
                 <div
                     className="turtle-text-inner"
                     style={{
-                        paddingLeft: `${sp.paddingHorizontal}px`,
-                        paddingRight: `${sp.paddingHorizontal}px`,
-                        paddingTop: `${sp.paddingTop}px`,
+                        paddingTop: `${slide.paddingTop ?? sp.paddingTop}px`,
+                        paddingLeft: `${slide.paddingLeft ?? sp.paddingLeft ?? sp.paddingHorizontal}px`,
+                        paddingRight: `${slide.paddingRight ?? sp.paddingRight ?? sp.paddingHorizontal}px`,
                         display: 'flex',
                         flexDirection: 'column',
-                        gap: `${sp.rowGap}px`
+                        gap: `${sp.rowGap}px`,
+                        maxWidth: `${slide.textMaxWidth ?? sp.textMaxWidth ?? 800}px`
                     }}
                 >
                     <motion.h1
@@ -222,7 +229,7 @@ function SlideContent({ slide, isActive, sp }) {
                         style={{
                             fontSize: `${sp.textSize}px`,
                             lineHeight: sp.textLineHeight,
-                            maxWidth: `${sp.textMaxWidth ?? 918}px`,
+                            maxWidth: `${slide.textMaxWidth ?? sp.textMaxWidth ?? 918}px`,
                             display: 'flex',
                             flexDirection: 'column',
                             gap: `${sp.rowGap * 0.6}px`

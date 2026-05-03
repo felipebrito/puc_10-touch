@@ -464,8 +464,16 @@ export default function DesignEditor({ config, setConfig, visible, onToggle, sel
                                         
                                         <div style={{ borderTop: '1px solid #333', margin: '15px 0', paddingTop: '15px' }}>
                                             <p style={{ fontSize: '11px', color: '#005fff', marginBottom: '10px', fontWeight: 'bold' }}>LAYOUT / MARGENS</p>
-                                            <Slider label="Margem Lateral" value={sp.paddingHorizontal} max={300}
-                                                onChange={v => update('speciesPage', 'paddingHorizontal', v)} />
+                                            <Slider label="Margem Esquerda (Left)" value={sp.paddingLeft ?? sp.paddingHorizontal} max={600}
+                                                onChange={v => update('speciesPage', 'paddingLeft', v)} />
+                                            <Slider label="Margem Direita (Right)" value={sp.paddingRight ?? sp.paddingHorizontal} max={600}
+                                                onChange={v => update('speciesPage', 'paddingRight', v)} />
+                                            <Slider label="Margem Lateral (Ambos)" value={sp.paddingHorizontal} max={600}
+                                                onChange={v => {
+                                                    update('speciesPage', 'paddingHorizontal', v);
+                                                    update('speciesPage', 'paddingLeft', v);
+                                                    update('speciesPage', 'paddingRight', v);
+                                                }} />
                                             <Slider label="Descer Conteúdo (Top)" value={sp.paddingTop} max={800}
                                                 onChange={v => update('speciesPage', 'paddingTop', v)} />
                                             <Slider label="Respiro (Gap)" value={sp.rowGap} max={150}
