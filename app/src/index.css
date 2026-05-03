@@ -3,25 +3,25 @@
    =========================== */
 @font-face {
     font-family: 'Blender Pro Book';
-    src: url('/assets/fonts/BlenderPro-Book.ttf') format('truetype');
+    src: url('/assets/fonts_v2/BlenderPro-Book.ttf') format('truetype');
     font-display: swap;
 }
 
 @font-face {
     font-family: 'Blender Pro Medium';
-    src: url('/assets/fonts/BlenderPro-Medium.ttf') format('truetype');
+    src: url('/assets/fonts_v2/BlenderPro-Medium.ttf') format('truetype');
     font-display: swap;
 }
 
 @font-face {
     font-family: 'Blender Pro Heavy';
-    src: url('/assets/fonts/BlenderPro-Heavy.ttf') format('truetype');
+    src: url('/assets/fonts_v2/BlenderPro-Heavy.ttf') format('truetype');
     font-display: swap;
 }
 
 @font-face {
     font-family: 'Canva Sans Regular';
-    src: url('/assets/fonts/CanvaSans-Regular.otf') format('opentype');
+    src: url('/assets/fonts_v2/CanvaSans-Regular.otf') format('opentype');
     font-display: swap;
 }
 
