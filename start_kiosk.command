@@ -15,5 +15,4 @@ sleep 3
   --kiosk \
   --disable-infobars \
   --disable-pinch \
-  --overscroll-history-navigation=0 \
-  --incognito
+  --overscroll-history-navigation=0
