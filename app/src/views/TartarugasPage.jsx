@@ -46,7 +46,7 @@ const slides = [
         title: 'TARTARUGAS-MARINHAS',
         background: '/assets/images/tartarugas/bg.png',
         paragraphs: [
-            'No Brasil ocorrem cinco das setes espécies de tartarugas marinhas: tartaruga-de-couro (_Dermochelys coriacea_), tartaruga-cabeçuda (_Caretta caretta_), tartaruga-oliva (_Lepidochelys olivacea_), tartaruga-de-pente (_Eretmochelys imbricata_) e a tartaruga-verde (_Chelonia mydas_).',
+            'No Brasil ocorrem cinco das setes espécies de tartarugas marinhas: tartaruga-de-couro (_Dermochelys coriacea_), tartaruga-cabeçuda (_Caretta caretta_), tartaruga-oliva (_Lepidochelys olivacea_), tartaruga-de-pente _Eretmochelys imbricata_ e a tartaruga-verde (_Chelonia mydas_).',
             'Põem ovos nas áreas de praia das regiões mais quentes do país, inclusive na ilha de Fernando de Noronha, mas jovens e adultos vivem e se alimentam em alto-mar, tendo ampla distribution, inclusive no litoral do Rio Grande do Sul.',
             'Podem viver por muitas décadas, algumas até próximo dos 100 anos. Uma curiosidade é que a temperatura da areia onde os ovos se desenvolvem é que determina o sexo em que o embrião vai se desenvolver.',
             'Normalmente, temperaturas mais altas determinam fêmeas, enquanto mais baixas desenvolvem machos. Por isso, o aumento da temperatura dos oceanos é uma grande preocupação para a conservação destas espécies.'
