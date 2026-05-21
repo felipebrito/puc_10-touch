@@ -174,21 +174,8 @@ function App() {
         handleResize();
         window.addEventListener('resize', handleResize);
         
-        // --- Cursor Management ---
-        const handlePointer = (e) => {
-            if (e.pointerType === 'touch') {
-                document.documentElement.classList.add('using-touch');
-                document.body.classList.add('using-touch');
-            }
-        };
-
-        window.addEventListener('pointerdown', handlePointer, { passive: true });
-        window.addEventListener('pointermove', handlePointer, { passive: true });
-
         return () => {
             window.removeEventListener('resize', handleResize);
-            window.removeEventListener('pointerdown', handlePointer);
-            window.removeEventListener('pointermove', handlePointer);
         };
     }, [config.appRotation]);
 

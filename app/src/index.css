@@ -152,28 +152,16 @@ h1, h2, h3 {
 .delay-500 { animation-delay: 0.5s; }
 
 /* ===========================
-   KIOSK GLOBALS & VERCEL CURSOR
+   KIOSK GLOBALS & COMPLETE CURSOR HIDING
    =========================== */
 * {
+    cursor: none !important;
     user-select: none !important;
     -webkit-user-select: none !important;
 }
 
-/* Custom cursor only for desktop/mouse devices */
-@media (pointer: fine) {
-    * {
-        cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><circle cx="16" cy="16" r="10" fill="rgba(0,0,0,0.5)" stroke="%23ffffff" stroke-width="2"/></svg>') 16 16, auto !important;
-    }
-}
-
-/* Esconde cursores no totem de toque físico (evita cursor "grudado") */
-@media (pointer: coarse) {
-    * {
-        cursor: none !important;
-    }
-}
-
-.using-touch,
-.using-touch * {
-    cursor: none !important;
+/* Allow native browser cursor inside the Design Editor for developer calibration */
+.design-editor,
+.design-editor * {
+    cursor: auto !important;
 }
