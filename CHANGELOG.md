@@ -10,6 +10,7 @@ Todas as mudanças notáveis neste projeto serão documentadas neste arquivo.
 - **Textos Editáveis e Flexíveis**: Estruturação dos textos no `whaleIntroData` dentro de `menuItems.js`, suportando quebras de linha (`\n`) e markdown inline (`**negrito**` e `_itálico_`).
 
 ### Melhorado
+- **Imagem de Fundo Personalizada**: Atualizada a tela de introdução das baleias para carregar a nova imagem de fundo local `baleia.jpg` (`/assets/images/baleia.jpg`), garantindo um visual premium e sob medida.
 - **Arquitetura 100% Offline**: Remoção de referências externas ao Google Fonts do arquivo `index.html`. Toda a tipografia agora é renderizada usando as fontes locais integradas (`Blender Pro` e `Canva Sans`), garantindo estabilidade no totem físico sem internet.
 - **Redirecionamento de Rotas**: Atualização da navegação no menu principal (`Home.jsx`) para interceptar cliques nas baleias e guiar o usuário através da nova tela de introdução (`/species/baleias-intro?next={id}`), mantendo a navegação fluida com um botão de prosseguir interativo e pulsante.
 

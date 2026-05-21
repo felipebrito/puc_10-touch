@@ -74,7 +74,7 @@ export default function BaleiasIntroPage({ config }) {
             {/* Background Image with Cinematic Overlay */}
             <div className="baleias-intro-bg">
                 <img 
-                    src="/assets/images/baleia_jubarte.png" 
+                    src="/assets/images/baleia.jpg" 
                     alt="Baleias Jubarte e Franca" 
                     className="baleias-bg-img"
                 />
