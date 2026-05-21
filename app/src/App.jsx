@@ -179,9 +179,6 @@ function App() {
             if (e.pointerType === 'touch') {
                 document.documentElement.classList.add('using-touch');
                 document.body.classList.add('using-touch');
-            } else if (e.pointerType === 'mouse') {
-                document.documentElement.classList.remove('using-touch');
-                document.body.classList.remove('using-touch');
             }
         };
 
