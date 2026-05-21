@@ -174,8 +174,23 @@ function App() {
         handleResize();
         window.addEventListener('resize', handleResize);
         
-        // --- Touch Ripple Feedback ---
+        // --- Touch Ripple Feedback & Cursor Management ---
+        const handlePointer = (e) => {
+            if (e.pointerType === 'touch') {
+                document.documentElement.classList.add('using-touch');
+                document.body.classList.add('using-touch');
+            } else if (e.pointerType === 'mouse') {
+                document.documentElement.classList.remove('using-touch');
+                document.body.classList.remove('using-touch');
+            }
+        };
+
         const createRipple = (e) => {
+            if (e.touches || e.type === 'touchstart') {
+                document.documentElement.classList.add('using-touch');
+                document.body.classList.add('using-touch');
+            }
+            
             // Se for touch, pega a coordenada do dedo. Se for mouse, pega do clique.
             const x = e.touches ? e.touches[0].clientX : e.clientX;
             const y = e.touches ? e.touches[0].clientY : e.clientY;
@@ -195,11 +210,15 @@ function App() {
             }, 600);
         };
 
+        window.addEventListener('pointerdown', handlePointer, { passive: true });
+        window.addEventListener('pointermove', handlePointer, { passive: true });
         window.addEventListener('mousedown', createRipple);
         window.addEventListener('touchstart', createRipple, { passive: true });
 
         return () => {
             window.removeEventListener('resize', handleResize);
+            window.removeEventListener('pointerdown', handlePointer);
+            window.removeEventListener('pointermove', handlePointer);
             window.removeEventListener('mousedown', createRipple);
             window.removeEventListener('touchstart', createRipple);
         };

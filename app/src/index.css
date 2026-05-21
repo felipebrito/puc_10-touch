@@ -160,6 +160,18 @@ h1, h2, h3 {
     -webkit-user-select: none !important;
 }
 
+/* Esconde cursores no totem de toque físico (evita cursor "grudado") */
+@media (pointer: coarse) {
+    * {
+        cursor: none !important;
+    }
+}
+
+.using-touch,
+.using-touch * {
+    cursor: none !important;
+}
+
 /* ===========================
    TOUCH RIPPLE EFFECT
    =========================== */

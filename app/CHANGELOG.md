@@ -1,5 +1,13 @@
 # Changelog - PUC 10-Touch
 
+## [2026-05-21] - Cursor Sticking Fix & Offline Whales Intro
+
+### Fixed
+- **Sticking Touch Cursor**: Solved the persistent cursor bug on touch screen totems. Added a global `PointerEvents` listener in `App.jsx` tracking `pointerType === 'touch'` vs `pointerType === 'mouse'` to add/remove a `.using-touch` class dynamically on both `document.documentElement` and `document.body`. Applied `.using-touch, .using-touch * { cursor: none !important; }` in `index.css` to reliably hide the custom SVG and native cursors across the entire application on touch interaction, while preserving them for developer mouse debugging.
+
+### Added
+- **Whales Intro Background**: Custom background integration for the Baleias Intro page using native offline assets.
+
 ## [2026-05-21] - QR Code Optimization
 
 ### Improved
