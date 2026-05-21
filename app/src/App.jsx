@@ -174,7 +174,7 @@ function App() {
         handleResize();
         window.addEventListener('resize', handleResize);
         
-        // --- Touch Ripple Feedback & Cursor Management ---
+        // --- Cursor Management ---
         const handlePointer = (e) => {
             if (e.pointerType === 'touch') {
                 document.documentElement.classList.add('using-touch');
@@ -182,42 +182,13 @@ function App() {
             }
         };
 
-        const createRipple = (e) => {
-            if (e.touches || e.type === 'touchstart') {
-                document.documentElement.classList.add('using-touch');
-                document.body.classList.add('using-touch');
-            }
-            
-            // Se for touch, pega a coordenada do dedo. Se for mouse, pega do clique.
-            const x = e.touches ? e.touches[0].clientX : e.clientX;
-            const y = e.touches ? e.touches[0].clientY : e.clientY;
-            
-            const ripple = document.createElement('div');
-            ripple.className = 'touch-ripple';
-            ripple.style.left = `${x}px`;
-            ripple.style.top = `${y}px`;
-            
-            document.body.appendChild(ripple);
-            
-            // Remove a bolinha do HTML depois de 600ms (tempo exato da animação)
-            setTimeout(() => {
-                if (document.body.contains(ripple)) {
-                    document.body.removeChild(ripple);
-                }
-            }, 600);
-        };
-
         window.addEventListener('pointerdown', handlePointer, { passive: true });
         window.addEventListener('pointermove', handlePointer, { passive: true });
-        window.addEventListener('mousedown', createRipple);
-        window.addEventListener('touchstart', createRipple, { passive: true });
 
         return () => {
             window.removeEventListener('resize', handleResize);
             window.removeEventListener('pointerdown', handlePointer);
             window.removeEventListener('pointermove', handlePointer);
-            window.removeEventListener('mousedown', createRipple);
-            window.removeEventListener('touchstart', createRipple);
         };
     }, [config.appRotation]);
 

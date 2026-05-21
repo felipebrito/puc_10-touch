@@ -2,6 +2,13 @@
 
 Todas as mudanças notáveis neste projeto serão documentadas neste arquivo.
 
+## [1.3.1] - 2026-05-21
+
+### Corrigido
+- **Remoção de Resíduos de Toque (Bolinhas Stickadas)**:
+  - Removido completamente o efeito de feedback visual `touch-ripple` (`createRipple` em `App.jsx` e classes CSS em `index.css`), eliminando qualquer possibilidade de círculos ficarem "presos/stickados" na tela do totem kiosk após o toque físico do usuário.
+  - Restringido o cursor personalizado em formato de círculo (`* { cursor: url(...) }`) estritamente a dispositivos com mouse de precisão (`@media (pointer: fine)`), garantindo que em telas de toque (totem físico ou simuladores) o cursor seja nativamente ocultado (`cursor: none !important`) e não sofra com atrasos ou quirks de pintura de tela do navegador.
+
 ## [1.3.0] - 2026-05-21
 
 ### Adicionado
