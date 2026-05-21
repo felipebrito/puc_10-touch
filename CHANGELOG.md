@@ -2,6 +2,11 @@
 
 Todas as mudanças notáveis neste projeto serão documentadas neste arquivo.
 
+## [1.2.3] - 2026-05-21
+
+### Otimizado
+- **QR Code do Módulo Extinção**: Substituído o arquivo `qrcode.png` do Slide 9 por uma versão de alta fidelidade e otimizada, reduzindo seu tamanho de ~219 KB para ~9.6 KB, o que otimiza o carregamento offline da aplicação.
+
 ## [1.2.2] - 2026-05-20
 
 ### Adicionado

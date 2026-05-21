@@ -1,5 +1,10 @@
 # Changelog - PUC 10-Touch
 
+## [2026-05-21] - QR Code Optimization
+
+### Improved
+- **Extinction QR Code**: Optimized `qrcode.png` on Slide 9, reducing file size from ~219 KB to ~9.6 KB for faster local loading and clean rendering.
+
 ## [2026-05-20] - TopBar Navigation & Offline Video Stability
 
 ### Added
