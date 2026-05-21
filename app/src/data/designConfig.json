@@ -558,5 +558,21 @@
     "textWeight": 400,
     "sealsWidth": 949,
     "sealsMarginTop": 40
+  },
+  "baleiasIntroPage": {
+    "paddingTop": 218,
+    "paddingLeft": 86,
+    "subtitleSize": 54,
+    "subtitleSpacing": 6.0,
+    "titleSize": 72,
+    "titleSpacing": 3.0,
+    "titleLineHeight": 1.1,
+    "lineMarginTop": 20,
+    "lineHeight": 3.0,
+    "lineWidth": 908,
+    "textSize": 30,
+    "textLineHeight": 1.5,
+    "textMarginTop": 40,
+    "textMaxWidth": 908
   }
 }

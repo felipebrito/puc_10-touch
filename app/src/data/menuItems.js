@@ -120,3 +120,14 @@ export const speciesDetails = {
         externalUrl: '',
     }
 };
+
+export const whaleIntroData = {
+    subtitle: 'EXTINÇÃO',
+    title: 'BALEIA-JUBARTE E\nBALEIA-FRANCA-AUSTRAL',
+    paragraphs: [
+        'Assim como boa parte de outras espécies de cetáceos, a baleia-jubarte e a baleia-franca-austral foram intensamente caçadas por vários séculos, inclusive no Brasil, tanto que em meados dos anos 1970, deixaram de ser avistadas.',
+        'A caça a estes animais foi proibida no Brasil em 1987, época em que foram criados o Projeto Baleia Jubarte e o Projeto Baleia Franca, ambos coordenados por organizações não-governamentais.',
+        'Essas ONGs criaram ao longo dos anos muitas ações de conservação, como monitoramento das populações, ações de educação e sensibilização públicas.',
+        'De quase extintas, as baleias-jubarte têm uma população de mais de 30 mil indivíduos atualmente. A baleia-franca-austral também está se recuperando, porém mais lentamente.'
+    ]
+};

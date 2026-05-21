@@ -7,6 +7,7 @@ import ExtincaoPage from './views/ExtincaoPage';
 import TartarugasPage from './views/TartarugasPage';
 import TubaroesPage from './views/TubaroesPage';
 import ArraiasPage from './views/ArraiasPage';
+import BaleiasIntroPage from './views/BaleiasIntroPage';
 import GuideOverlay from './components/GuideOverlay';
 import DesignEditor from './components/DesignEditor';
 import { loadConfig, saveConfig } from './utils/designUtils';
@@ -103,6 +104,10 @@ function AppContent({ config, setConfig, editorVisible, toggleEditor, setInactiv
                 <Route
                     path="/species/raias"
                     element={<ArraiasPage config={config} />}
+                />
+                <Route
+                    path="/species/baleias-intro"
+                    element={<BaleiasIntroPage config={config} />}
                 />
                 <Route
                     path="/species/:id"

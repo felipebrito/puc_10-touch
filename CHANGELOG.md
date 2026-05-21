@@ -2,7 +2,19 @@
 
 Todas as mudanças notáveis neste projeto serão documentadas neste arquivo.
 
+## [1.3.0] - 2026-05-21
+
+### Adicionado
+- **Tela de Transição/Intro das Baleias (`BaleiasIntroPage`)**: Nova tela intermediária vertical (1080x1920) com animações fade-blur de alta fidelidade e design premium para introduzir a história da conservação das baleias-jubarte e baleias-franca-austral antes do acesso às telas de detalhe correspondentes.
+- **Configurações Dinâmicas e Customizáveis**: Bloco de design `"baleiasIntroPage"` integrado ao `designConfig.json` que viabiliza o ajuste fino de tamanhos de fonte, cores, line-height, letter-spacing e paddings.
+- **Textos Editáveis e Flexíveis**: Estruturação dos textos no `whaleIntroData` dentro de `menuItems.js`, suportando quebras de linha (`\n`) e markdown inline (`**negrito**` e `_itálico_`).
+
+### Melhorado
+- **Arquitetura 100% Offline**: Remoção de referências externas ao Google Fonts do arquivo `index.html`. Toda a tipografia agora é renderizada usando as fontes locais integradas (`Blender Pro` e `Canva Sans`), garantindo estabilidade no totem físico sem internet.
+- **Redirecionamento de Rotas**: Atualização da navegação no menu principal (`Home.jsx`) para interceptar cliques nas baleias e guiar o usuário através da nova tela de introdução (`/species/baleias-intro?next={id}`), mantendo a navegação fluida com um botão de prosseguir interativo e pulsante.
+
 ## [1.2.3] - 2026-05-21
+
 
 ### Otimizado
 - **QR Code do Módulo Extinção**: Substituído o arquivo `qrcode.png` do Slide 9 por uma versão de alta fidelidade e otimizada, reduzindo seu tamanho de ~219 KB para ~9.6 KB, o que otimiza o carregamento offline da aplicação.
