@@ -1,5 +1,16 @@
 # Changelog - PUC 10-Touch
 
+## [2026-05-20] - TopBar Navigation & Offline Video Stability
+
+### Added
+- **Local & Offline Videos**: Hand-copied high-fidelity background videos `pg03 video 01.mp4` and `pg03 video 02.mp4` to `app/public/assets/videos/` as `pg03_video_01.mp4` and `pg03_video_02.mp4`.
+- **Git Asset Tracking**: Modified root `.gitignore` to whitelist `app/public/assets/videos/*.mp4` to prevent Git from ignoring video files.
+
+### Improved
+- **TopBar Navigation Shortcut**: Configured `TopBar` across all pages to use `useNavigate` and return to the Home view (`/`) when touched/clicked.
+- **TopBar Cursor**: Added CSS rule `cursor: pointer` to the `.top-bar` element.
+- **Local Kiosk Compatibility**: Replaced Pexels remote background videos in `BackgroundVideo.jsx` with local asset paths to ensure stability in offline settings.
+
 ## [2026-05-03] - Layout Stabilization & Species Expansion
 
 ### Fixed

@@ -2,6 +2,17 @@
 
 Todas as mudanças notáveis neste projeto serão documentadas neste arquivo.
 
+## [1.2.2] - 2026-05-20
+
+### Adicionado
+- **Vídeos Locais e Offline**: Copiados os vídeos de fundo `pg03 video 01.mp4` e `pg03 video 02.mp4` da pasta de design para `app/public/assets/videos/` (renomeados para `pg03_video_01.mp4` e `pg03_video_02.mp4`).
+- **Rastreabilidade de Ativos no Git**: Ajustado o `.gitignore` na raiz do projeto para parar de ignorar arquivos `.mp4` dentro de `app/public/assets/videos/`.
+
+### Melhorado
+- **Navegação do Cabeçalho**: O componente `TopBar` (barra do topo presente em todas as telas) agora navega de volta para a Home (`/`) ao ser tocado ou clicado, servindo como atalho de navegação global.
+- **Acessibilidade do Topo**: Adicionada a propriedade `cursor: pointer` à barra do topo no CSS global para indicar visualmente que o elemento é interativo.
+- **Compatibilidade Offline**: O componente `BackgroundVideo.jsx` agora aponta para os arquivos de vídeo locais em vez de links externos do Pexels, permitindo o funcionamento pleno da aplicação sem conexão de internet.
+
 ## [1.2.1] - 2026-05-03
 
 ### Corrigido
