@@ -55,11 +55,11 @@ const slides = [
     {
         type: 'ocean-text',
         title: 'AS AMEAÇAS À VIDA MARINHA',
-        subtitle: 'As ameaças o Brasil à biodiversidade marinha são:',
+        subtitle: 'As principais ameaças à biodiversidade marinha são:',
         paragraphs: [
-            'A captura acidental em redes de pesca, que resulta em afogamento e morte de tartarugas marinhas, botos e principalmente de toninhas e peixes-boi.',
-            'A caça ilegal e pesca predatória, em especial de tubarões e raias. Para as tartarugas marinhas, a caça e a coleta de ovos eram a maior ameaça até a década de 1980.',
-            'Várias formas de poluição, tais como lixo plástico e produtos químicos tóxicos, que impactam à saúde e podem levar a morte dos indivíduos.',
+            '- a captura acidental em redes de pesca, que resulta em afogamento e morte de tartarugas-marinhas, botos e principalmente de toninhas e peixes-boi;',
+            '- a caça ilegal e pesca predatória, em especial de tubarões e raias. Para as tartarugas-marinhas, a caça e a coleta de ovos eram a maior ameaça até a década de 1980;',
+            '- várias formas de poluição, tais como lixo plástico e produtos químicos tóxicos, que impactam à saúde e podem levar a morte dos indivíduos.',
         ],
     },
     // Página 5 — PESCA PREDATÓRIA
@@ -104,6 +104,42 @@ export default function ExtincaoPage({ config }) {
 
 
     const ep = config?.extincaoPage || {};
+
+    const sp = {
+        ...config?.speciesPage,
+        ...(config?.speciesPageOverrides?.['perigo-extincao'] || {})
+    };
+
+    const backButtonStyle = {
+        width: `${sp.backButtonSize ?? 60}px`,
+        height: `${sp.backButtonSize ?? 60}px`,
+        bottom: `${sp.backButtonBottom ?? 39}px`,
+        left: `${sp.backButtonLeft ?? 40}px`,
+        position: 'absolute',
+        zIndex: 1000
+    };
+
+    const arrowLeftStyle = {
+        width: `${sp.arrowSize ?? 90}px`,
+        height: `${sp.arrowSize ?? 90}px`,
+        bottom: `${sp.arrowBottom ?? 134}px`,
+        left: `${sp.arrowLeft ?? 30}px`,
+        position: 'absolute',
+        top: 'auto',
+        transform: 'none',
+        zIndex: 1000
+    };
+
+    const arrowRightStyle = {
+        width: `${sp.arrowSize ?? 90}px`,
+        height: `${sp.arrowSize ?? 90}px`,
+        bottom: `${sp.arrowBottom ?? 134}px`,
+        right: `${sp.arrowRight ?? 30}px`,
+        position: 'absolute',
+        top: 'auto',
+        transform: 'none',
+        zIndex: 1000
+    };
 
     useEffect(() => {
         console.log("ExtincaoPage Config Update:", ep);
@@ -168,12 +204,12 @@ export default function ExtincaoPage({ config }) {
             <div className="extincao-bg-static">
                 <AnimatePresence mode="wait">
                     {slides[currentIndex].video ? (
-                        <motion.video 
+                        <motion.video
                             key={`video-${slides[currentIndex].video}`}
-                            src={slides[currentIndex].video} 
-                            autoPlay 
-                            loop 
-                            muted 
+                            src={slides[currentIndex].video}
+                            autoPlay
+                            loop
+                            muted
                             playsInline
                             className="extincao-bg-video"
                             initial={{ opacity: 0, filter: 'blur(10px)' }}
@@ -182,10 +218,10 @@ export default function ExtincaoPage({ config }) {
                             transition={{ duration: 0.8 }}
                         />
                     ) : slides[currentIndex].bgImage ? (
-                        <motion.img 
+                        <motion.img
                             key={`img-${slides[currentIndex].bgImage}`}
-                            src={slides[currentIndex].bgImage} 
-                            alt="background" 
+                            src={slides[currentIndex].bgImage}
+                            alt="background"
                             className="extincao-bg-image"
                             initial={{ opacity: 0, filter: 'blur(10px)' }}
                             animate={{ opacity: 1, filter: 'blur(0px)' }}
@@ -193,9 +229,9 @@ export default function ExtincaoPage({ config }) {
                             transition={{ duration: 0.8 }}
                         />
                     ) : (
-                        <motion.img 
+                        <motion.img
                             key="default-bg"
-                            src="/assets/images/extincao_bg.png" 
+                            src="/assets/images/extincao_bg.png"
                             alt="background"
                             initial={{ opacity: 0, filter: 'blur(10px)' }}
                             animate={{ opacity: 1, filter: 'blur(0px)' }}
@@ -208,8 +244,8 @@ export default function ExtincaoPage({ config }) {
             </div>
 
             <TopBar />
-            <Link to="/" className="extincao-back-button">
-                <img src="/assets/images/home.svg" alt="Home" className="home-icon-svg" />
+            <Link to="/" className="extincao-back-button" style={backButtonStyle}>
+                <img src="/assets/images/home.svg" alt="Home" className="home-icon-svg" style={{ width: `${sp.backButtonIconSize ?? 60}%`, height: `${sp.backButtonIconSize ?? 60}%` }} />
             </Link>
 
             {/* Carrossel — cada slide contém seu próprio fundo e conteúdo */}
@@ -288,8 +324,8 @@ export default function ExtincaoPage({ config }) {
                                         )}
                                     </motion.div>
 
-                                    <motion.div 
-                                        className="extincao-text" 
+                                    <motion.div
+                                        className="extincao-text"
                                         variants={itemVariants}
                                         style={{
                                             fontSize: `${ep.textSize ?? 38}px`,
@@ -305,17 +341,17 @@ export default function ExtincaoPage({ config }) {
                                     </motion.div>
 
                                     {slides[currentIndex].footerSeals && (
-                                        <motion.div 
+                                        <motion.div
                                             className="extincao-seals"
                                             variants={itemVariants}
                                             style={{
                                                 marginTop: `${ep.sealsMarginTop ?? 40}px`
                                             }}
                                         >
-                                            <img 
-                                                src={slides[currentIndex].footerSeals} 
-                                                alt="Seals" 
-                                                className="seals-img" 
+                                            <img
+                                                src={slides[currentIndex].footerSeals}
+                                                alt="Seals"
+                                                className="seals-img"
                                                 style={{ width: `${ep.sealsWidth ?? 949}px` }}
                                             />
                                         </motion.div>
@@ -332,10 +368,11 @@ export default function ExtincaoPage({ config }) {
                 {currentIndex > 0 && (
                     <button
                         className="carousel-arrow arrow-left"
+                        style={arrowLeftStyle}
                         onClick={() => goTo(currentIndex - 1)}
                         onPointerDown={(e) => e.stopPropagation()}
                     >
-                        <img src="/assets/images/seta-esquerda.svg" alt="Anterior" className="arrow-icon-svg" />
+                        <img src="/assets/images/seta-esquerda.svg" alt="Anterior" className="arrow-icon-svg" style={{ width: '100%', height: '100%' }} />
                     </button>
                 )}
 
@@ -343,10 +380,11 @@ export default function ExtincaoPage({ config }) {
                 {currentIndex < slides.length - 1 && (
                     <button
                         className="carousel-arrow arrow-right"
+                        style={arrowRightStyle}
                         onClick={() => goTo(currentIndex + 1)}
                         onPointerDown={(e) => e.stopPropagation()}
                     >
-                        <img src="/assets/images/seta-direita.svg" alt="Próximo" className="arrow-icon-svg" />
+                        <img src="/assets/images/seta-direita.svg" alt="Próximo" className="arrow-icon-svg" style={{ width: '100%', height: '100%' }} />
                     </button>
                 )}
             </div>

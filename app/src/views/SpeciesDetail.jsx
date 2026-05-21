@@ -58,12 +58,17 @@ export default function SpeciesDetail({ config, setConfig, editorVisible, onTogg
 
     return (
         <div className="species-detail-wrapper">
-            <div className="detail-navigation">
+            <div className="detail-navigation" style={{ position: 'absolute', inset: 0, pointerEvents: 'none', zIndex: 1000 }}>
                 <Link to="/" className="back-button-home" style={{
-                    width: `${sp.backButtonSize}px`,
-                    height: `${sp.backButtonSize}px`,
+                    width: `${sp.backButtonSize ?? 60}px`,
+                    height: `${sp.backButtonSize ?? 60}px`,
+                    bottom: `${sp.backButtonBottom ?? 39}px`,
+                    left: `${sp.backButtonLeft ?? 40}px`,
+                    position: 'absolute',
+                    pointerEvents: 'auto',
+                    zIndex: 1000
                 }}>
-                    <img src="/assets/images/home.svg" alt="Home" className="home-icon-svg" />
+                    <img src="/assets/images/home.svg" alt="Home" className="home-icon-svg" style={{ width: `${sp.backButtonIconSize ?? 60}%`, height: `${sp.backButtonIconSize ?? 60}%` }} />
                 </Link>
             </div>
 

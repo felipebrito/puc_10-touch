@@ -8,35 +8,35 @@ export const menuItems = [
     {
         id: 'boto',
         label: 'BOTO',
-        scientificName: 'BOTO (GOLFINHO DA TAINHA)',
+        scientificName: 'BOTO',
         binomialName: 'Tursiops gephyreus',
         image: '/assets/images/thumb_boto.png', // Thumb for menu
         heroImage: '/assets/images/boto/hero.png', // High-fidelity top image
         footerImage: '/assets/images/boto/footer.png', // Specific footer with seal
         guideImage: '/assets/guides/revisao-22-04/page-11.jpg',
-        description: `Espécie de mamífero marinho que só ocorre nas águas costeiras do sul do Brasil, Uruguai e centro-norte da Argentina. Ameaçada de extinção, possui uma população estimada em menos de 500 indivíduos, e que ainda está diminuindo.\n\nÉ famoso por interagir com pescadores artesanais, um comportamento conhecido como pesca cooperativa, que ocorre principalmente na Barra do Rio Tramandaí (RS) e em Laguna (SC). Os botos, que residem nestas áreas e os pescadores artesanais cooperam a décadas na pesca da tainha, o que traz benefícios para ambos.`,
+        description: `Espécie de mamífero marinho que só ocorre nas águas costeiras do sul do Brasil, Uruguai e centro-norte da Argentina. Ameaçada de extinção, possui uma população estimada em menos de 500 indivíduos, que ainda está diminuindo.\n\nÉ famoso por interagir com pescadores artesanais, um comportamento conhecido como pesca cooperativa, que ocorre principalmente na Barra do Rio Tramandaí (RS) e em Laguna (SC). Os botos, que residem nestas áreas e os pescadores artesanais cooperam há décadas na pesca da tainha, o que traz benefícios para ambos.`,
     },
     {
         id: 'toninha',
         label: 'TONINHA',
-        scientificName: 'TONINHA (FRANCISCANA)',
+        scientificName: 'TONINHA',
         binomialName: 'Pontoporia blainvillei',
         image: '/assets/images/thumb_toninha.png',
         heroImage: '/assets/images/toninha/hero.png',
         footerImage: '/assets/images/toninha/footer.png',
         guideImage: '/assets/guides/revisao-22-04/page-12.jpg',
-        description: `A toninha é um golfinho marinho bastante pequeno (entre 1,6 e 1,8m) que ocorre nas águas costeiras desde o estado do Espírito Santo até o norte da Argentina, e está criticamente em perigo de extinção.\n\nApesar das estimativas atuais apontarem para a existência de mais de 10 mil indivíduos, a população parece estar em declínio constante nas últimas décadas, em especial pela alta taxa de captura acidental em redes de pesca.`,
+        description: `A toninha é um golfinho marinho bastante pequeno (entre 1,6 e 1,8 m) que ocorre nas águas costeiras desde o Espírito Santo até o norte da Argentina. \n\nApesar das estimativas atuais apontarem para a existência de mais de 10 mil indivíduos, a população parece estar em declínio constante nas últimas décadas, em especial pela alta taxa de captura acidental em redes de pesca.`,
     },
     {
         id: 'baleia-jubarte',
-        label: 'BALEIA JUBARTE',
-        scientificName: 'BALEIA JUBARTE',
+        label: 'BALEIA-JUBARTE',
+        scientificName: 'BALEIA-JUBARTE',
         binomialName: 'Megaptera novaeangliae',
         image: '/assets/images/thumb_baleia_jubarte.png',
         heroImage: '/assets/images/jubarte/hero.png',
         footerImage: '/assets/images/jubarte/footer.png',
         guideImage: '/assets/guides/revisao-22-04/page-14.jpg',
-        description: `A baleia-jubarte pode chegar a 16 metros de comprimento e pesar mais de 30 toneladas, mas mesmo com esse tamanho impressionante, é famosa por suas acrobacias: salta fora d’água com surpreendente elegância! Isto é possível graças às suas nadadeiras peitorais extremamente longas (até um terço do comprimento corporal), as maiores entre as baleias.\n\nOutro destaque, é o “canto” que os machos emitem - uma série de sons complexos e misteriosos que podem durar até meia hora e viajar por quilômetros de distância.\n\nAlém disso, são migradoras incríveis: viajam milhares de quilômetros todos os anos entre águas polares (onde se alimentam) e tropicais (onde se reproduzem). No Brasil, se concentram no litoral da Bahia.`,
+        description: `A baleia-jubarte pode chegar a 16 metros de comprimento e pesar mais de 30 toneladas, mas mesmo com esse tamanho impressionante, é famosa por suas acrobacias: salta fora d’água com surpreendente elegância. Isto é possível graças às suas nadadeiras peitorais extremamente longas (até um terço do comprimento corporal), as maiores entre as baleias.\n\nOutro destaque, é o “canto” que os machos emitem, isto é, uma série de sons complexos e misteriosos que podem durar até meia hora e viajar por quilômetros de distância.\n\nAlém disso, são migradoras incríveis: viajam milhares de quilômetros todos os anos entre águas polares (onde se alimentam) e tropicais (onde se reproduzem). No Brasil, se concentram no litoral da Bahia.`,
     },
     {
         id: 'baleia-franca',
@@ -47,7 +47,7 @@ export const menuItems = [
         heroImage: '/assets/images/franca/hero.png',
         footerImage: '/assets/images/franca/footer.png',
         guideImage: '/assets/guides/revisao-22-04/page-15.jpg',
-        description: `Podem ser reconhecidas pela presença de calosidades no corpo, cobertas por pequenos parasitas chamados "piolhos-de-baleia", os quais formam um padrão tão exclusivo que os cientistas usam para identificar cada indivíduo, como se fossem impressões digitais.\n\nNo Brasil, elas podem ser encontradas durante o inverno no litoral de Santa Catarina.`,
+        description: `Podem ser reconhecidas pela presença de calosidades no corpo, cobertas por pequenos parasitas chamados "piolhos-de-baleia", os quais formam um padrão tão exclusivo, que são utilizados pelos cientistas para identificar cada indivíduo, como se fossem impressões digitais.\n\nNo Brasil, elas podem ser encontradas durante o inverno no litoral de Santa Catarina.`,
     },
     {
         id: 'tartarugas-marinhas',
@@ -57,14 +57,14 @@ export const menuItems = [
     },
     {
         id: 'peixe-boi',
-        label: 'PEIXE-BOI-\nMARINHO',
-        scientificName: 'PEIXE-BOI MARINHO',
+        label: 'PEIXE-BOI-MARINHO',
+        scientificName: 'PEIXE-BOI-MARINHO',
         binomialName: 'Trichechus manatus',
         image: '/assets/images/thumb_peixe_boi.png',
         heroImage: '/assets/images/peixe-boi/hero.png',
         footerImage: '/assets/images/peixe-boi/footer.png',
         guideImage: '/assets/guides/revisao-22-04/page-20.jpg',
-        description: `Esses gentis mamíferos de até 4 metros de comprimento se alimentam de vegetação marinha. Têm um corpo grande e cilíndrico, com uma cauda em forma de remo, que os ajuda a se mover lentamente pela água.\n\nSão animais muito vulneráveis e estão ameaçados de extinção principalmente por conta da perda de habitat e de colisões com embarcações.\n\nEstima-se que existam menos de mil indivíduos no Brasil, onde estão distribuídos de forma descontínua ao longo da costa, desde o estado de Alagoas até o Amapá.`,
+        description: `Esses gentis mamíferos de até 4 metros de comprimento se alimentam de vegetação marinha. Têm um corpo grande e cilíndrico, com uma cauda em forma de remo, que os ajuda a se mover lentamente pela água.\n\nSão animais muito vulneráveis e estão ameaçados de extinção principalmente por conta da perda de habitat e de colisões com embarcações.\n\nEstima-se que existam menos de mil indivíduos no Brasil, onde estão distribuídos de forma descontínua ao longo da costa, desde Alagoas até o Amapá.`,
         externalUrl: '',
     },
     {
@@ -82,7 +82,7 @@ export const menuItems = [
 // Dados detalhados para navegação interna / sub-páginas
 export const speciesDetails = {
     'tubarao-mangona': {
-        label: 'TUBARÃO\nMANGONA',
+        label: 'TUBARÃO-MANGONA',
         scientificName: 'TUBARÃO-MANGONA',
         binomialName: 'Carcharias taurus',
         image: '/assets/images/mangona_thumb.png',
@@ -91,7 +91,7 @@ export const speciesDetails = {
         externalUrl: '',
     },
     'tubarao-martelo': {
-        label: 'TUBARÃO-MARTELO\nGRANDE',
+        label: 'TUBARÃO-MARTELO-GRANDE',
         scientificName: 'TUBARÃO-MARTELO-GRANDE',
         binomialName: 'Sphyrna mokarran',
         image: '/assets/images/martelo_thumb.png',
@@ -100,7 +100,7 @@ export const speciesDetails = {
         externalUrl: '',
     },
     'cacao-anjo': {
-        label: 'CAÇÃO-ANJO-DE\nASA-LONGA',
+        label: 'CAÇÃO-ANJO-DE-ASA-LONGA',
         scientificName: 'CAÇÃO-ANJO-DE-ASA-LONGA',
         binomialName: 'Squatina argentina',
         image: '/assets/images/cacao_anjo_thumb.png',
@@ -109,14 +109,14 @@ export const speciesDetails = {
         externalUrl: '',
     },
     'raia-jamanta': {
-        label: 'RAIA\nJAMANTA',
-        scientificName: 'RAIA JAMANTA',
+        label: 'RAIA-JAMANTA',
+        scientificName: 'RAIA-JAMANTA',
         binomialName: 'Mobula birostris',
         image: '/assets/images/raia_jamanta.png',
         heroImage: '/assets/images/raia-jamanta/hero.png',
         footerImage: '/assets/images/raia-jamanta/footer.png',
         guideImage: '/assets/guides/revisao-22-04/page-26.jpg',
-        description: `Maior raia conhecida, pode atingir mais de 7m de largura de disco. Tem distribuição global em águas temperadas e tropicais.\n\nAs maiores populações ocorrem ao longo das áreas das plataformas continentais, próximo a cadeias de ilhas e elevações submarinas.\n\nÉ suscetível à rede de emalhe-de-superfície e meia-água, sendo ocasionalmente capturada no arrasto-de-fundo (provavelmente no levantar e descer das redes).`,
+        description: `Maior raia conhecida, pode atingir mais de 7 m de largura de disco. Tem distribuição global em águas temperadas e tropicais.\n\nAs maiores populações ocorrem ao longo das áreas das plataformas continentais, próximo a cadeias de ilhas e elevações submarinas.\n\nÉ suscetível a redes de emalhe-de-superfície e meia-água, sendo ocasionalmente capturada no arrasto-de-fundo (provavelmente no levantar e descer das redes).`,
         externalUrl: '',
     }
 };
@@ -127,7 +127,7 @@ export const whaleIntroData = {
     paragraphs: [
         'Assim como boa parte de outras espécies de cetáceos, a baleia-jubarte e a baleia-franca-austral foram intensamente caçadas por vários séculos, inclusive no Brasil, tanto que em meados dos anos 1970, deixaram de ser avistadas.',
         'A caça a estes animais foi proibida no Brasil em 1987, época em que foram criados o Projeto Baleia Jubarte e o Projeto Baleia Franca, ambos coordenados por organizações não-governamentais.',
-        'Essas ONGs criaram ao longo dos anos muitas ações de conservação, como monitoramento das populações, ações de educação e sensibilização públicas.',
+        'Essas ONGs criaram, ao longo dos anos, muitas ações de conservação, como monitoramento das populações, ações de educação e sensibilização públicas.',
         'De quase extintas, as baleias-jubarte têm uma população de mais de 30 mil indivíduos atualmente. A baleia-franca-austral também está se recuperando, porém mais lentamente.'
     ]
 };

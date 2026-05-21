@@ -84,17 +84,10 @@
     margin-bottom: 0;
 }
 
-/* ── Navigation ────────────────────────────────────────────── */
 .baleias-navigation {
     position: absolute;
-    bottom: 40px;
-    left: 40px;
-    right: 40px;
-    height: 90px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    z-index: 10;
+    inset: 0;
+    z-index: 1000;
     pointer-events: none; /* allow clicks to fall through unless on buttons */
 }
 

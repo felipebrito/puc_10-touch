@@ -228,7 +228,8 @@
 }
 
 /* Ajuste para slides de texto (fundo escuro) */
-.slide-shark-text ~ .tubaroes-indicator .indicator-dot {
+.slide-shark-text ~ .tubaroes-indicator .indicator-dot,
+.tubaroes-indicator.theme-dark .indicator-dot {
     background: rgba(255, 255, 255, 0.30);
 }
 

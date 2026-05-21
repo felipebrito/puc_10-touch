@@ -1,12 +1,18 @@
 # Changelog - PUC 10-Touch
 
-## [2026-05-21] - Cursor Sticking Fix & Offline Whales Intro
+## [2026-05-21] - Cursor Sticking Fix, Offline Whales Intro & Rays Carousel Alignment
 
 ### Fixed
 - **Sticking Touch Cursor**: Solved the persistent cursor bug on touch screen totems. Added a global `PointerEvents` listener in `App.jsx` tracking `pointerType === 'touch'` vs `pointerType === 'mouse'` to add/remove a `.using-touch` class dynamically on both `document.documentElement` and `document.body`. Applied `.using-touch, .using-touch * { cursor: none !important; }` in `index.css` to reliably hide the custom SVG and native cursors across the entire application on touch interaction, while preserving them for developer mouse debugging.
+- **Whale Introduction Page Navigation Buttons**: Resolved a rendering bug and layout/CSS stylesheet collision on `/species/baleias-intro` where the Home/Back button was pushed to the top of the viewport and touch interactions were blocked. Replaced legacy `.baleias-navigation` layout classes with a full-screen absolute `inset: 0` pointer-events overlay and explicitly assigned `pointerEvents: 'auto'` to both navigation buttons inside their inline style configurations. This perfectly aligns the home/back and next arrow buttons to their custom bottom coordinates (`bottom: 39px` and `bottom: 134px`) and guarantees touch-responsiveness on real totem hardware.
+- **Rays Navigation Arrow Vertical Alignment**: Created explicit `arrowLeftStyle` and `arrowRightStyle` objects in `ArraiasPage.jsx` with `top: 'auto'` and `transform: 'none'` to properly position the carousel navigation arrows at absolute pixel locations (`bottom: 134px`), preventing vertical misalignment.
+- **Carousel Indicator Dots Sibling CSS Selector Bug**: Fixed a CSS sibling selector bug where `.slide-ray-text ~ .arraias-indicator` would fail because the text slides are nested. Replaced this with a dynamic `.theme-dark` class on the indicator elements in both `ArraiasPage.jsx` and `TubaroesPage.jsx`, allowing indicator dots to elegantly switch contrast colors on dark background slides.
 
 ### Added
+- **Rays Multi-Slide Carousel**: Converted the static Rays single detail view into a stateful, touch-interactive 3-slide carousel (`ArraiasPage.jsx` and `ArraiasPage.css`) following the exact architectural flow of `TubaroesPage.jsx`.
+- **Rays Intro Layout Alignment**: Configured custom `"arraias"` slideOverrides in `designConfig.json` to mirror the precise paddings, font sizes, line heights, and margins of `"tubaroes"`, ensuring absolute pixel symmetry between both elasmobranch pages.
 - **Whales Intro Background**: Custom background integration for the Baleias Intro page using native offline assets.
+- **Independent Back/Home Button Icon Size Control**: Added `backButtonIconSize` slider control to `DesignEditor.jsx` (under the "Botão Voltar" section) for both species pages and the extinction page. Bound the inline styles for `home-icon-svg` on `ExtincaoPage`, `TubaroesPage`, `TartarugasPage`, `ArraiasPage`, `BaleiasIntroPage`, and `SpeciesDetail` to allow kiosk administrators to edit the blue circle container size and the white icon size completely independently.
 
 ## [2026-05-21] - QR Code Optimization
 

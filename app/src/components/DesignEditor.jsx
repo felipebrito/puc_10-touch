@@ -441,50 +441,51 @@ export default function DesignEditor({ config, setConfig, visible, onToggle, sel
 
                                      {/* Hero settings visibility - Show for detail slides even in carousels */}
                                      {(!['tartarugas-marinhas', 'tubaroes', 'arraias'].includes(currentSpeciesId) || 
-                                       (currentSpeciesId === 'tubaroes' && activeSlide >= 2)) && (
-                                        <ControlGroup label="🖼️ Imagem de Topo (Hero)" defaultOpen={false}>
-                                            <Slider label="Altura Hero" value={sp.heroHeight} max={1000}
-                                                onChange={v => update('speciesPage', 'heroHeight', v)} />
-                                            <Slider label="Margem Bottom Hero" value={sp.heroMarginBottom} min={-100} max={200}
-                                                onChange={v => update('speciesPage', 'heroMarginBottom', v)} />
-                                            <Slider label="Intensidade Máscara" value={sp.maskIntensity} max={200}
-                                                onChange={v => update('speciesPage', 'maskIntensity', v)} />
-                                        </ControlGroup>
-                                    )}
+                                       ((currentSpeciesId === 'tubaroes' || currentSpeciesId === 'arraias') && activeSlide >= 2)) && (
+                                         <ControlGroup label="🖼️ Imagem de Topo (Hero)" defaultOpen={false}>
+                                             <Slider label="Altura Hero" value={sp.heroHeight} max={1000}
+                                                 onChange={v => update('speciesPage', 'heroHeight', v)} />
+                                             <Slider label="Margem Bottom Hero" value={sp.heroMarginBottom} min={-100} max={200}
+                                                 onChange={v => update('speciesPage', 'heroMarginBottom', v)} />
+                                             <Slider label="Intensidade Máscara" value={sp.maskIntensity} max={200}
+                                                 onChange={v => update('speciesPage', 'maskIntensity', v)} />
+                                         </ControlGroup>
+                                     )}
 
-                                    <ControlGroup label="📝 Título" defaultOpen={true}>
-                                        <Slider label="Tamanho do Título" value={sp.titleSize} max={150}
-                                            onChange={v => update('speciesPage', 'titleSize', v)} />
-                                        <Slider label="Peso (Grosso/Fino)" value={sp.titleWeight} min={100} max={900} step={100}
-                                            onChange={v => update('speciesPage', 'titleWeight', v)} />
-                                        <Slider label="Espaçamento Letras" value={sp.titleSpacing} max={20}
-                                            onChange={v => update('speciesPage', 'titleSpacing', v)} />
-                                        <Slider label="Altura da Linha" value={sp.titleLineHeight} max={2.5} step={0.1}
-                                            onChange={v => update('speciesPage', 'titleLineHeight', v)} />
-                                        
-                                        {!['tartarugas-marinhas', 'tubaroes', 'arraias'].includes(currentSpeciesId) && (
-                                            <>
-                                                <Slider label="Tamanho (Parênteses)" value={sp.titleParenthesesSize || 60} max={120}
-                                                    onChange={v => update('speciesPage', 'titleParenthesesSize', v)} />
-                                                
-                                                <div style={{ borderTop: '1px solid #333', margin: '15px 0', paddingTop: '15px' }}>
-                                                    <p style={{ fontSize: '11px', color: '#005fff', marginBottom: '10px', fontWeight: 'bold' }}>SUBTÍTULO (CIENTÍFICO)</p>
-                                                    <Slider label="Tamanho" value={sp.subtitleSize} max={100}
-                                                        onChange={v => update('speciesPage', 'subtitleSize', v)} />
-                                                    <Slider label="Espaçamento" value={sp.subtitleSpacing} max={20} step={0.1}
-                                                        onChange={v => update('speciesPage', 'subtitleSpacing', v)} />
-                                                    <Slider label="Altura Linha" value={sp.subtitleLineHeight} max={2.5} step={0.1}
-                                                        onChange={v => update('speciesPage', 'subtitleLineHeight', v)} />
-                                                    <Slider label="Margem Topo" value={sp.subtitleMarginTop} min={-100} max={100}
-                                                        onChange={v => update('speciesPage', 'subtitleMarginTop', v)} />
-                                                    <Slider label="Peso" value={sp.scientificNameWeight} min={100} max={900} step={100}
-                                                        onChange={v => update('speciesPage', 'scientificNameWeight', v)} />
-                                                    <Checkbox label="Itálico" checked={sp.scientificNameItalic}
-                                                        onChange={v => update('speciesPage', 'scientificNameItalic', v)} />
-                                                </div>
-                                            </>
-                                        )}
-                                    </ControlGroup>
+                                     <ControlGroup label="📝 Título" defaultOpen={true}>
+                                         <Slider label="Tamanho do Título" value={sp.titleSize} max={150}
+                                             onChange={v => update('speciesPage', 'titleSize', v)} />
+                                         <Slider label="Peso (Grosso/Fino)" value={sp.titleWeight} min={100} max={900} step={100}
+                                             onChange={v => update('speciesPage', 'titleWeight', v)} />
+                                         <Slider label="Espaçamento Letras" value={sp.titleSpacing} max={20}
+                                             onChange={v => update('speciesPage', 'titleSpacing', v)} />
+                                         <Slider label="Altura da Linha" value={sp.titleLineHeight} max={2.5} step={0.1}
+                                             onChange={v => update('speciesPage', 'titleLineHeight', v)} />
+                                         
+                                         {(!['tartarugas-marinhas', 'tubaroes', 'arraias'].includes(currentSpeciesId) || 
+                                           ((currentSpeciesId === 'tubaroes' || currentSpeciesId === 'arraias') && activeSlide >= 2)) && (
+                                             <>
+                                                 <Slider label="Tamanho (Parênteses)" value={sp.titleParenthesesSize || 60} max={120}
+                                                     onChange={v => update('speciesPage', 'titleParenthesesSize', v)} />
+                                                 
+                                                 <div style={{ borderTop: '1px solid #333', margin: '15px 0', paddingTop: '15px' }}>
+                                                     <p style={{ fontSize: '11px', color: '#005fff', marginBottom: '10px', fontWeight: 'bold' }}>SUBTÍTULO (CIENTÍFICO)</p>
+                                                     <Slider label="Tamanho" value={sp.subtitleSize} max={100}
+                                                         onChange={v => update('speciesPage', 'subtitleSize', v)} />
+                                                     <Slider label="Espaçamento" value={sp.subtitleSpacing} max={20} step={0.1}
+                                                         onChange={v => update('speciesPage', 'subtitleSpacing', v)} />
+                                                     <Slider label="Altura Linha" value={sp.subtitleLineHeight} max={2.5} step={0.1}
+                                                         onChange={v => update('speciesPage', 'subtitleLineHeight', v)} />
+                                                     <Slider label="Margem Topo" value={sp.subtitleMarginTop} min={-100} max={100}
+                                                         onChange={v => update('speciesPage', 'subtitleMarginTop', v)} />
+                                                     <Slider label="Peso" value={sp.scientificNameWeight} min={100} max={900} step={100}
+                                                         onChange={v => update('speciesPage', 'scientificNameWeight', v)} />
+                                                     <Checkbox label="Itálico" checked={sp.scientificNameItalic}
+                                                         onChange={v => update('speciesPage', 'scientificNameItalic', v)} />
+                                                 </div>
+                                             </>
+                                         )}
+                                     </ControlGroup>
 
                                     <ControlGroup label="📄 Texto (Descrição)" defaultOpen={true}>
                                         <Slider label="Tamanho da Fonte" value={sp.textSize} max={60}
@@ -530,10 +531,24 @@ export default function DesignEditor({ config, setConfig, visible, onToggle, sel
                                     <ControlGroup label="⬅️ Botão Voltar" defaultOpen={false}>
                                         <Slider label="Tamanho" value={sp.backButtonSize} max={120}
                                             onChange={v => update('speciesPage', 'backButtonSize', v)} />
+                                        <Slider label="Tamanho do Ícone" value={sp.backButtonIconSize ?? 60} min={10} max={100} unit="%"
+                                            onChange={v => update('speciesPage', 'backButtonIconSize', v)} />
                                         <Slider label="Margem Bottom" value={sp.backButtonBottom} max={200}
                                             onChange={v => update('speciesPage', 'backButtonBottom', v)} />
                                         <Slider label="Margem Left" value={sp.backButtonLeft} max={200}
                                             onChange={v => update('speciesPage', 'backButtonLeft', v)} />
+                                    </ControlGroup>
+
+                                    <ControlGroup label="◀️ ▶️ Setas de Navegação" defaultOpen={false}>
+                                        <Slider label="Tamanho" value={sp.arrowSize ?? 90} max={180}
+                                            onChange={v => update('speciesPage', 'arrowSize', v)} />
+                                        <Slider label="Margem Bottom" value={sp.arrowBottom ?? 134} max={400}
+                                            onChange={v => update('speciesPage', 'arrowBottom', v)} />
+                                        <Slider label="Afastamento Lateral" value={sp.arrowLeft ?? 30} max={200}
+                                            onChange={v => {
+                                                update('speciesPage', 'arrowLeft', v);
+                                                update('speciesPage', 'arrowRight', v);
+                                            }} />
                                     </ControlGroup>
 
                                     <ControlGroup label="⬜ Barra Branca" defaultOpen={false}>
@@ -600,6 +615,45 @@ export default function DesignEditor({ config, setConfig, visible, onToggle, sel
                             ))}
                         </div>
 
+                        <div className="editor-species-override" style={{ padding: '0 10px', marginBottom: '15px' }}>
+                            <Checkbox 
+                                label={`Habilitar Override (${currentSpeciesId})`} 
+                                checked={hasSpeciesOverride} 
+                                onChange={toggleSpeciesOverride}
+                            />
+                            {hasSpeciesOverride && (
+                                <div style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
+                                    <p style={{ fontSize: '11px', color: '#005fff', marginTop: '2px', marginBottom: '5px' }}>
+                                        ✓ Editando botões apenas nesta página.
+                                    </p>
+                                    <button 
+                                        onClick={() => {
+                                            if (window.confirm('Deseja resetar a configuração de botões desta página e voltar ao padrão?')) {
+                                                setConfig(prev => {
+                                                    const next = { ...prev };
+                                                    delete next.speciesPageOverrides[currentSpeciesId];
+                                                    saveConfig(next);
+                                                    return next;
+                                                });
+                                            }
+                                        }}
+                                        style={{ 
+                                            alignSelf: 'flex-start', 
+                                            fontSize: '10px', 
+                                            padding: '2px 6px', 
+                                            background: '#444', 
+                                            color: '#fff', 
+                                            border: 'none', 
+                                            borderRadius: '3px',
+                                            cursor: 'pointer'
+                                        }}
+                                    >
+                                        🗑️ Resetar Botões
+                                    </button>
+                                </div>
+                            )}
+                        </div>
+
                         <Slider label="Padding Top" value={config.extincaoPage?.paddingTop} max={600}
                             onChange={v => update('extincaoPage', 'paddingTop', v)} />
                         <Slider label="Padding Left" value={config.extincaoPage?.paddingLeft} max={400}
@@ -659,6 +713,38 @@ export default function DesignEditor({ config, setConfig, visible, onToggle, sel
                             <Slider label="Margem Top" value={config.extincaoPage?.sealsMarginTop} max={300}
                                 onChange={v => update('extincaoPage', 'sealsMarginTop', v)} />
                         </ControlGroup>
+
+                        {(() => {
+                            const sp = {
+                                ...config.speciesPage,
+                                ...(config.speciesPageOverrides?.['perigo-extincao'] || {})
+                            };
+                            return (
+                                <>
+                                    <ControlGroup label="⬅️ Botão Voltar" defaultOpen={false}>
+                                        <Slider label="Tamanho" value={sp.backButtonSize} max={120}
+                                            onChange={v => update('speciesPage', 'backButtonSize', v)} />
+                                        <Slider label="Tamanho do Ícone" value={sp.backButtonIconSize ?? 60} min={10} max={100} unit="%"
+                                            onChange={v => update('speciesPage', 'backButtonIconSize', v)} />
+                                        <Slider label="Margem Bottom" value={sp.backButtonBottom} max={200}
+                                            onChange={v => update('speciesPage', 'backButtonBottom', v)} />
+                                        <Slider label="Margem Left" value={sp.backButtonLeft} max={200}
+                                            onChange={v => update('speciesPage', 'backButtonLeft', v)} />
+                                    </ControlGroup>
+                                    <ControlGroup label="◀️ ▶️ Setas de Navegação" defaultOpen={false}>
+                                        <Slider label="Tamanho" value={sp.arrowSize ?? 90} max={180}
+                                            onChange={v => update('speciesPage', 'arrowSize', v)} />
+                                        <Slider label="Margem Bottom" value={sp.arrowBottom ?? 134} max={400}
+                                            onChange={v => update('speciesPage', 'arrowBottom', v)} />
+                                        <Slider label="Afastamento Lateral" value={sp.arrowLeft ?? 30} max={200}
+                                            onChange={v => {
+                                                update('speciesPage', 'arrowLeft', v);
+                                                update('speciesPage', 'arrowRight', v);
+                                            }} />
+                                    </ControlGroup>
+                                </>
+                            );
+                        })()}
                     </ControlGroup>
                 )}
 

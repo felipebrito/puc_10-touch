@@ -41,6 +41,34 @@ export default function BaleiasIntroPage({ config }) {
     const searchParams = new URLSearchParams(location.search);
     const nextSpeciesId = searchParams.get('next') || 'baleia-jubarte';
 
+    const overrides = config?.speciesPageOverrides?.['baleias-intro'] || {};
+    const sp = {
+        ...config?.speciesPage,
+        ...overrides
+    };
+
+    const backButtonStyle = {
+        width: `${sp.backButtonSize ?? 60}px`,
+        height: `${sp.backButtonSize ?? 60}px`,
+        bottom: `${sp.backButtonBottom ?? 39}px`,
+        left: `${sp.backButtonLeft ?? 40}px`,
+        position: 'absolute',
+        pointerEvents: 'auto',
+        zIndex: 1000
+    };
+
+    const nextButtonStyle = {
+        width: `${sp.arrowSize ?? 90}px`,
+        height: `${sp.arrowSize ?? 90}px`,
+        bottom: `${sp.arrowBottom ?? 134}px`,
+        right: `${sp.arrowRight ?? 30}px`,
+        position: 'absolute',
+        top: 'auto',
+        transform: 'none',
+        pointerEvents: 'auto',
+        zIndex: 1000
+    };
+
     const handleNext = () => {
         navigate(`/species/${nextSpeciesId}`);
     };
@@ -151,17 +179,18 @@ export default function BaleiasIntroPage({ config }) {
             {/* Navigation Buttons (Back & Next) */}
             <div className="baleias-navigation">
                 {/* Back Button (Bottom Left) */}
-                <Link to="/" className="baleias-nav-button nav-back" title="Voltar para Início">
-                    <img src="/assets/images/home.svg" alt="Home" className="home-icon-svg" />
+                <Link to="/" className="baleias-nav-button nav-back" style={backButtonStyle} title="Voltar para Início">
+                    <img src="/assets/images/home.svg" alt="Home" className="home-icon-svg" style={{ width: `${sp.backButtonIconSize ?? 60}%`, height: `${sp.backButtonIconSize ?? 60}%`, filter: 'brightness(0) invert(1)' }} />
                 </Link>
 
                 {/* Next Button (Bottom Right) */}
                 <button 
                     onClick={handleNext} 
                     className="baleias-nav-button nav-next" 
+                    style={nextButtonStyle}
                     title="Avançar"
                 >
-                    <img src="/assets/images/seta-direita.svg" alt="Próximo" className="arrow-icon-svg" />
+                    <img src="/assets/images/seta-direita.svg" alt="Próximo" className="arrow-icon-svg" style={{ width: '60%', height: '60%' }} />
                     {/* Glowing pulse effect */}
                     <div className="pulse-glow" />
                 </button>

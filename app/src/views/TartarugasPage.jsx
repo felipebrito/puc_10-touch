@@ -46,10 +46,10 @@ const slides = [
         title: 'TARTARUGAS-MARINHAS',
         background: '/assets/images/tartarugas/bg.png',
         paragraphs: [
-            'No Brasil ocorrem cinco das setes espécies de tartarugas marinhas: tartaruga-de-couro (_Dermochelys coriacea_), tartaruga-cabeçuda (_Caretta caretta_), tartaruga-oliva (_Lepidochelys olivacea_), tartaruga-de-pente _Eretmochelys imbricata_ e a tartaruga-verde (_Chelonia mydas_).',
-            'Põem ovos nas áreas de praia das regiões mais quentes do país, inclusive na ilha de Fernando de Noronha, mas jovens e adultos vivem e se alimentam em alto-mar, tendo ampla distribution, inclusive no litoral do Rio Grande do Sul.',
+            'No Brasil ocorrem cinco das setes espécies de tartarugas marinhas: tartaruga-de-couro (_Dermochelys coriacea_), tartaruga-cabeçuda (_Caretta caretta_), tartaruga-oliva (_Lepidochelys olivacea_), tartaruga-de-pente _(Eretmochelys imbricata)_ e a tartaruga-verde (_Chelonia mydas_).',
+            'Põem ovos nas áreas de praia das regiões mais quentes do país, inclusive na ilha de Fernando de Noronha, mas jovens e adultos vivem e se alimentam em alto-mar, tendo ampla distribuição, inclusive no litoral do Rio Grande do Sul.',
             'Podem viver por muitas décadas, algumas até próximo dos 100 anos. Uma curiosidade é que a temperatura da areia onde os ovos se desenvolvem é que determina o sexo em que o embrião vai se desenvolver.',
-            'Normalmente, temperaturas mais altas determinam fêmeas, enquanto mais baixas desenvolvem machos. Por isso, o aumento da temperatura dos oceanos é uma grande preocupação para a conservação destas espécies.'
+            'Normalmente, temperaturas mais altas determinam fêmeas, enquanto temperaturas mais baixas desenvolvem machos. Por isso, o aumento da temperatura dos oceanos é uma grande preocupação para a conservação destas espécies.'
         ],
     },
     // Slide 2 — Imagem 2
@@ -86,8 +86,8 @@ export default function TartarugasPage({ config }) {
     useEffect(() => {
         window.__currentSlideIndex = current;
         window.dispatchEvent(new CustomEvent('slide-changed'));
-        return () => { 
-            window.__currentSlideIndex = undefined; 
+        return () => {
+            window.__currentSlideIndex = undefined;
             window.dispatchEvent(new CustomEvent('slide-changed'));
         };
     }, [current]);
@@ -95,12 +95,12 @@ export default function TartarugasPage({ config }) {
     // Resolve design configuration ONLY from overrides to allow CSS to prevail by default
     const speciesId = 'tartarugas-marinhas';
     const overrides = config?.speciesPageOverrides?.[speciesId] || {};
-    
+
     const sp = {
         ...overrides,
         ...(overrides.slideOverrides?.[current] || {})
     };
-    
+
     // Note: If sp is empty, SlideContent will use CSS defaults
 
     const goTo = (index) => {
@@ -126,11 +126,47 @@ export default function TartarugasPage({ config }) {
         dragStart.current = null;
     };
 
+    const btnSp = {
+        ...config.speciesPage,
+        ...sp
+    };
+
+    const backButtonStyle = {
+        width: `${btnSp.backButtonSize ?? 60}px`,
+        height: `${btnSp.backButtonSize ?? 60}px`,
+        bottom: `${btnSp.backButtonBottom ?? 39}px`,
+        left: `${btnSp.backButtonLeft ?? 40}px`,
+        position: 'absolute',
+        zIndex: 1000
+    };
+
+    const arrowLeftStyle = {
+        width: `${btnSp.arrowSize ?? 90}px`,
+        height: `${btnSp.arrowSize ?? 90}px`,
+        bottom: `${btnSp.arrowBottom ?? 134}px`,
+        left: `${btnSp.arrowLeft ?? 30}px`,
+        position: 'absolute',
+        top: 'auto',
+        transform: 'none',
+        zIndex: 1000
+    };
+
+    const arrowRightStyle = {
+        width: `${btnSp.arrowSize ?? 90}px`,
+        height: `${btnSp.arrowSize ?? 90}px`,
+        bottom: `${btnSp.arrowBottom ?? 134}px`,
+        right: `${btnSp.arrowRight ?? 30}px`,
+        position: 'absolute',
+        top: 'auto',
+        transform: 'none',
+        zIndex: 1000
+    };
+
     return (
         <div className="tartarugas-page">
             <TopBar />
-            <Link to="/" className="tartarugas-back-button">
-                <img src="/assets/images/home.svg" alt="Home" className="home-icon-svg" />
+            <Link to="/" className="tartarugas-back-button" style={backButtonStyle}>
+                <img src="/assets/images/home.svg" alt="Home" className="home-icon-svg" style={{ width: `${sp.backButtonIconSize ?? 60}%`, height: `${sp.backButtonIconSize ?? 60}%` }} />
             </Link>
 
             <div
@@ -151,19 +187,21 @@ export default function TartarugasPage({ config }) {
                 {current > 0 && (
                     <button
                         className="carousel-arrow-t arrow-left-t"
+                        style={arrowLeftStyle}
                         onClick={() => goTo(current - 1)}
                         onPointerDown={(e) => e.stopPropagation()}
                     >
-                        <img src="/assets/images/seta-esquerda.svg" alt="Anterior" className="arrow-icon-svg" />
+                        <img src="/assets/images/seta-esquerda.svg" alt="Anterior" className="arrow-icon-svg" style={{ width: '100%', height: '100%' }} />
                     </button>
                 )}
                 {current < slides.length - 1 && (
                     <button
                         className="carousel-arrow-t arrow-right-t"
+                        style={arrowRightStyle}
                         onClick={() => goTo(current + 1)}
                         onPointerDown={(e) => e.stopPropagation()}
                     >
-                        <img src="/assets/images/seta-direita.svg" alt="Próximo" className="arrow-icon-svg" />
+                        <img src="/assets/images/seta-direita.svg" alt="Próximo" className="arrow-icon-svg" style={{ width: '100%', height: '100%' }} />
                     </button>
                 )}
             </div>

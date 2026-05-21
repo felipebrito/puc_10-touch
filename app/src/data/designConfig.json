@@ -102,8 +102,13 @@
     "paddingTop": 51,
     "rowGap": 59,
     "backButtonSize": 60,
+    "backButtonIconSize": 60,
     "backButtonBottom": 39,
     "backButtonLeft": 40,
+    "arrowSize": 90,
+    "arrowBottom": 134,
+    "arrowLeft": 30,
+    "arrowRight": 30,
     "whiteBarWidth": 375,
     "whiteBarBottom": -51,
     "whiteBarRight": 0,
@@ -350,6 +355,28 @@
         "3": {
           "titleSize": 83,
           "paddingLeft": 164
+        }
+      }
+    },
+    "arraias": {
+      "slideOverrides": {
+        "0": {
+          "titleSize": 71,
+          "titleWeight": 800,
+          "paddingLeft": 94,
+          "paddingRight": 94,
+          "paddingHorizontal": 94,
+          "paddingTop": 157,
+          "textSize": 39,
+          "titleSpacing": 2,
+          "titleLineHeight": 1,
+          "textWeight": 100
+        },
+        "1": {
+          "paddingTop": 166,
+          "paddingHorizontal": 108,
+          "paddingLeft": 108,
+          "paddingRight": 108
         }
       }
     },

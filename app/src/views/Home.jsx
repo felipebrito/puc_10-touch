@@ -31,7 +31,7 @@ export default function Home({ config, setConfig, editorVisible, onToggleEditor 
 
     const handleItemClick = (item) => {
         if (item.id === 'raias' || item.id === 'arraias') {
-            navigate('/species/raia-jamanta');
+            navigate('/species/raias');
         } else if (item.id === 'baleia-jubarte' || item.id === 'baleia-franca') {
             navigate(`/species/baleias-intro?next=${item.id}`);
         } else {

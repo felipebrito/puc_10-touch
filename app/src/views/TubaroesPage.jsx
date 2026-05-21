@@ -49,49 +49,48 @@ const slides = [
         guideImage: '/assets/guides/revisao-22-04/page-22.jpg',
         paragraphs: [
             'A principal ameaça aos tubarões e raias é a perda de habitat, principalmente nas áreas costeiras e praias, devido à urbanização descontrolada e atividades industriais, tais como portos e dragagens em zonas de estuários, que alteram ou destroem as áreas de reprodução, alimentação e abrigo.',
-            'As mudanças climáticas, que têm aumentado as temperaturas e a acidificação dos oceanos, alteram as cadeias alimentares e a distribuição das espécies, ampliando seu risco de extinção. Confira a seguir detalhes sobre algumas dessas espécies.'
+            'As mudanças climáticas, que têm aumentado as temperaturas e a acidificação dos oceanos, alteram as cadeias alimentares e a distribuição das espécies, ampliando seu risco de extinção. Confira a seguir detalhes sobre algumas dessas espécies:'
         ],
     },
     {
         type: 'species-detail',
         id: 'tubarao-mangona',
-        label: 'TUBARÃO\nMANGONA',
+        label: 'TUBARÃO-MANGONA',
         scientificName: 'TUBARÃO-MANGONA',
         binomialName: 'Carcharias taurus',
         heroImage: '/assets/images/tubaroes/mangona_hero.png',
         footerImage: '/assets/images/tubaroes/mangona_footer.png',
         guideImage: '/assets/guides/revisao-22-04/page-23.jpg',
         paragraphs: [
-            'É um tubarão de grande porte, com distribuição costeira no mundo inteiro. No Brasil, ocorre no Sudeste e Sul. O comprimento máximo comprovado da espécie é de aproximadamente 3,2m, chegando a pesar por volta de 300 kg.',
-            'Produz apenas dois filhotes por gestação. Como resultado, as taxas anuais de crescimento da população são muito baixas, reduzindo sua capacidade de sustentar as ameaças causadas pela pesca.'
+            'É um tubarão de grande porte, com distribuição costeira no mundo inteiro. No Brasil, ocorre no Sudeste e Sul. O comprimento máximo comprovado da espécie é de aproximadamente 3,2 m, chegando a pesar por volta de 300 kg.',
+            'Tem apenas dois filhotes por gestação. Como resultado, as taxas anuais de crescimento da população são muito baixas, reduzindo sua capacidade de sustentar as ameaças causadas pela pesca.'
         ],
     },
     {
         type: 'species-detail',
         id: 'tubarao-martelo',
-        label: 'TUBARÃO-MARTELO\nGRANDE',
+        label: 'TUBARÃO-MARTELO-GRANDE',
         scientificName: 'TUBARÃO-MARTELO-GRANDE',
         binomialName: 'Sphyrna mokarran',
         heroImage: '/assets/images/tubaroes/martelo_hero.png',
         footerImage: '/assets/images/tubaroes/martelo_footer.png',
         guideImage: '/assets/guides/revisao-22-04/page-24.jpg',
         paragraphs: [
-            'Podendo ultrapassar os 6m de comprimento, é um grande tubarão tropical e sub-tropical, amplamente distribuído.',
+            'Podendo ultrapassar os 6 m de comprimento, é um grande tubarão tropical e sub-tropical, amplamente distribuído.',
             'Altamente valorizado por suas barbatanas, apresenta taxas elevadas de mortalidade e se reproduz apenas uma vez a cada dois anos, tornando-se vulnerável à sobre-exploração e redução da população.'
         ],
     },
     {
         type: 'species-detail',
         id: 'cacao-anjo',
-        label: 'CAÇÃO-ANJO-DE\nASA-LONGA',
+        label: 'CAÇÃO-ANJO-DE-ASA-LONGA',
         scientificName: 'CAÇÃO-ANJO-DE-ASA-LONGA',
         binomialName: 'Squatina argentina',
         heroImage: '/assets/images/tubaroes/cacao_anjo_hero.png',
         footerImage: '/assets/images/tubaroes/cacao_anjo_footer.png',
         guideImage: '/assets/guides/revisao-22-04/page-25.jpg',
         paragraphs: [
-            'Também conhecido como tubarão-anjo-argentino, é uma espécie de peixe cartilaginoso, com um comprimento máximo de 1,4m, endêmica do Atlântico Sul ocidental. No Brasil, há registros da espécie desde o Rio de Janeiro até o Rio Grande do Sul. As pescarias com redes de arrasto e emalhe são a principal ameaça sobre a espécie.',
-            'O cação-anjo-de-asa-longa apresenta longa vida e baixo potencial reprodutivo.'
+            'Também conhecido como tubarão-anjo-argentino, é uma espécie de peixe cartilaginoso, com um comprimento máximo de 1,4 m, endêmica do Atlântico Sul ocidental. No Brasil, há registros da espécie desde o Rio de Janeiro até o Rio Grande do Sul. As pescarias com redes de arrasto e emalhe são a principal ameaça sobre a espécie. O cação-anjo-de-asa-longa apresenta longa vida e baixo potencial reprodutivo.',
         ],
     },
 ];
@@ -121,8 +120,8 @@ export default function TubaroesPage({ config }) {
         window.__currentSlideIndex = current;
         window.__currentSpeciesId = currentSlide.type === 'species-detail' ? currentSlide.id : 'tubaroes';
         window.dispatchEvent(new CustomEvent('slide-changed'));
-        return () => { 
-            window.__currentSlideIndex = undefined; 
+        return () => {
+            window.__currentSlideIndex = undefined;
             window.__currentSpeciesId = undefined;
             window.dispatchEvent(new CustomEvent('slide-changed'));
         };
@@ -131,7 +130,7 @@ export default function TubaroesPage({ config }) {
     // Resolve design configuration
     const speciesId = 'tubaroes';
     const overrides = config?.speciesPageOverrides?.[speciesId] || {};
-    
+
     const specificSpeciesId = currentSlide.type === 'species-detail' ? currentSlide.id : null;
     const specificOverrides = specificSpeciesId ? (config?.speciesPageOverrides?.[specificSpeciesId] || {}) : {};
 
@@ -174,11 +173,42 @@ export default function TubaroesPage({ config }) {
         dragStart.current = null;
     };
 
+    const backButtonStyle = {
+        width: `${sp.backButtonSize ?? 60}px`,
+        height: `${sp.backButtonSize ?? 60}px`,
+        bottom: `${sp.backButtonBottom ?? 39}px`,
+        left: `${sp.backButtonLeft ?? 40}px`,
+        position: 'absolute',
+        zIndex: 1000
+    };
+
+    const arrowLeftStyle = {
+        width: `${sp.arrowSize ?? 90}px`,
+        height: `${sp.arrowSize ?? 90}px`,
+        bottom: `${sp.arrowBottom ?? 134}px`,
+        left: `${sp.arrowLeft ?? 30}px`,
+        position: 'absolute',
+        top: 'auto',
+        transform: 'none',
+        zIndex: 1000
+    };
+
+    const arrowRightStyle = {
+        width: `${sp.arrowSize ?? 90}px`,
+        height: `${sp.arrowSize ?? 90}px`,
+        bottom: `${sp.arrowBottom ?? 134}px`,
+        right: `${sp.arrowRight ?? 30}px`,
+        position: 'absolute',
+        top: 'auto',
+        transform: 'none',
+        zIndex: 1000
+    };
+
     return (
         <div className="tubaroes-page">
             <TopBar />
-            <Link to="/" className="tubaroes-back-button">
-                <img src="/assets/images/home.svg" alt="Home" className="home-icon-svg" />
+            <Link to="/" className="tubaroes-back-button" style={backButtonStyle}>
+                <img src="/assets/images/home.svg" alt="Home" className="home-icon-svg" style={{ width: `${sp.backButtonIconSize ?? 60}%`, height: `${sp.backButtonIconSize ?? 60}%` }} />
             </Link>
 
             <div
@@ -199,24 +229,26 @@ export default function TubaroesPage({ config }) {
                 {current > 0 && (
                     <button
                         className="carousel-arrow arrow-left"
+                        style={arrowLeftStyle}
                         onClick={() => goTo(current - 1)}
                         onPointerDown={(e) => e.stopPropagation()}
                     >
-                        <img src="/assets/images/seta-esquerda.svg" alt="Anterior" className="arrow-icon-svg" />
+                        <img src="/assets/images/seta-esquerda.svg" alt="Anterior" className="arrow-icon-svg" style={{ width: '100%', height: '100%' }} />
                     </button>
                 )}
                 {current < slides.length - 1 && (
                     <button
                         className="carousel-arrow arrow-right"
+                        style={arrowRightStyle}
                         onClick={() => goTo(current + 1)}
                         onPointerDown={(e) => e.stopPropagation()}
                     >
-                        <img src="/assets/images/seta-direita.svg" alt="Próximo" className="arrow-icon-svg" />
+                        <img src="/assets/images/seta-direita.svg" alt="Próximo" className="arrow-icon-svg" style={{ width: '100%', height: '100%' }} />
                     </button>
                 )}
             </div>
 
-            <div className="tubaroes-indicator">
+            <div className={`tubaroes-indicator ${currentSlide.type === 'shark-text' ? 'theme-dark' : ''}`}>
                 {slides.map((_, i) => (
                     <div key={i} className={`indicator-dot ${i === current ? 'active' : ''}`} />
                 ))}
@@ -303,8 +335,8 @@ function SlideContent({ slide, sp }) {
                 variants={containerVariants}
             >
                 {/* Hero Section */}
-                <motion.div 
-                    className="species-hero" 
+                <motion.div
+                    className="species-hero"
                     variants={itemVariants}
                     style={{ height: `${sp.heroHeight}px`, marginBottom: `${sp.heroMarginBottom}px` }}
                 >
@@ -313,7 +345,7 @@ function SlideContent({ slide, sp }) {
                 </motion.div>
 
                 {/* Content Section */}
-                <div 
+                <div
                     className="species-content"
                     style={{
                         paddingLeft: `${sp.paddingHorizontal}px`,
@@ -322,8 +354,8 @@ function SlideContent({ slide, sp }) {
                         gap: `${sp.rowGap}px`
                     }}
                 >
-                    <motion.h1 
-                        className="species-title" 
+                    <motion.h1
+                        className="species-title"
                         variants={itemVariants}
                         style={{
                             fontSize: `${sp.titleSize}px`,
@@ -336,8 +368,8 @@ function SlideContent({ slide, sp }) {
                     </motion.h1>
 
                     {slide.binomialName && (
-                        <motion.p 
-                            className="species-scientific" 
+                        <motion.p
+                            className="species-scientific"
                             variants={itemVariants}
                             style={{
                                 fontSize: `${sp.subtitleSize}px`,
@@ -351,8 +383,8 @@ function SlideContent({ slide, sp }) {
                         </motion.p>
                     )}
 
-                    <motion.div 
-                        className="species-paragraphs" 
+                    <motion.div
+                        className="species-paragraphs"
                         variants={itemVariants}
                         style={{
                             fontSize: `${sp.textSize}px`,
@@ -368,9 +400,9 @@ function SlideContent({ slide, sp }) {
 
                 {/* Footer Section - Simplified (no extra line, with scale/offset) */}
                 {slide.footerImage && (
-                    <div 
+                    <div
                         className="species-footer-wrapper"
-                        style={{ 
+                        style={{
                             position: 'absolute',
                             bottom: `${sp.footerVerticalOffset || 0}px`,
                             left: `${sp.footerHorizontalOffset || 0}px`,
@@ -379,8 +411,8 @@ function SlideContent({ slide, sp }) {
                             pointerEvents: 'none'
                         }}
                     >
-                        <motion.div 
-                            className="species-footer" 
+                        <motion.div
+                            className="species-footer"
                             variants={itemVariants}
                             style={{ width: 'auto' }}
                         >
